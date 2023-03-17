@@ -1,0 +1,33 @@
+@import "./colorbase.scss";
+
+.cst-sidebar{    
+    background-color: $color-plain;
+    width: 250px;    
+    border-right: 0.6px solid lighten($color-primary, 20%);
+    position: fixed;    
+    top: 0;    
+    bottom: 0;
+    left: 0;
+    min-height: 100vh !important;
+    transition: 0.3s;    
+}
+
+.cst-sidebar-collapsed{
+    width: 60px;
+    background-color: $color-plain;
+    border-right: 0.6px solid lighten($color-primary, 20%);
+    position: fixed;    
+    top: 0;    
+    bottom: 0;
+    left: 0;
+    min-height: 100vh !important;
+    transition: 0.3s; 
+}
+
+.cst-content{
+    padding-left: 250px;    
+}
+
+.cst-content-extended{
+    padding-left: 60px;    
+}
