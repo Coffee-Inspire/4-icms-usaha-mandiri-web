@@ -1,7 +1,7 @@
 @import "./colorbase.scss";
 
 .cst-sidebar{    
-    background-color: $color-plain;
+    background-color: $color-plain;    
     width: 250px;    
     border-right: 0.6px solid lighten($color-primary, 20%);
     position: fixed;    
@@ -9,11 +9,15 @@
     bottom: 0;
     left: 0;
     min-height: 100vh !important;
-    transition: 0.3s;    
+    transition: 0.3s;  
+    overflow-x: hidden;     
+    overflow-y: auto; 
+    height: 100vh;
+    z-index: 2;
 }
 
 .cst-sidebar-collapsed{
-    width: 60px;
+    width: 0px;
     background-color: $color-plain;
     border-right: 0.6px solid lighten($color-primary, 20%);
     position: fixed;    
@@ -22,12 +26,82 @@
     left: 0;
     min-height: 100vh !important;
     transition: 0.3s; 
+    overflow: hidden !important;  
+    overflow-y: auto; 
+    height: 100vh;  
+    z-index: 2;
 }
 
 .cst-content{
     padding-left: 250px;    
+    transition: 0.3s; 
 }
 
 .cst-content-extended{
-    padding-left: 60px;    
+    padding-left: 0px;   
+    transition: 0.3s;  
 }
+
+.cst-text-primary{
+    color: $color-primary;
+}
+
+.cst-text-secondary{
+    color: $color-secondary;
+}
+
+.cst-clickable{
+    cursor: pointer;
+}
+
+.cst-letter-spacing{
+    letter-spacing: 4px;
+}
+
+.cst-border-bottom{
+    border-bottom: 1px solid rgba($color-primary,0.4);
+}
+
+.cst-btn-primary{
+    background-color: $color-primary;
+    color: $color-plain;
+    
+    &:hover{
+        background-color: $color-plain;
+        border: 1px solid $color-primary;   
+        color: $color-primary;
+    }
+}
+
+.cst-btn-secondary{
+    background-color: $color-plain;
+    border: 1px solid $color-primary;   
+    color: $color-primary;
+    
+    &:hover{
+        background-color: $color-primary;
+        border: 1px solid $color-primary;   
+        color: $color-plain;
+    }    
+}
+
+.cst-btn-eclipse{
+    width: 55px;
+    height: 30px;
+    border-radius: 100px;
+}
+
+.cst-float-on{
+    margin-left: -40px;
+    z-index: 2;
+    transition: 0.3s;
+}
+
+.cst-float-off{
+    margin-left: -0px;    
+    transition: 0.3s;
+}
+
+// .cst-btn-add{
+//     letter-spacing: 2px;
+// }
