@@ -10,7 +10,6 @@ function ProfileBar({ expanded, setExpanded }) {
     >
       <Button
         variant="none"
-        // className="cst-aaa  cst-aaa-bbb cst-btn-primary cst-btn-eclipse d-flex justify-content-center align-items-center"
         className={`cst-float-on  ${
           expanded && "cst-float-off"
         }  cst-btn-primary cst-btn-eclipse d-flex justify-content-center align-items-center`}
@@ -18,7 +17,12 @@ function ProfileBar({ expanded, setExpanded }) {
       >
         {expanded ? take("chevron-right") : take("chevron-left")}
       </Button>
-      <p>ProfileBar</p>
+      <div className="d-flex align-items-center me-md-3">
+        Hi, <strong className="ms-1 me-2">{"Admin"}</strong>
+        <span className="cst-avatar-bg cst-avatar d-flex justify-content-center align-items-center rounded-circle">
+          {take("avatar")}
+        </span>
+      </div>
     </Container>
   );
 }

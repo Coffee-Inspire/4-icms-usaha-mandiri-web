@@ -10,9 +10,7 @@ function MainLayout({ prefix }) {
   return (
     <Container fluid className="p-0 vh-100">
       <Sidebar prefix={prefix} expanded={expanded} />
-      {/* <div className="cst-content w-100"> */}
       <div
-        // className={`cst-content ${!expanded && "cst-content-extended"} w-100`}
         className={`cst-content ${expanded && "cst-content-extended"} w-100`}
       >
         <ProfileBar expanded={expanded} setExpanded={setExpanded} />
