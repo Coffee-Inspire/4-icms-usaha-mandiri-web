@@ -35,12 +35,13 @@ function Shows({ columns, rows }) {
       ...baseStyles,
       borderColor: "rgba(255,155,255,0)",
       backgroundColor: "rgba(255,155,255,0)",
+      cursor: "pointer",
     }),
 
     option: (base) => {
       return {
         ...base,
-        color: "rgba(109,91,208,1)",
+        cursor: "pointer",
       };
     },
     singleValue: (provided) => ({
@@ -52,22 +53,105 @@ function Shows({ columns, rows }) {
       ...base,
       color: "rgba(110,104,147,1)",
     }),
+    indicatorSeparator: (state) => ({
+      display: "none",
+    }),
   };
+
   const renderColumns = () => {
     return columns.map((col) => {
-      return <th key={col.bind}>{col.label}</th>;
+      return (
+        <th key={col.bind} className="text-center">
+          {col.label}
+        </th>
+      );
     });
   };
-  const renderRecords = () => {
-    const aaa = rows;
-    console.log(aaa);
-    //   <tr>
-    //   {Array.from({ length: 8 }).map((_, index) => (
-    //     <td key={index}>Table cell {index}</td>
-    //   ))}
-    // </tr>
+
+  const renderCells = (record) => {
+    const recognizedCell = (col) => {
+      const value = record[col.bind];
+      const align = { textAlign: col.align || "center" };
+
+      switch (col.type) {
+        case "qty":
+          <td style={align} key={`${record.id}-${col.bind}`}>
+            <div className="d-flex flex-column">
+              <span>{`${value}`}</span>
+              <span className="text-secondary">PCS</span>
+            </div>
+          </td>;
+
+        case "currency":
+          return (
+            <td style={align} key={`${record.id}-${col.bind}`}>
+              <div className="d-flex flex-column">
+                <span>{`${value}`}</span>
+                <span className="text-secondary">IDR</span>
+              </div>
+            </td>
+          );
+
+        default:
+          return (
+            <td style={align} key={`${record.id}-${col.bind}`}>
+              {value}
+            </td>
+          );
+      }
+    };
+
+    const unrecognizedCell = (col) => {
+      const align = { textAlign: col.align || "center" };
+      switch (col.type) {
+        case "action":
+          return (
+            <td style={align} key={`${record.id}-${col.bind}`}>
+              <Button
+                variant="none"
+                className="cst-btn-neutral mx-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  alert("test");
+                }}
+              >
+                {take("view")}
+              </Button>
+              <Button
+                variant="none"
+                className="cst-btn-success mx-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  alert("test");
+                }}
+              >
+                {take("edit")}
+              </Button>
+              <Button
+                variant="none"
+                className="cst-btn-danger mx-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  alert("test");
+                }}
+              >
+                {take("delete")}
+              </Button>
+            </td>
+          );
+
+        default:
+          return <td key={`${record.id}-${col.bind}`}>-</td>;
+      }
+    };
+
+    return columns.map((col) =>
+      Object.keys(record).find((cell) => cell == col.bind)
+        ? recognizedCell(col)
+        : unrecognizedCell(col)
+    );
   };
-  renderRecords();
+
   return (
     <div className="cst-section-shadow rounded-3  my-4">
       <Row className="mx-0 py-3">
@@ -99,31 +183,9 @@ function Shows({ columns, rows }) {
           <tr>{renderColumns()}</tr>
         </thead>
         <tbody>
-          <tr>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <td key={index}>Table cell {index}</td>
-            ))}
-          </tr>
-          <tr>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <td key={index}>Table cell {index}</td>
-            ))}
-          </tr>
-          <tr>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <td key={index}>Table cell {index}</td>
-            ))}
-          </tr>
-          <tr>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <td key={index}>Table cell {index}</td>
-            ))}
-          </tr>
-          <tr>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <td key={index}>Table cell {index}</td>
-            ))}
-          </tr>
+          {rows.map((row) => (
+            <tr key={row.id}>{renderCells(row)}</tr>
+          ))}
         </tbody>
       </Table>
       <div className="cst-heading-bg p-3 text-end fw-bold rounded-3 ">

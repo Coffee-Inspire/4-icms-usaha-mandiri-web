@@ -19,6 +19,7 @@ function Stock() {
     {
       label: "Name",
       bind: "name",
+      align: "left",
     },
     {
       label: "Category",
@@ -31,22 +32,34 @@ function Stock() {
     {
       label: "Qty",
       bind: "qty",
+      type: "qty",
+      align: "right",
     },
     {
       label: "Cost",
       bind: "cost",
+      type: "currency",
+      align: "right",
     },
     {
       label: "Price",
-      bind: "price",
+      bind: "hpp",
+      type: "currency",
+      align: "right",
     },
     {
       label: "Last Order",
-      bind: "lastOrder",
+      bind: "lastOrderDate",
     },
     {
       label: "Last Restock",
-      bind: "lastRestock",
+      bind: "lastRestockDate",
+    },
+    {
+      label: "Action",
+      bind: "action",
+      type: "action",
+      method: ["edit", "delete"],
     },
   ];
 
@@ -56,33 +69,33 @@ function Stock() {
       {
         id: "1",
         name: "KUSEN 2S",
+        lastOrderDate: "20/03/2023",
         qty: "50",
         cost: "30000",
         hpp: "50000",
         category: "KAYU",
-        lastOrderDate: "20/03/2023",
         lastRestockDate: "21/03/2023",
         supplier: "PT. Sinar Abadi",
       },
       {
         id: "2",
         name: "KUSEN 3S",
+        lastOrderDate: "20/03/2023",
         qty: "16",
         cost: "30000",
         hpp: "50000",
         category: "KAYU",
-        lastOrderDate: "20/03/2023",
         lastRestockDate: "21/03/2023",
         supplier: "PT. Sinar Abadi",
       },
       {
         id: "3",
         name: "KUSEN 4S",
+        lastOrderDate: "20/03/2023",
         qty: "21",
         cost: "30000",
         hpp: "50000",
         category: "KAYU",
-        lastOrderDate: "20/03/2023",
         lastRestockDate: "21/03/2023",
         supplier: "PT. Alco Jaya",
       },
