@@ -196,6 +196,7 @@ function Stock() {
         setPage={setPage}
         totalPage={totalPage}
         setSearch={setSearch}
+        setFilter={setFilter}
       />
     </Container>
   );

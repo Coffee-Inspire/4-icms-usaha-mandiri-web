@@ -171,6 +171,7 @@ function Customer() {
         setPage={setPage}
         totalPage={totalPage}
         setSearch={setSearch}
+        setFilter={setFilter}
       />
       <CustomerCreateModal
         show={createModalShow}

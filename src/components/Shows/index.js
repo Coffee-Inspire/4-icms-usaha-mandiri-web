@@ -21,14 +21,61 @@ function Shows({
   setPage,
   totalPage,
   setSearch,
+  setFilter,
 }) {
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
-        <p className="cst-text-secondary">SORT BY:</p>
         <Form>
-          <Form.Check type={"radio"} label={`label`} name="sort" />
-          <Form.Check type={"radio"} label={`label2`} name="sort" />
+          <Row>
+            <Col xs={12}>
+              <p className="cst-text-secondary">SORT BY:</p>
+            </Col>
+            <Col
+              xs={12}
+              className="cst-clickable cst-hover-respond my-1 d-flex justify-content-between align-items-center"
+            >
+              <label htmlFor="sortDefault" className="cst-clickable">
+                Default
+              </label>
+              <Form.Check
+                type={"radio"}
+                name="filter"
+                id="sortDefault"
+                onChange={() => setFilter("")}
+                className="cst-clickable"
+                defaultChecked
+              />
+            </Col>
+            <Col
+              xs={12}
+              className="cst-clickable cst-hover-respond my-1 d-flex justify-content-between align-items-center"
+            >
+              <label htmlFor="sortUpdatedAt" className="cst-clickable">
+                Date modified
+              </label>
+              <Form.Check
+                type={"radio"}
+                name="filter"
+                id="sortUpdatedAt"
+                onChange={() => setFilter("updatedAt")}
+                className="cst-clickable"
+              />
+            </Col>
+          </Row>
+
+          {/* <Form.Group className="d-flex">
+           
+          </Form.Group> */}
+          {/* <Form.Group className="d-flex">
+            <Form.Label htmlFor="sortName">Name</Form.Label>
+            <Form.Check
+              type={"radio"}
+              name="filter"
+              id="sortName"
+              onChange={() => setFilter("name")}
+            />
+          </Form.Group> */}
         </Form>
       </Popover.Body>
     </Popover>
