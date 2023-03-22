@@ -11,7 +11,16 @@ import {
 } from "react-bootstrap";
 import { take } from "../../helpers/iconMapper";
 
-function Shows({ columns, rows }) {
+function Shows({
+  columns,
+  rows,
+  limitOptions,
+  setLimit,
+  page,
+  setPage,
+  totalPage,
+  setSearch,
+}) {
   const popover = (
     <Popover id="popover-basic">
       <Popover.Body>
@@ -23,12 +32,6 @@ function Shows({ columns, rows }) {
       </Popover.Body>
     </Popover>
   );
-
-  const limitOptions = [
-    { label: "5", value: "5" },
-    { label: "10", value: "10" },
-    { label: "15", value: "15" },
-  ];
 
   const customStyles = {
     control: (baseStyles) => ({
@@ -48,6 +51,9 @@ function Shows({ columns, rows }) {
       ...provided,
 
       color: "rgba(110,104,147,1)",
+      width: "100%",
+      marginRight: "10px",
+      textAlign: "center",
     }),
     dropdownIndicator: (base) => ({
       ...base,
@@ -75,12 +81,14 @@ function Shows({ columns, rows }) {
 
       switch (col.type) {
         case "qty":
-          <td style={align} key={`${record.id}-${col.bind}`}>
-            <div className="d-flex flex-column">
-              <span>{`${value}`}</span>
-              <span className="text-secondary">PCS</span>
-            </div>
-          </td>;
+          return (
+            <td style={align} key={`${record.id}-${col.bind}`}>
+              <div className="d-flex flex-column">
+                <span>{`${value}`}</span>
+                <span className="text-secondary">PCS</span>
+              </div>
+            </td>
+          );
 
         case "currency":
           return (
@@ -107,36 +115,42 @@ function Shows({ columns, rows }) {
         case "action":
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
-              <Button
-                variant="none"
-                className="cst-btn-neutral mx-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  alert("test");
-                }}
-              >
-                {take("view")}
-              </Button>
-              <Button
-                variant="none"
-                className="cst-btn-success mx-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  alert("test");
-                }}
-              >
-                {take("edit")}
-              </Button>
-              <Button
-                variant="none"
-                className="cst-btn-danger mx-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  alert("test");
-                }}
-              >
-                {take("delete")}
-              </Button>
+              {col.methods.includes("detail") && (
+                <Button
+                  variant="none"
+                  className="cst-btn-neutral mx-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    alert("test");
+                  }}
+                >
+                  {take("view")}
+                </Button>
+              )}
+              {col.methods.includes("edit") && (
+                <Button
+                  variant="none"
+                  className="cst-btn-success mx-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    alert("test");
+                  }}
+                >
+                  {take("edit")}
+                </Button>
+              )}
+              {col.methods.includes("delete") && (
+                <Button
+                  variant="none"
+                  className="cst-btn-danger mx-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    alert("test");
+                  }}
+                >
+                  {take("delete")}
+                </Button>
+              )}
             </td>
           );
 
@@ -151,11 +165,17 @@ function Shows({ columns, rows }) {
         : unrecognizedCell(col)
     );
   };
+  const handlePrevPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
+  const handleNextPage = () => {
+    if (page < totalPage) setPage(page + 1);
+  };
 
   return (
     <div className="cst-section-shadow rounded-3  my-4">
       <Row className="mx-0 py-3">
-        <Col xs={12} md={1} className="px-0  d-flex justify-content-center">
+        <Col xs={6} md={1} className="px-0  d-flex justify-content-center">
           <OverlayTrigger
             rootClose
             trigger="click"
@@ -171,9 +191,12 @@ function Shows({ columns, rows }) {
             </Button>
           </OverlayTrigger>
         </Col>
-        <Col xs={12} md={4} className="px-0">
+        <Col xs={6} md={4} className="px-0">
           <Form>
-            <Form.Control placeholder="Search user by name" className="" />
+            <Form.Control
+              placeholder="Search"
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </Form>
         </Col>
       </Row>
@@ -188,15 +211,44 @@ function Shows({ columns, rows }) {
           ))}
         </tbody>
       </Table>
-      <div className="cst-heading-bg p-3 text-end fw-bold rounded-3 ">
-        <span className="d-flex justify-content-end align-items-center">
-          <small className=" cst-text-secondary me-1 ">Rows per page:</small>
+      <Row className="cst-heading-bg cst-table-toolbar cst-text-secondary mx-0 fw-bold d-flex justify-content-end">
+        <Col
+          xs={5}
+          md={2}
+          className="d-flex justify-content-end align-items-center py-1"
+        >
+          <small className="me-1">Limit:</small>
           <small>
-            <Select options={limitOptions} styles={customStyles} />
+            <Select
+              options={limitOptions}
+              styles={customStyles}
+              defaultValue={limitOptions[0]}
+              onChange={(a) => setLimit(a)}
+            />
           </small>
-          <small className=" cst-text-secondary mx-5">Page 1-3 of 3</small>
-        </span>
-      </div>
+        </Col>
+        <Col
+          xs={7}
+          md={2}
+          className="d-flex justify-content-end align-items-center py-1"
+        >
+          <small>
+            Page {page} <span>of {"99"}</span>
+          </small>
+          <small
+            className="cst-item px-2 mx-2 p-1"
+            onClick={() => handlePrevPage()}
+          >
+            {take("chevron-left")}
+          </small>
+          <small
+            className="cst-item px-2 mx-2 p-1"
+            onClick={() => handleNextPage()}
+          >
+            {take("chevron-right")}
+          </small>
+        </Col>
+      </Row>
     </div>
   );
 }
