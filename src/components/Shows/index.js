@@ -63,19 +63,6 @@ function Shows({
               />
             </Col>
           </Row>
-
-          {/* <Form.Group className="d-flex">
-           
-          </Form.Group> */}
-          {/* <Form.Group className="d-flex">
-            <Form.Label htmlFor="sortName">Name</Form.Label>
-            <Form.Check
-              type={"radio"}
-              name="filter"
-              id="sortName"
-              onChange={() => setFilter("name")}
-            />
-          </Form.Group> */}
         </Form>
       </Popover.Body>
     </Popover>
@@ -137,7 +124,6 @@ function Shows({
               </div>
             </td>
           );
-
         case "currency":
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
@@ -147,7 +133,20 @@ function Shows({
               </div>
             </td>
           );
-
+        case "activeStatus":
+          return (
+            <td style={align} key={`${record.id}-${col.bind}`}>
+              {value ? (
+                <div className="cst-bg-positive-light cst-chip-radius d-flex">
+                  <span className="cst-text-positive w-100">Aktif</span>
+                </div>
+              ) : (
+                <div className="cst-bg-negative-light cst-chip-radius d-flex">
+                  <span className="cst-text-negative w-100">Non Aktif</span>
+                </div>
+              )}
+            </td>
+          );
         default:
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>

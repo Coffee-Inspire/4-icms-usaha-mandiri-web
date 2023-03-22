@@ -79,6 +79,14 @@ Extra extra large	xxl	≥1400px
   background-color: $color-primary;
 }
 
+.cst-bg-positive-light {
+  background-color: lighten($color-positive, 53%);
+}
+
+.cst-bg-negative-light {
+  background-color: lighten($color-negative, 53%);
+}
+
 .cst-heading-bg {
   background-color: lighten($color-primary, 32%);
 }
@@ -101,7 +109,11 @@ Extra extra large	xxl	≥1400px
   color: $color-plain;
 }
 
-.cst-text-danger {
+.cst-text-positive {
+  color: $color-positive;
+}
+
+.cst-text-negative {
   color: $color-negative;
 }
 
@@ -223,6 +235,10 @@ Extra extra large	xxl	≥1400px
   border-radius: 100px;
 }
 
+.cst-chip-radius{
+  border-radius: 20px;
+}
+
 .cst-item {
   cursor: pointer;
   transition: 0.3s;
@@ -251,6 +267,7 @@ Extra extra large	xxl	≥1400px
   border-collapse: collapse;
   transition: 0.3s;
   font-size: 14px;
+  font-weight: bold;
 
   thead tr {
     border-top: 1px solid lighten($color-primary, 23%);
@@ -272,7 +289,7 @@ Extra extra large	xxl	≥1400px
 
   tbody tr {
     cursor: pointer;
-    text-transform: capitalize;
+    // text-transform: capitalize;
 
     &:hover {
       background-color: lighten($color-primary, 32%);

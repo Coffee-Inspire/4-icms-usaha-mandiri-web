@@ -16,12 +16,12 @@ function Stock() {
 
   const columns = [
     {
-      label: "Name",
+      label: "Nama",
       bind: "name",
       align: "left",
     },
     {
-      label: "Category",
+      label: "Kategori",
       bind: "category",
     },
     {
@@ -35,23 +35,23 @@ function Stock() {
       align: "right",
     },
     {
-      label: "Cost",
+      label: "Modal",
       bind: "cost",
       type: "currency",
       align: "right",
     },
     {
-      label: "Price",
+      label: "HPP",
       bind: "hpp",
       type: "currency",
       align: "right",
     },
     {
-      label: "Last Order",
+      label: "Tgl Order",
       bind: "lastOrderDate",
     },
     {
-      label: "Last Restock",
+      label: "Tgl Restock",
       bind: "lastRestockDate",
     },
     {

@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import ProfileBar from "../../components/ProfileBar";
 import Stock from "../../screens/Stock";
 import Customer from "../../screens/Customer";
+import Supplier from "../Supplier";
 
 function MainLayout({ prefix }) {
   const [expanded, setExpanded] = useState(false);
@@ -18,6 +19,7 @@ function MainLayout({ prefix }) {
         <Routes>
           <Route element={<Stock />} path="/stock" />
           <Route element={<Customer />} path="/customer" />
+          <Route element={<Supplier />} path="/supplier" />
         </Routes>
       </div>
     </Container>

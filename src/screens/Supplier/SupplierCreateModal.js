@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-function CustomerCreateModal({ show, close, handler }) {
+function SupplierCreateModal({ show, close, handler }) {
   const schema = yup.object({
     name: yup.string().required().min(2),
     contact: yup
@@ -42,7 +42,7 @@ function CustomerCreateModal({ show, close, handler }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Tambah Pelanggan</Modal.Title>
+        <Modal.Title>Tambah Supplier</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
@@ -142,4 +142,4 @@ function CustomerCreateModal({ show, close, handler }) {
   );
 }
 
-export default CustomerCreateModal;
+export default SupplierCreateModal;

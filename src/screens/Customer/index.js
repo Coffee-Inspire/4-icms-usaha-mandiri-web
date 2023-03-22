@@ -21,12 +21,12 @@ function Customer() {
 
   const columns = [
     {
-      label: "Name",
+      label: "Nama",
       bind: "name",
       align: "left",
     },
     {
-      label: "Contact",
+      label: "Telp",
       bind: "contact",
     },
     {
@@ -34,7 +34,7 @@ function Customer() {
       bind: "email",
     },
     {
-      label: "Address",
+      label: "Alamat",
       bind: "address",
     },
     {
