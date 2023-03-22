@@ -9,7 +9,8 @@ import {
   Popover,
   Button,
 } from "react-bootstrap";
-import { take } from "../../helpers/iconMapper";
+
+import { takeIcon } from "../../helpers/iconMapper";
 
 function Shows({
   columns,
@@ -118,37 +119,37 @@ function Shows({
               {col.methods.includes("detail") && (
                 <Button
                   variant="none"
-                  className="cst-btn-neutral mx-1"
+                  className="cst-btn-neutral m-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    alert("test");
+                    // * Call Function
                   }}
                 >
-                  {take("view")}
+                  {takeIcon("view")}
                 </Button>
               )}
               {col.methods.includes("edit") && (
                 <Button
                   variant="none"
-                  className="cst-btn-success mx-1"
+                  className="cst-btn-success m-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    alert("test");
+                    // * Call Function
                   }}
                 >
-                  {take("edit")}
+                  {takeIcon("edit")}
                 </Button>
               )}
               {col.methods.includes("delete") && (
                 <Button
                   variant="none"
-                  className="cst-btn-danger mx-1"
+                  className="cst-btn-danger m-1"
                   onClick={(e) => {
                     e.stopPropagation();
-                    alert("test");
+                    // * Call Function
                   }}
                 >
-                  {take("delete")}
+                  {takeIcon("delete")}
                 </Button>
               )}
             </td>
@@ -175,7 +176,7 @@ function Shows({
   return (
     <div className="cst-section-shadow rounded-3  my-4">
       <Row className="mx-0 py-3">
-        <Col xs={6} md={1} className="px-0  d-flex justify-content-center">
+        <Col xs={5} md={2} className="px-0  d-flex justify-content-center">
           <OverlayTrigger
             rootClose
             trigger="click"
@@ -184,14 +185,14 @@ function Shows({
           >
             <Button
               variant="none"
-              className="cst-btn-secondary d-flex align-items-center w-75"
+              className="cst-btn-secondary d-flex justify-content-center align-items-center w-75"
             >
-              <span>{take("filter")}</span>
+              <span>{takeIcon("filter")}</span>
               <span className="ms-1"> Filter</span>
             </Button>
           </OverlayTrigger>
         </Col>
-        <Col xs={6} md={4} className="px-0">
+        <Col xs={7} md={4} className="px-0">
           <Form>
             <Form.Control
               placeholder="Search"
@@ -229,7 +230,7 @@ function Shows({
         </Col>
         <Col
           xs={7}
-          md={2}
+          md={3}
           className="d-flex justify-content-end align-items-center py-1"
         >
           <small>
@@ -239,13 +240,13 @@ function Shows({
             className="cst-item px-2 mx-2 p-1"
             onClick={() => handlePrevPage()}
           >
-            {take("chevron-left")}
+            {takeIcon("chevronLeft")}
           </small>
           <small
             className="cst-item px-2 mx-2 p-1"
             onClick={() => handleNextPage()}
           >
-            {take("chevron-right")}
+            {takeIcon("chevronRight")}
           </small>
         </Col>
       </Row>

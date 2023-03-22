@@ -4,7 +4,8 @@ import { Navbar, Nav, Collapse } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 import navs from "../../helpers/navs";
-import { take } from "../../helpers/iconMapper";
+import logo from "../../assets/logo.png";
+import { takeIcon } from "../../helpers/iconMapper";
 
 function Sidebar({ prefix, expanded }) {
   const [collapseList, setCollapseList] = useState([]);
@@ -24,8 +25,11 @@ function Sidebar({ prefix, expanded }) {
       } text-nowrap pb-5`}
     >
       <Navbar.Brand>
-        <div className="cst-text-primary p-2 my-5 text-center">
+        {/* <div className="cst-text-primary p-2 my-5 text-center">
           <h5 className="fw-bold"> Usaha Mandiri</h5>
+        </div> */}
+        <div className="text-center">
+          <img src={logo} alt="" className="my-5" />
         </div>
       </Navbar.Brand>
       {navs.length > 0 &&
@@ -43,8 +47,8 @@ function Sidebar({ prefix, expanded }) {
                     <span className="ms-2">{navItem.label}</span>
                   </div>
                   {collapseList.some((item) => item === navItem.label)
-                    ? take("chevron-up")
-                    : take("chevron-down")}
+                    ? takeIcon("chevronUp")
+                    : takeIcon("chevronDown")}
                 </div>
                 <Collapse
                   in={collapseList.some((item) => item === navItem.label)}

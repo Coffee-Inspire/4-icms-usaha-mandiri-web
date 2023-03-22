@@ -1,5 +1,11 @@
 @import "./colorbase.scss";
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .cst-sidebar {
   background-color: $color-plain;
   width: 250px;
@@ -42,6 +48,10 @@
   transition: 0.3s;
 }
 
+.cst-bg-primary {
+  background-color: $color-primary;
+}
+
 .cst-heading-bg {
   background-color: lighten($color-primary, 32%);
 }
@@ -52,14 +62,6 @@
   color: $color-plain;
 }
 
-.cst-section-shadow {
-  box-shadow: -1px 1px 28px -8px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: -1px 1px 28px -8px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: -1px 1px 28px -8px rgba(0, 0, 0, 0.75);
-  // max-height: calc(100vh - 199px);
-  // overflow-y: auto;
-}
-
 .cst-text-primary {
   color: $color-primary;
 }
@@ -68,12 +70,53 @@
   color: $color-secondary;
 }
 
-.cst-clickable {
-  cursor: pointer;
+.cst-text-plain {
+  color: $color-plain;
+}
+
+.cst-text-danger {
+  color: $color-negative;
 }
 
 .cst-letter-spacing {
   letter-spacing: 4px;
+}
+
+.cst-clickable {
+  cursor: pointer;
+}
+
+.cst-form-control {
+  border: 1px solid lighten($color-primary, 10%);
+  color: $color-primary;
+  transition: 0.3s;
+
+  &:focus {
+    box-shadow: 0 0 0 0.1rem lighten($color-primary, 20%);
+    border-color: $color-secondary;
+    background-color: lighten($color-primary, 35%);
+    transition: 0.3s;
+  }
+}
+
+.cst-form-invalid {
+  border: 1px solid lighten($color-negative, 10%);
+  color: $color-negative;
+
+  &:focus {
+    box-shadow: 0 0 0 0.1rem lighten($color-negative, 20%);
+    border-color: $color-negative;
+    background-color: lighten($color-primary, 35%);
+    transition: 0.3s;
+  }
+}
+
+.cst-section-shadow {
+  box-shadow: -1px 1px 28px -8px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: -1px 1px 28px -8px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: -1px 1px 28px -8px rgba(0, 0, 0, 0.75);
+  // max-height: calc(100vh - 199px);
+  // overflow-y: auto;
 }
 
 .cst-border-bottom {
@@ -145,11 +188,11 @@
   border-radius: 100px;
 }
 
-.cst-item{
+.cst-item {
   cursor: pointer;
   transition: 0.3s;
-  
-  &:hover{
+
+  &:hover {
     background-color: $color-primary;
     color: $color-plain;
     border-radius: 18%;
@@ -168,15 +211,11 @@
   transition: 0.3s;
 }
 
-// .cst-btn-add{
-//     letter-spacing: 2px;
-// }
-
 .cst-table {
   width: 100%;
   border-collapse: collapse;
   transition: 0.3s;
-  font-size: 14px;  
+  font-size: 14px;
 
   thead tr {
     border-top: 1px solid lighten($color-primary, 23%);
@@ -207,9 +246,9 @@
   }
 }
 
-.cst-table-toolbar{
-  border-bottom-left-radius:8px ;
-  border-bottom-right-radius:8px ;
+.cst-table-toolbar {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .cst-avatar {

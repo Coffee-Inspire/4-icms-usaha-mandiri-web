@@ -1,60 +1,60 @@
-import { take } from "./iconMapper";
+import { takeIcon } from "./iconMapper";
 
 const navs = [
   {
     label: "Inventory",
-    icon: take("inventory"),
+    icon: takeIcon("inventory"),
     childs: [
       {
         label: "Stocks",
-        icon: take("stock"),
+        icon: takeIcon("stock"),
         destination: "/stock",
       },
       {
         label: "Customers",
-        icon: take("customer"),
+        icon: takeIcon("customer"),
         destination: "/customer",
       },
       {
         label: "Suppliers",
-        icon: take("supplier"),
+        icon: takeIcon("supplier"),
         destination: "/supplier",
       },
     ],
   },
   {
     label: "Goods",
-    icon: take("good"),
+    icon: takeIcon("good"),
     childs: [
       {
         label: "Incomings",
-        icon: take("stock"),
+        icon: takeIcon("stock"),
         destination: "/incoming",
       },
       {
         label: "Outgoings",
-        icon: take("outgoing"),
+        icon: takeIcon("outgoing"),
         destination: "/outgoing",
       },
       {
         label: "Journal",
-        icon: take("journal"),
+        icon: takeIcon("journal"),
         destination: "/journal",
       },
     ],
   },
   {
     label: "Config",
-    icon: take("config"),
+    icon: takeIcon("config"),
     childs: [
       {
         label: "Users",
-        icon: take("user"),
+        icon: takeIcon("user"),
         destination: "/user",
       },
       {
         label: "Categories",
-        icon: take("category"),
+        icon: takeIcon("category"),
         destination: "/category",
       },
     ],

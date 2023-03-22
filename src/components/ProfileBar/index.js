@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Button } from "react-bootstrap";
-import { take } from "../../helpers/iconMapper";
+import { takeIcon } from "../../helpers/iconMapper";
 
 function ProfileBar({ expanded, setExpanded }) {
   return (
@@ -15,12 +15,12 @@ function ProfileBar({ expanded, setExpanded }) {
         }  cst-btn-primary cst-btn-eclipse d-flex justify-content-center align-items-center`}
         onClick={() => setExpanded(!expanded)}
       >
-        {expanded ? take("chevron-right") : take("chevron-left")}
+        {expanded ? takeIcon("chevronRight") : takeIcon("chevronLeft")}
       </Button>
       <div className="d-flex align-items-center me-md-3">
         Hi, <strong className="ms-1 me-2">{"Admin"}</strong>
         <span className="cst-avatar-bg cst-avatar d-flex justify-content-center align-items-center rounded-circle">
-          {take("avatar")}
+          {takeIcon("avatar")}
         </span>
       </div>
     </Container>

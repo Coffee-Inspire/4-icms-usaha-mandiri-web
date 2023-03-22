@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
-import Stock from "../../screens/Stock";
 import { Container } from "react-bootstrap";
 import ProfileBar from "../../components/ProfileBar";
+import Stock from "../../screens/Stock";
+import Customer from "../../screens/Customer";
 
 function MainLayout({ prefix }) {
   const [expanded, setExpanded] = useState(false);
@@ -16,6 +17,7 @@ function MainLayout({ prefix }) {
         <ProfileBar expanded={expanded} setExpanded={setExpanded} />
         <Routes>
           <Route element={<Stock />} path="/stock" />
+          <Route element={<Customer />} path="/customer" />
         </Routes>
       </div>
     </Container>
