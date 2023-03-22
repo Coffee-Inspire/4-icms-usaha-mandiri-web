@@ -287,7 +287,7 @@ function Shows({
             className="cst-item px-2 mx-2 p-1"
             onClick={() => handlePrevPage()}
           >
-            {takeIcon("chevron-left")}
+            {takeIcon("chevronLeft")}
           </small>
           <small
             className="cst-item px-2 mx-2 p-1"
