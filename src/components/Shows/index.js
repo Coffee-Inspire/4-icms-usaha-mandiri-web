@@ -114,6 +114,50 @@ function Shows({
   };
 
   const renderCells = (record) => {
+    const actionPopover = (
+      <Popover id="popover-positioned-lft">
+        <Popover.Body className="p-1">
+          {actionMethods.includes("detail") && (
+            <div
+              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("View Detail - id:", record.id);
+              }}
+            >
+              <span>Lihat Detail</span>
+            </div>
+          )}
+
+          {actionMethods.includes("edit") && (
+            <div
+              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("Ubah - id:", record.id);
+              }}
+            >
+              <span>Ubah</span>
+            </div>
+          )}
+          {actionMethods.includes("delete") && (
+            <>
+              <Separator className="mx-1 mt-2" />
+              <div
+                className="cst-text-negative cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log("Hapus - id:", record.id);
+                }}
+              >
+                <span>Hapus</span>
+              </div>
+            </>
+          )}
+        </Popover.Body>
+      </Popover>
+    );
+
     const recognizedCell = (col) => {
       const value = record[col.bind];
       const align = { textAlign: col.align || "center" };
@@ -160,65 +204,20 @@ function Shows({
       }
     };
 
-    const actionPopover = (
-      <Popover id="popover-basic">
-        <Popover.Body className="p-1">
-          {actionMethods.includes("detail") && (
-            <div
-              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log("View Detail - id:", record.id);
-              }}
-            >
-              <span>Lihat Detail</span>
-            </div>
-          )}
-
-          {actionMethods.includes("edit") && (
-            <div
-              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log("Ubah - id:", record.id);
-              }}
-            >
-              <span>Ubah</span>
-            </div>
-          )}
-          {actionMethods.includes("delete") && (
-            <>
-              <Separator className="mx-1 mt-2" />
-              <div
-                className="cst-text-negative cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log("Hapus - id:", record.id);
-                }}
-              >
-                <span>Hapus</span>
-              </div>
-            </>
-          )}
-        </Popover.Body>
-      </Popover>
-    );
-
     const unrecognizedCell = (col) => {
       const align = { textAlign: col.align || "center" };
       switch (col.type) {
         case "action":
           return (
             <OverlayTrigger
+              key={`${record.id}-${col.bind}`}
               trigger="click"
               placement="bottom-start"
               rootClose
               rootCloseEvent="click"
               overlay={actionPopover}
             >
-              <td style={align} key={`${record.id}-${col.bind}`}>
-                ...
-              </td>
+              <td style={align}>{takeIcon("menuVertical")}</td>
             </OverlayTrigger>
           );
         default:

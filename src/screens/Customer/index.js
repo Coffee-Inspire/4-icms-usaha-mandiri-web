@@ -7,6 +7,7 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 
 import limitOptions from "../../options/tableLimitOptions.json";
 import CustomerCreateModal from "./CustomerCreateModal";
+import { takeIcon } from "../../helpers/iconMapper";
 
 function Customer() {
   const [data, setData] = useState([]);
@@ -38,7 +39,7 @@ function Customer() {
       bind: "address",
     },
     {
-      label: "Action",
+      label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
       methods: ["edit", "delete"],

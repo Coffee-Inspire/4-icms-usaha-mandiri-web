@@ -4,7 +4,9 @@ import { Container } from "react-bootstrap";
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 
+// import stocksAPI from "../../apis/stocksAPI";
 import limitOptions from "../../options/tableLimitOptions.json";
+import { takeIcon } from "../../helpers/iconMapper";
 
 function Stock() {
   const [data, setData] = useState([]);
@@ -55,7 +57,7 @@ function Stock() {
       bind: "lastRestockDate",
     },
     {
-      label: "Action",
+      label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
       methods: ["edit", "delete", "detail"],
@@ -69,6 +71,7 @@ function Stock() {
       filter,
       search,
     };
+
     console.log("Current GET Parameter:", param);
     // * Call API
 

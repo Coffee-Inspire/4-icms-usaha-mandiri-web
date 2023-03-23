@@ -4,9 +4,10 @@ import { Container } from "react-bootstrap";
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
+import SupplierCreateModal from "./SupplierCreateModal";
 
 import limitOptions from "../../options/tableLimitOptions.json";
-import SupplierCreateModal from "./SupplierCreateModal";
+import { takeIcon } from "../../helpers/iconMapper";
 
 function Supplier() {
   const [data, setData] = useState([]);
@@ -47,7 +48,7 @@ function Supplier() {
       type: "activeStatus",
     },
     {
-      label: "action",
+      label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
       methods: ["edit", "delete"],

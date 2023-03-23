@@ -6,6 +6,11 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.popover{
+  margin-left: -30px;
+}
+
+
 /* 
 X-SmallNone	<576px
 Small	sm	≥576px
@@ -16,6 +21,10 @@ Extra extra large	xxl	≥1400px
 */
 
 @media (max-width: 991px) {
+  .popover{
+    margin-left: -40px;
+  }
+
   .cst-content {
     padding-left: 0px !important;
     transition: 0.3s;
