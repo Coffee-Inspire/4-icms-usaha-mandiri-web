@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 
 import { takeIcon } from "../../helpers/iconMapper";
+import Separator from "../Separator";
 
 function Shows({
   columns,
@@ -23,7 +24,10 @@ function Shows({
   setSearch,
   setFilter,
 }) {
-  const popover = (
+  let actionMethods = columns.find((col) => col.methods);
+  if (actionMethods) actionMethods = actionMethods.methods;
+
+  const filterPopover = (
     <Popover id="popover-basic">
       <Popover.Body>
         <Form>
@@ -156,51 +160,67 @@ function Shows({
       }
     };
 
+    const actionPopover = (
+      <Popover id="popover-basic">
+        <Popover.Body className="p-1">
+          {actionMethods.includes("detail") && (
+            <div
+              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("View Detail - id:", record.id);
+              }}
+            >
+              <span>Lihat Detail</span>
+            </div>
+          )}
+
+          {actionMethods.includes("edit") && (
+            <div
+              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("Ubah - id:", record.id);
+              }}
+            >
+              <span>Ubah</span>
+            </div>
+          )}
+          {actionMethods.includes("delete") && (
+            <>
+              <Separator className="mx-1 mt-2" />
+              <div
+                className="cst-text-negative cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log("Hapus - id:", record.id);
+                }}
+              >
+                <span>Hapus</span>
+              </div>
+            </>
+          )}
+        </Popover.Body>
+      </Popover>
+    );
+
     const unrecognizedCell = (col) => {
       const align = { textAlign: col.align || "center" };
       switch (col.type) {
         case "action":
           return (
-            <td style={align} key={`${record.id}-${col.bind}`}>
-              {col.methods.includes("detail") && (
-                <Button
-                  variant="none"
-                  className="cst-btn-neutral m-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // * Call Function
-                  }}
-                >
-                  {takeIcon("view")}
-                </Button>
-              )}
-              {col.methods.includes("edit") && (
-                <Button
-                  variant="none"
-                  className="cst-btn-success m-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // * Call Function
-                  }}
-                >
-                  {takeIcon("edit")}
-                </Button>
-              )}
-              {col.methods.includes("delete") && (
-                <Button
-                  variant="none"
-                  className="cst-btn-danger m-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // * Call Function
-                  }}
-                >
-                  {takeIcon("delete")}
-                </Button>
-              )}
-            </td>
+            <OverlayTrigger
+              trigger="click"
+              placement="bottom-start"
+              rootClose
+              rootCloseEvent="click"
+              overlay={actionPopover}
+            >
+              <td style={align} key={`${record.id}-${col.bind}`}>
+                ...
+              </td>
+            </OverlayTrigger>
           );
-
         default:
           return <td key={`${record.id}-${col.bind}`}>-</td>;
       }
@@ -227,7 +247,7 @@ function Shows({
             rootClose
             trigger="click"
             placement="bottom-start"
-            overlay={popover}
+            overlay={filterPopover}
           >
             <Button
               variant="none"

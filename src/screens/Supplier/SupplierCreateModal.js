@@ -7,7 +7,13 @@ import * as yup from "yup";
 function SupplierCreateModal({ show, close, handler }) {
   const schema = yup.object({
     name: yup.string().required().min(2),
-    contact: yup
+    personContact: yup
+      .string()
+      .matches(/^[0-9]+$/, "Invalid value")
+      .min(6)
+      .max(16)
+      .required(),
+    companyContact: yup
       .string()
       .matches(/^[0-9]+$/, "Invalid value")
       .min(6)
@@ -65,25 +71,38 @@ function SupplierCreateModal({ show, close, handler }) {
             </Col>
             <Col xs={12} md={6} className="py-2">
               <Form.Group>
-                <Form.Label>Nomor Handphone / Telp</Form.Label>
-
+                <Form.Label>Telp Pribadi</Form.Label>
                 <Form.Control
                   type="number"
-                  {...register("contact")}
+                  {...register("personContact")}
                   className={`cst-form-control ${
-                    errors.contact && "cst-form-invalid"
+                    errors.personContact && "cst-form-invalid"
                   }`}
-                  placeholder="Nomor Handphone / Telp"
+                  placeholder="Telp Pribadi"
                 />
                 <small className="cst-text-negative ">
-                  {errors.contact?.message}
+                  {errors.personContact?.message}
+                </small>
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6} className="py-2">
+              <Form.Group>
+                <Form.Label>Telp Kantor</Form.Label>
+                <Form.Control
+                  {...register("companyContact")}
+                  className={`cst-form-control ${
+                    errors.companyContact && "cst-form-invalid"
+                  }`}
+                  placeholder="Telp Kantor"
+                />
+                <small className="cst-text-negative ">
+                  {errors.companyContact?.message}
                 </small>
               </Form.Group>
             </Col>
             <Col xs={12} md={6} className="py-2">
               <Form.Group>
                 <Form.Label>E-Mail</Form.Label>
-
                 <Form.Control
                   {...register("email")}
                   className={`cst-form-control ${
