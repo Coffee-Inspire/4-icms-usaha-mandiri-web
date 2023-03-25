@@ -1,2 +1,3 @@
-const host = "http://localhost:3001/";
-export { host };
+const host = "https://arzone.site";
+const pathPrefix = "/api";
+export { host, pathPrefix };

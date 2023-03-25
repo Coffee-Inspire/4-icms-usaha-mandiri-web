@@ -25,7 +25,9 @@ function Shows({
   setFilter,
 }) {
   let actionMethods = columns.find((col) => col.methods);
-  if (actionMethods) actionMethods = actionMethods.methods;
+  actionMethods
+    ? (actionMethods = actionMethods.methods)
+    : (actionMethods = []);
 
   const filterPopover = (
     <Popover id="popover-basic">
@@ -37,7 +39,7 @@ function Shows({
             </Col>
             <Col
               xs={12}
-              className="cst-clickable cst-hover-respond my-1 d-flex justify-content-between align-items-center"
+              className="cst-clickable cst-hover-bg-respond my-1 d-flex justify-content-between align-items-center"
             >
               <label htmlFor="sortDefault" className="cst-clickable">
                 Default
@@ -53,7 +55,7 @@ function Shows({
             </Col>
             <Col
               xs={12}
-              className="cst-clickable cst-hover-respond my-1 d-flex justify-content-between align-items-center"
+              className="cst-clickable cst-hover-bg-respond my-1 d-flex justify-content-between align-items-center"
             >
               <label htmlFor="sortUpdatedAt" className="cst-clickable">
                 Date modified
@@ -119,7 +121,7 @@ function Shows({
         <Popover.Body className="p-1">
           {actionMethods.includes("detail") && (
             <div
-              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+              className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("View Detail - id:", record.id);
@@ -131,7 +133,7 @@ function Shows({
 
           {actionMethods.includes("edit") && (
             <div
-              className="cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+              className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("Ubah - id:", record.id);
@@ -144,7 +146,7 @@ function Shows({
             <>
               <Separator className="mx-1 mt-2" />
               <div
-                className="cst-text-negative cst-clickable cst-hover-respond my-1 py-1 px-2 rounded-2"
+                className="cst-text-negative cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   console.log("Hapus - id:", record.id);
@@ -166,18 +168,22 @@ function Shows({
         case "qty":
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
-              <div className="d-flex flex-column">
-                <span>{`${value}`}</span>
-                <span className="text-secondary">PCS</span>
+              <div className="d-flex justify-content-center ">
+                <div className="d-flex flex-column">
+                  <span>{`${value}`}</span>
+                  <span className="text-secondary">PCS</span>
+                </div>
               </div>
             </td>
           );
         case "currency":
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
-              <div className="d-flex flex-column">
-                <span>{`${value}`}</span>
-                <span className="text-secondary">IDR</span>
+              <div className="d-flex justify-content-center">
+                <div className="d-flex flex-column">
+                  <span>{`${value}`}</span>
+                  <span className="text-secondary">IDR</span>
+                </div>
               </div>
             </td>
           );
@@ -198,7 +204,9 @@ function Shows({
         default:
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
-              {value}
+              <div className="d-flex justify-content-center">
+                <div className="w-75">{value}</div>
+              </div>
             </td>
           );
       }
@@ -259,10 +267,14 @@ function Shows({
         </Col>
         <Col xs={7} md={4} className="px-0">
           <Form>
-            <Form.Control
-              placeholder="Search"
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <Form.Group className=" position-relative">
+              <Form.Control
+                placeholder="Search"
+                onChange={(e) => setSearch(e.target.value)}
+                className="cst-form-control cst-form-control-inner-padding"
+              />
+              <span className="cst-form-icon-float">{takeIcon("search")}</span>
+            </Form.Group>
           </Form>
         </Col>
       </Row>

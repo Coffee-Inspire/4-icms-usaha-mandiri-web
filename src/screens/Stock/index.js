@@ -72,7 +72,7 @@ function Stock() {
       search,
     };
 
-    console.log("Current GET Parameter:", param);
+    console.log("STOCK GET Parameter:", param);
     // * Call API
 
     // ? For Development

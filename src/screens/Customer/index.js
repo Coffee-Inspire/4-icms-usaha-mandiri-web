@@ -53,7 +53,7 @@ function Customer() {
       filter,
       search,
     };
-    console.log("Current GET Parameter:", param);
+    console.log("CUSTOMER GET Parameter:", param);
     // * Call API
 
     // ? For Development
