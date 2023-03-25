@@ -36,6 +36,15 @@ const sitemap = [
     element: <OutgoingCreate />,
     path: "/outgoing/create",
   },
+  // ? Default routing
+  // {
+  //   element: <Stock />,
+  //   path: "*",
+  // },
+  {
+    element: <>404</>,
+    path: "/*",
+  },
 ];
 
 export default sitemap;
