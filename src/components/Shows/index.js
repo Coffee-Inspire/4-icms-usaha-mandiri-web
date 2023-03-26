@@ -117,7 +117,7 @@ function Shows({
 
   const renderCells = (record) => {
     const actionPopover = (
-      <Popover id="popover-positioned-lft">
+      <Popover id="popover-positioned-left">
         <Popover.Body className="p-1">
           {actionMethods.includes("detail") && (
             <div

@@ -1,6 +1,6 @@
 import React from "react";
 
-function index({ children, className }) {
+function Header({ children, className }) {
   return (
     <h2
       className={`${className} cst-letter-spacing cst-text-secondary cst-border-bottom fw-bold pb-3`}
@@ -10,4 +10,4 @@ function index({ children, className }) {
   );
 }
 
-export default index;
+export default Header;
