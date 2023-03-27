@@ -2,15 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Table,
-  Alert,
-} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -22,7 +14,6 @@ import convertIDR from "../../helpers/convertIDR";
 
 function IncomingCreate() {
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
 
   const [dataList, setDataList] = useState([]);
   const schema = Joi.object({
@@ -409,7 +400,7 @@ function IncomingCreate() {
                   <Col xs={5} md={2}>
                     <Button
                       // onClick={() => navigate(-1)}
-                      onClick={() => setShow(true)}
+                      // onClick={() => setShow(true)}
                       variant="none"
                       className="cst-btn-secondary w-100"
                     >
@@ -422,20 +413,6 @@ function IncomingCreate() {
           </Container>
         </Col>
       </Row>
-      <Alert show={show} variant="success">
-        <Alert.Heading>How's it going?!</Alert.Heading>
-        <p>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
-          lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
-          fermentum.
-        </p>
-        <hr />
-        <div className="d-flex justify-content-end">
-          <Button onClick={() => setShow(false)} variant="outline-success">
-            Close me y'all!
-          </Button>
-        </div>
-      </Alert>
     </Container>
   );
 }
