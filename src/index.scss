@@ -154,6 +154,14 @@ Extra extra large	xxl	≥1400px
   }
 }
 
+.cst-h-md{
+  max-height: calc(100vh - 480px);  
+}
+
+.cst-y-scroll{
+  overflow-y: auto;
+}
+
 .cst-form-control {
   border: 1px solid lighten($color-primary, 10%);
   color: $color-primary;

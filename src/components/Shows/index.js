@@ -12,6 +12,7 @@ import {
 
 import { takeIcon } from "../../helpers/iconMapper";
 import Separator from "../Separator";
+import convertIDR from "../../helpers/convertIDR";
 
 function Shows({
   columns,
@@ -181,7 +182,7 @@ function Shows({
             <td style={align} key={`${record.id}-${col.bind}`}>
               <div className="d-flex justify-content-center">
                 <div className="d-flex flex-column">
-                  <span>{`${value}`}</span>
+                  <span>{`${convertIDR(value)}`}</span>
                   <span className="text-secondary">IDR</span>
                 </div>
               </div>

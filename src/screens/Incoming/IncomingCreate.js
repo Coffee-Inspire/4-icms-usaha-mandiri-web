@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Table,
+  Alert,
+} from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -10,9 +18,12 @@ import Joi from "joi";
 import Header from "../../components/Header";
 import { takeIcon } from "../../helpers/iconMapper";
 import Subheader from "../../components/Subheader";
+import convertIDR from "../../helpers/convertIDR";
 
 function IncomingCreate() {
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+
   const [dataList, setDataList] = useState([]);
   const schema = Joi.object({
     itemName: Joi.object().required().messages({
@@ -22,6 +33,10 @@ function IncomingCreate() {
     supplier: Joi.object().required().messages({
       "string.empty": `Nama supplier tidak boleh kosong`,
       "any.required": `Nama supplier tidak boleh kosong`,
+    }),
+    category: Joi.object().required().messages({
+      "string.empty": `Kategori tidak boleh kosong`,
+      "any.required": `Kategori tidak boleh kosong`,
     }),
     costPcs: Joi.string()
       .pattern(/^[0-9]+$/)
@@ -58,16 +73,21 @@ function IncomingCreate() {
     // TODO Checking whitespace
     // handler(data);
     // handleClose();
-
+    data.amount = data.costPcs * data.purchaseQty;
     // TODO Checking if item name already exist in dataList
     const isExist = dataList.find(
       (i) => i.itemName.value === data.itemName.value
     );
-    if (isExist) {
-      alert("stop");
-      return;
-    }
+    // if (isExist) {
+    //   alert("stop");
+    //   return;
+    // }
     setDataList([...dataList, data]);
+  };
+
+  const getTotalPrice = (data) => {
+    const s = data.reduce((a, b) => a + b.amount, 0);
+    return convertIDR(s);
   };
 
   // ? For Development
@@ -107,6 +127,24 @@ function IncomingCreate() {
       value: "3",
     },
   ];
+  const dummyCategoryOptions = [
+    {
+      label: "category-1",
+      value: "1",
+    },
+    {
+      label: "category-2",
+      value: "2",
+    },
+    {
+      label: "category-3",
+      value: "3",
+    },
+    {
+      label: "category-4",
+      value: "4",
+    },
+  ];
 
   const [isFetching, setIsFetching] = useState(false);
 
@@ -126,7 +164,7 @@ function IncomingCreate() {
           <Subheader>Input Data Barang</Subheader>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row>
-              <Col xs={12} md={12} className="pb-2">
+              <Col xs={12} md={8} className="pb-2">
                 <Form.Group>
                   <Form.Label>Nama Barang</Form.Label>
                   <Controller
@@ -146,21 +184,36 @@ function IncomingCreate() {
                   </small>
                 </Form.Group>
               </Col>
+              <Col xs={12} md={4} className="pb-2">
+                <Form.Group>
+                  <Form.Label>Kategori</Form.Label>
+                  <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={dummyCategoryOptions}
+                        placeholder="Kategori"
+                      />
+                    )}
+                  />
+                  <small className="cst-text-negative ">
+                    {errors.category?.message}
+                  </small>
+                </Form.Group>
+              </Col>
               <Col xs={12} md={12} className="pb-2">
                 <Form.Group>
                   <Form.Label>Pilih Supplier</Form.Label>
                   <Controller
                     name="supplier"
                     control={control}
-                    // rules={{ required: true }}
                     render={({ field }) => (
                       <Select
                         {...field}
-                        // className={`cst-form-control ${
-                        //   errors.itemName && "cst-form-invalid"
-                        // }`}
                         options={dummySupplyOptions}
-                        placeholder="Pilih Supplier"
+                        placeholder="Pilih supplier"
                       />
                     )}
                   />
@@ -216,20 +269,30 @@ function IncomingCreate() {
                             name="unit"
                             id="unitPcs"
                             value="pcs"
-                            className="me-2"
+                            className="cst-clickable me-2"
                             defaultChecked
                           />
-                          <Form.Label htmlFor="unitPcs">Pcs</Form.Label>
+                          <Form.Label
+                            htmlFor="unitPcs"
+                            className="cst-clickable"
+                          >
+                            Pcs
+                          </Form.Label>
                         </div>
-                        <div className="d-flex me-3">
+                        <div className="cst-clickable d-flex me-3">
                           <Form.Check
                             type="radio"
                             name="unit"
                             id="unitBox"
                             value="box"
-                            className="me-2"
+                            className="cst-clickable me-2"
                           />
-                          <Form.Label htmlFor="unitBox">Box</Form.Label>
+                          <Form.Label
+                            htmlFor="unitBox"
+                            className="cst-clickable"
+                          >
+                            Box
+                          </Form.Label>
                         </div>
                       </Form.Group>
                     )}
@@ -242,7 +305,11 @@ function IncomingCreate() {
 
               <Row className="mx-0 my-5 justify-content-end">
                 <Col xs={5} md={4}>
-                  <Button variant="none" className="cst-btn-danger w-100">
+                  <Button
+                    variant="none"
+                    className="cst-btn-danger w-100"
+                    // onClick={() => reset()}
+                  >
                     Bersihkan
                   </Button>
                 </Col>
@@ -265,46 +332,84 @@ function IncomingCreate() {
             <Subheader>Order List</Subheader>
             {dataList.length > 0 && (
               <>
-                <Table responsive>
-                  <thead>
-                    <tr>
-                      {[
-                        "Nama Barang",
-                        "Supplier",
-                        "Harga Barang",
-                        "Order Qty",
-                        "Unit",
-                        "Amount",
-                      ].map((i) => (
-                        <th key={i}>{i}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dataList.map((cell) => (
-                      <tr key={cell.itemName.value}>
-                        <td>{cell.itemName.label}</td>
-                        <td>{cell.supplier.label}</td>
-                        <td>{cell.costPcs}</td>
-                        <td>{cell.purchaseQty}</td>
-                        <td>{cell.unit}</td>
-                        <td>{cell.costPcs * cell.purchaseQty}</td>
+                <Row className="mx-0 mb-3 border-bottom border-1 d-flex justify-content-between justify-content-md-end">
+                  <Col xs={6} md={3} className="px-2">
+                    <h6 className="cst-text-secondary text-md-end">
+                      Total Barang: {dataList.length} Item
+                    </h6>
+                  </Col>
+                  <Col xs={6} md={3} className="px-2">
+                    <h6 className="cst-text-secondary text-md-end">
+                      Total Harga: IDR {getTotalPrice(dataList)}
+                    </h6>
+                  </Col>
+                </Row>
+                <div className="cst-h-md cst-y-scroll mb-2">
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        {[
+                          "Nama Barang",
+                          "Supplier",
+                          "Harga Barang",
+                          "Order Qty",
+                          "Unit",
+                          "Amount",
+                          "Hapus",
+                        ].map((i) => (
+                          <th
+                            key={i}
+                            className={`${i === "Hapus" && "text-center"}`}
+                          >
+                            {i}
+                          </th>
+                        ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {dataList.map((cell) => (
+                        <tr key={cell.itemName.value}>
+                          <td>{cell.itemName.label}</td>
+                          <td>{cell.supplier.label}</td>
+                          <td>IDR {convertIDR(cell.costPcs)}</td>
+                          <td>{cell.purchaseQty}</td>
+                          <td>{cell.unit}</td>
+                          <td>IDR {convertIDR(cell.amount)}</td>
+                          <td
+                            className="cst-text-negative cst-clickable text-center"
+                            onClick={() => {
+                              setDataList(
+                                dataList.filter(
+                                  (list) =>
+                                    list.itemName.value != cell.itemName.value
+                                )
+                              );
+                            }}
+                          >
+                            {takeIcon("x")}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
                 <Form.Label>Catatan</Form.Label>
                 <Form.Control as="textarea" />
                 <Row className="mx-0 my-5 justify-content-end">
                   <Col xs={5} md={2}>
-                    <Button variant="none" className="cst-btn-danger w-100">
+                    <Button
+                      variant="none"
+                      className="cst-btn-danger w-100"
+                      onClick={() => setDataList([])}
+                    >
                       Ulangi
                     </Button>
                   </Col>
 
                   <Col xs={5} md={2}>
                     <Button
-                      onClick={() => navigate(-1)}
+                      // onClick={() => navigate(-1)}
+                      onClick={() => setShow(true)}
                       variant="none"
                       className="cst-btn-secondary w-100"
                     >
@@ -317,6 +422,20 @@ function IncomingCreate() {
           </Container>
         </Col>
       </Row>
+      <Alert show={show} variant="success">
+        <Alert.Heading>How's it going?!</Alert.Heading>
+        <p>
+          Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
+          lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
+          fermentum.
+        </p>
+        <hr />
+        <div className="d-flex justify-content-end">
+          <Button onClick={() => setShow(false)} variant="outline-success">
+            Close me y'all!
+          </Button>
+        </div>
+      </Alert>
     </Container>
   );
 }
