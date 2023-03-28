@@ -55,7 +55,7 @@ function TransactionCreateModal({ show, close, handler }) {
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
           <Row className="mx-0">
-            <Col xs={6} md={6} className="pb-2">
+            <Col xs={12} md={7} className="pb-2">
               <Form.Group>
                 <Form.Label>Tipe Transaksi</Form.Label>
 
@@ -64,7 +64,7 @@ function TransactionCreateModal({ show, close, handler }) {
                   name="type"
                   render={({ field }) => (
                     <Form.Group {...field} className="d-flex">
-                      <div className="d-flex me-3">
+                      <div className="d-flex me-3 me-md-4">
                         <Form.Check
                           type="radio"
                           name="type"
@@ -77,7 +77,7 @@ function TransactionCreateModal({ show, close, handler }) {
                           {"Uang Keluar (DB) "}
                         </Form.Label>
                       </div>
-                      <div className="cst-clickable d-flex me-3">
+                      <div className="cst-clickable d-flex me-3 me-md-4">
                         <Form.Check
                           type="radio"
                           name="type"
