@@ -5,6 +5,7 @@ import Incoming from "../screens/Incoming";
 import IncomingCreate from "../screens/Incoming/IncomingCreate";
 import Outgoing from "../screens/Outgoing";
 import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
+import Journal from "../screens/Journal";
 
 const sitemap = [
   {
@@ -35,6 +36,10 @@ const sitemap = [
   {
     element: <OutgoingCreate />,
     path: "/outgoing/create",
+  },
+  {
+    element: <Journal />,
+    path: "/journal",
   },
   // ? Default routing
   // {

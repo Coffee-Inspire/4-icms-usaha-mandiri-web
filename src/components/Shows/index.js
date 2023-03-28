@@ -108,9 +108,12 @@ function Shows({
 
   const renderColumns = () => {
     return columns.map((col) => {
+      const align = { textAlign: col.align || "center" };
       return (
-        <th key={col.bind} className="text-center">
-          {col.label}
+        <th key={col.bind}>
+          <div style={align} className="w-75 mx-auto">
+            {col.label}
+          </div>
         </th>
       );
     });
@@ -169,7 +172,7 @@ function Shows({
         case "qty":
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
-              <div className="d-flex justify-content-center ">
+              <div className="w-75 mx-auto">
                 <div className="d-flex flex-column">
                   <span>{`${value}`}</span>
                   <span className="text-secondary">PCS</span>
@@ -177,17 +180,57 @@ function Shows({
               </div>
             </td>
           );
-        case "currency":
-          return (
-            <td style={align} key={`${record.id}-${col.bind}`}>
-              <div className="d-flex justify-content-center">
-                <div className="d-flex flex-column">
-                  <span>{`${convertIDR(value)}`}</span>
-                  <span className="text-secondary">IDR</span>
+        case "currency": {
+          if (col.bind === "mutation") {
+            return (
+              <td style={align} key={`${record.id}-${col.bind}`}>
+                <div className="w-75 mx-auto">
+                  <div className="d-flex flex-column">
+                    <span
+                      className={`${
+                        record.type === "CR"
+                          ? "cst-text-positive"
+                          : "cst-text-negative"
+                      }`}
+                    >{`${convertIDR(value)}`}</span>
+                    <span className="text-secondary">IDR</span>
+                  </div>
                 </div>
-              </div>
-            </td>
-          );
+              </td>
+            );
+          } else
+            return (
+              <td style={align} key={`${record.id}-${col.bind}`}>
+                <div className="w-75 mx-auto">
+                  <div className="d-flex flex-column">
+                    <span>{`${convertIDR(value)}`}</span>
+                    <span className="text-secondary">IDR</span>
+                  </div>
+                </div>
+              </td>
+            );
+        }
+        case "transactionType": {
+          switch (value) {
+            case "CR":
+              return (
+                <td key={`${record.id}-${col.bind}`}>
+                  <div className="cst-bg-positive-light cst-chip-radius w-75 mx-auto text-center">
+                    <span className="cst-text-positive">CR</span>
+                  </div>
+                </td>
+              );
+
+            case "DB":
+              return (
+                <td key={`${record.id}-${col.bind}`}>
+                  <div className="cst-bg-negative-light cst-chip-radius w-75 mx-auto text-center">
+                    <span className="cst-text-negative">DB</span>
+                  </div>
+                </td>
+              );
+          }
+        }
         case "activeStatus":
           return (
             <td style={align} key={`${record.id}-${col.bind}`}>
