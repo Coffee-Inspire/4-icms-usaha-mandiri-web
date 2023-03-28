@@ -10,6 +10,15 @@ input::-webkit-inner-spin-button {
   margin-left: -30px;
 }
 
+.form-check-input:checked{
+  background-color: $color-primary;
+  border-color: $color-primary;
+}
+
+.form-check-input:focus {
+  box-shadow: 0px 0px 2px 4px rgba($color-primary, 0.4) !important;
+}
+
 
 /* 
 X-SmallNone	<576px

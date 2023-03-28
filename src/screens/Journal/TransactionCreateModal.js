@@ -57,7 +57,7 @@ function TransactionCreateModal({ show, close, handler }) {
           <Row className="mx-0">
             <Col xs={6} md={6} className="pb-2">
               <Form.Group>
-                <Form.Label>Tipe</Form.Label>
+                <Form.Label>Tipe Transaksi</Form.Label>
 
                 <Controller
                   control={control}
@@ -74,7 +74,7 @@ function TransactionCreateModal({ show, close, handler }) {
                           defaultChecked
                         />
                         <Form.Label htmlFor="typeDB" className="cst-clickable">
-                          Pcs
+                          {"Uang Keluar (DB) "}
                         </Form.Label>
                       </div>
                       <div className="cst-clickable d-flex me-3">
@@ -86,7 +86,7 @@ function TransactionCreateModal({ show, close, handler }) {
                           className="cst-clickable me-2"
                         />
                         <Form.Label htmlFor="typeCR" className="cst-clickable">
-                          Box
+                          {"Uang Masuk (CR) "}
                         </Form.Label>
                       </div>
                     </Form.Group>
