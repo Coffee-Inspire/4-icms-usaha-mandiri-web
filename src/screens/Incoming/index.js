@@ -88,10 +88,6 @@ function Incoming() {
     setTotalPage(5);
   };
 
-  const createData = (param) => {
-    console.log("INCOMING POST Parameter:", param);
-  };
-
   useEffect(() => {
     getData();
   }, [limit, page, filter, search]);
@@ -102,7 +98,7 @@ function Incoming() {
         <span>BARANG MASUK</span>
       </Header>
       <ButtonAddRow handler={() => navigate("create")}>
-        Tambah Barang
+        Order Barang
       </ButtonAddRow>
       <Shows
         columns={columns}

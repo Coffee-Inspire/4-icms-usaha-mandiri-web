@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Table,
+  Alert,
+} from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -16,6 +24,8 @@ function IncomingCreate() {
   const navigate = useNavigate();
 
   const [dataList, setDataList] = useState([]);
+  const [alertShow, setAlertShow] = useState(false);
+  const [rejected, setRejected] = useState("");
   const schema = Joi.object({
     itemName: Joi.object().required().messages({
       "string.empty": `Nama barang tidak boleh kosong`,
@@ -69,10 +79,12 @@ function IncomingCreate() {
     const isExist = dataList.find(
       (i) => i.itemName.value === data.itemName.value
     );
-    // if (isExist) {
-    //   alert("stop");
-    //   return;
-    // }
+    if (isExist) {
+      setRejected(data.itemName.label);
+      setAlertShow(true);
+      return;
+    }
+    setAlertShow(false);
     setDataList([...dataList, data]);
   };
 
@@ -148,7 +160,7 @@ function IncomingCreate() {
         >
           {takeIcon("backspace")}
         </span>
-        <span>TAMBAH BARANG</span>
+        <span>ORDER BARANG</span>
       </Header>
       <Row className="mx-0">
         <Col xs={12} md={4} className="cst-border-right py-3">
@@ -317,6 +329,21 @@ function IncomingCreate() {
               </Row>
             </Row>
           </Form>
+          <Alert
+            show={alertShow}
+            transition
+            variant="danger"
+            onClose={() => setAlertShow(false)}
+            dismissible
+          >
+            {/* <Alert.Heading>Gagal menambahkan barang</Alert.Heading> */}
+            <Alert.Heading>Oops, kamu gagal menambahkan barang</Alert.Heading>
+            <p>
+              {rejected} sudah ada di dalam{" "}
+              <strong className="cst-text-primary">Order List</strong>, mohon
+              untuk memilih barang yang lain ya {takeIcon("smile")}
+            </p>
+          </Alert>
         </Col>
         <Col xs={12} md={8} className="py-3">
           <Container>
