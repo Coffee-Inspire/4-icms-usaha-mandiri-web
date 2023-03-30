@@ -8,6 +8,7 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
+import IncomingUpdateModal from "./IncomingUpdateModal";
 
 function Incoming() {
   const navigate = useNavigate();
@@ -21,6 +22,10 @@ function Incoming() {
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
+
+  const [updateModalShow, setUpdateModalShow] = useState(false);
+  const [subjectId, setSubjectId] = useState("");
+  const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const columns = [
     {
@@ -88,6 +93,11 @@ function Incoming() {
     setTotalPage(5);
   };
 
+  const triggerEdit = (dataId) => {
+    setSubjectId(dataId);
+    setUpdateModalShow(true);
+  };
+
   useEffect(() => {
     getData();
   }, [limit, page, filter, search]);
@@ -110,6 +120,14 @@ function Incoming() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        actionForEdit={triggerEdit}
+      />
+      {}
+      <IncomingUpdateModal
+        show={updateModalShow}
+        close={handleCloseUpdateModal}
+        id={subjectId}
+        // handler={}
       />
     </Container>
   );

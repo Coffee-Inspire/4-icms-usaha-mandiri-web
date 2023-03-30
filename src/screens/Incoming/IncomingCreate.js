@@ -336,7 +336,6 @@ function IncomingCreate() {
             onClose={() => setAlertShow(false)}
             dismissible
           >
-            {/* <Alert.Heading>Gagal menambahkan barang</Alert.Heading> */}
             <Alert.Heading>Oops, kamu gagal menambahkan barang</Alert.Heading>
             <p>
               {rejected} sudah ada di dalam{" "}

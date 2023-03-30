@@ -24,6 +24,7 @@ function Shows({
   totalPage,
   setSearch,
   setFilter,
+  actionForEdit,
 }) {
   let actionMethods = columns.find((col) => col.methods);
   actionMethods
@@ -128,6 +129,7 @@ function Shows({
               className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
               onClick={(e) => {
                 e.stopPropagation();
+                document.body.click();
                 console.log("View Detail - id:", record.id);
               }}
             >
@@ -141,6 +143,8 @@ function Shows({
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("Ubah - id:", record.id);
+                document.body.click();
+                actionForEdit(record.id);
               }}
             >
               <span>Ubah</span>
@@ -153,6 +157,7 @@ function Shows({
                 className="cst-text-negative cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
                 onClick={(e) => {
                   e.stopPropagation();
+                  document.body.click();
                   console.log("Hapus - id:", record.id);
                 }}
               >
@@ -333,7 +338,7 @@ function Shows({
           ))}
         </tbody>
       </Table>
-      <Row className="cst-heading-bg cst-table-toolbar cst-text-secondary mx-0 fw-bold d-flex justify-content-end">
+      <Row className="cst-heading-bg cst-pagination-toolbar cst-text-secondary mx-0 fw-bold d-flex justify-content-end">
         <Col
           xs={5}
           md={2}

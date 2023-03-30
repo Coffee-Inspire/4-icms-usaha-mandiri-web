@@ -139,6 +139,10 @@ Extra extra large	xxl	≥1400px
   color: $color-neutral;
 }
 
+.cst-letter-spacing-sm {
+  letter-spacing: 1px;
+}
+
 .cst-letter-spacing {
   letter-spacing: 4px;
 }
@@ -163,6 +167,10 @@ Extra extra large	xxl	≥1400px
   }
 }
 
+.cst-h-sm{
+  max-height: 400px
+}
+
 .cst-h-md{
   max-height: calc(100vh - 480px);  
 }
@@ -174,6 +182,19 @@ Extra extra large	xxl	≥1400px
 .cst-form-control {
   border: 1px solid lighten($color-primary, 10%);
   color: $color-primary;
+  transition: 0.3s;
+
+  &:focus {
+    box-shadow: 0 0 0 0.1rem lighten($color-primary, 20%);
+    border-color: $color-secondary;
+    background-color: lighten($color-primary, 35%);
+    transition: 0.3s;
+  }
+}
+
+.cst-form-counter {
+  border: 1px solid lighten($color-primary, 10%);  
+  padding: 2px 4px 2px 4px;  
   transition: 0.3s;
 
   &:focus {
@@ -236,6 +257,12 @@ Extra extra large	xxl	≥1400px
     border: 1px solid $color-primary;
     color: $color-primary;
   }
+
+  &:disabled{
+    background-color: $color-primary;
+    opacity: 0.4;
+    color: $color-plain;        
+  } 
 }
 
 .cst-btn-secondary {
@@ -319,6 +346,16 @@ Extra extra large	xxl	≥1400px
   transition: 0.3s;
 }
 
+.cst-avatar {
+  width: 30px;
+  height: 30px;
+}
+
+.cst-pagination-toolbar {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;    
+}
+
 .cst-table {
   width: 100%;
   border-collapse: collapse;
@@ -329,6 +366,7 @@ Extra extra large	xxl	≥1400px
   thead tr {
     border-top: 1px solid lighten($color-primary, 23%);
     border-bottom: 1px solid lighten($color-primary, 23%);
+    vertical-align: middle;
   }
 
   thead tr th {
@@ -354,12 +392,48 @@ Extra extra large	xxl	≥1400px
   }
 }
 
-.cst-table-toolbar {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+.cst-subtable {
+  // width: 100%;
+  border-collapse: collapse;
+  transition: 0.3s;
+  font-size: 14px;
+  font-weight: bold;
+
+  thead tr {
+    border-top: 1px solid lighten($color-primary, 23%);
+    border-bottom: 1px solid lighten($color-primary, 23%);
+    vertical-align: middle;
+  }
+
+  thead tr th {
+    // background-color: lighten($color-primary, 32%);
+    background-color: lighten($color-secondary, 38%);
+    text-transform: uppercase;
+    color: $color-primary;
+    // padding-top: 15px;
+    // padding-bottom: 15px;
+  }
+
+  td {
+    padding: 12px 8px;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    cursor: pointer;    
+
+    &:hover {
+      background-color: lighten($color-secondary, 40%);
+      transition: 0.3s;
+    }
+  }
+
+  .cst-subtable-toolbar {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
 }
 
-.cst-avatar {
-  width: 30px;
-  height: 30px;
-}
+
+
+
