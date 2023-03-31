@@ -163,8 +163,22 @@ function IncomingCreate() {
         <span>ORDER BARANG</span>
       </Header>
       <Row className="mx-0">
-        <Col xs={12} md={4} className="cst-border-right py-3">
+        <Col xs={12} md={5} className="cst-border-right py-3">
           <Subheader>Input Data Barang</Subheader>
+          <Alert
+            show={alertShow}
+            transition
+            variant="danger"
+            onClose={() => setAlertShow(false)}
+            dismissible
+          >
+            <Alert.Heading>Oops, kamu gagal menambahkan barang</Alert.Heading>
+            <p>
+              {rejected} sudah ada di dalam{" "}
+              <strong className="cst-text-primary">Order List</strong>, mohon
+              untuk memilih barang yang lain ya {takeIcon("smile")}
+            </p>
+          </Alert>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row>
               <Col xs={12} md={8} className="pb-2">
@@ -317,7 +331,7 @@ function IncomingCreate() {
                   </Button>
                 </Col>
 
-                <Col xs={7} md={5}>
+                <Col xs={7} md={6}>
                   <Button
                     type="submit"
                     variant="none"
@@ -329,22 +343,8 @@ function IncomingCreate() {
               </Row>
             </Row>
           </Form>
-          <Alert
-            show={alertShow}
-            transition
-            variant="danger"
-            onClose={() => setAlertShow(false)}
-            dismissible
-          >
-            <Alert.Heading>Oops, kamu gagal menambahkan barang</Alert.Heading>
-            <p>
-              {rejected} sudah ada di dalam{" "}
-              <strong className="cst-text-primary">Order List</strong>, mohon
-              untuk memilih barang yang lain ya {takeIcon("smile")}
-            </p>
-          </Alert>
         </Col>
-        <Col xs={12} md={8} className="py-3">
+        <Col xs={12} md={7} className="py-3">
           <Container>
             <Subheader>Order List</Subheader>
             {dataList.length > 0 && (
@@ -413,7 +413,7 @@ function IncomingCreate() {
                 <Form.Label>Catatan</Form.Label>
                 <Form.Control as="textarea" />
                 <Row className="mx-0 my-5 justify-content-end">
-                  <Col xs={5} md={2}>
+                  <Col xs={5} md={3}>
                     <Button
                       variant="none"
                       className="cst-btn-danger w-100"
@@ -423,7 +423,7 @@ function IncomingCreate() {
                     </Button>
                   </Col>
 
-                  <Col xs={5} md={2}>
+                  <Col xs={5} md={4}>
                     <Button
                       // onClick={() => navigate(-1)}
                       // onClick={() => setShow(true)}
