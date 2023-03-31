@@ -16,6 +16,7 @@ function IncomingUpdateModal({ show, close, id }) {
       createdAt: "30/03/2023",
       totalPurchase: "10630000",
       note: "Lorem Ipsum",
+      status: false,
       IncomingDetails: [
         {
           id: "31",
@@ -178,9 +179,22 @@ function IncomingUpdateModal({ show, close, id }) {
             <h4 className="cst-text-primary cst-letter-spacing-sm m-0">
               Penerimaan Barang
             </h4>
-            <small className="cst-text-negative">
-              <strong>Transaksi ini belum selesai</strong>
-            </small>
+            {data.status ? (
+              <small className="cst-text-positive">
+                <strong>Transaksi sudah selesai</strong>
+              </small>
+            ) : (
+              <>
+                <small className="cst-text-negative">
+                  <strong>Transaksi ini belum selesai</strong>
+                </small>
+                <div className="mt-2">
+                  <small className="cst-clickable cst-text-primary cst-hover-color-respond">
+                    Ubah status menjadi selesai
+                  </small>
+                </div>
+              </>
+            )}
           </Col>
           <Col xs={12} md={6}>
             <Row className="m-0 d-flex justify-content-end">
@@ -257,7 +271,7 @@ function IncomingUpdateModal({ show, close, id }) {
           </Col>
         </Row>
         <Row className="mx-0 my-1">
-          <div className="cst-h-sm cst-y-scroll">
+          <div className="cst-h-xs cst-y-scroll">
             <Table responsive className="cst-subtable">
               <thead>
                 <tr>
@@ -337,18 +351,6 @@ function IncomingUpdateModal({ show, close, id }) {
               </tbody>
             </Table>
           </div>
-        </Row>
-        <Row className="mx-0 mt-5 mb-2 d-flex justify-content-end">
-          <Col xs={12} md={3}>
-            <Button
-              variant="none"
-              onClick={() => {}}
-              className="cst-btn-primary w-100"
-              disabled={false}
-            >
-              Ubah Status Menjadi Selesai
-            </Button>
-          </Col>
         </Row>
       </Modal.Body>
     </Modal>

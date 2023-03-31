@@ -138,6 +138,10 @@ Extra extra large	xxl	≥1400px
   color: $color-negative;
 }
 
+.cst-text-warning {
+  color: $color-warning;
+}
+
 .cst-text-neutral {
   color: $color-neutral;
 }
@@ -170,8 +174,12 @@ Extra extra large	xxl	≥1400px
   }
 }
 
+.cst-h-xs {
+  max-height: 320px;
+}
+
 .cst-h-sm {
-  max-height: 400px;
+  max-height: calc(100vh - 320px);
 }
 
 .cst-h-md {
