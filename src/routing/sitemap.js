@@ -3,6 +3,7 @@ import Customer from "../screens/Customer";
 import Supplier from "../screens/Supplier";
 import Incoming from "../screens/Incoming";
 import IncomingCreate from "../screens/Incoming/IncomingCreate";
+import IncomingDetail from "../screens/Incoming/IncomingDetail";
 import Outgoing from "../screens/Outgoing";
 import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
 import Journal from "../screens/Journal";
@@ -24,6 +25,10 @@ const sitemap = [
   {
     element: <Incoming />,
     path: "/incoming",
+  },
+  {
+    element: <IncomingDetail />,
+    path: "/incoming/detail/:id",
   },
   {
     element: <IncomingCreate />,

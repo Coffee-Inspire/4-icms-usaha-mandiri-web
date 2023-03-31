@@ -25,6 +25,7 @@ function Shows({
   setSearch,
   setFilter,
   actionForEdit,
+  actionForDetail,
 }) {
   let actionMethods = columns.find((col) => col.methods);
   actionMethods
@@ -131,6 +132,7 @@ function Shows({
                 e.stopPropagation();
                 document.body.click();
                 console.log("View Detail - id:", record.id);
+                actionForDetail(record.id);
               }}
             >
               <span>Lihat Detail</span>

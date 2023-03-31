@@ -93,6 +93,10 @@ function Incoming() {
     setTotalPage(5);
   };
 
+  const triggerDetail = (dataId) => {
+    navigate(`detail/${dataId}`);
+  };
+
   const triggerEdit = (dataId) => {
     setSubjectId(dataId);
     setUpdateModalShow(true);
@@ -121,6 +125,7 @@ function Incoming() {
         setSearch={setSearch}
         setFilter={setFilter}
         actionForEdit={triggerEdit}
+        actionForDetail={triggerDetail}
       />
       {}
       <IncomingUpdateModal

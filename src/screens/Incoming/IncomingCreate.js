@@ -43,8 +43,16 @@ function IncomingCreate() {
       .pattern(/^[0-9]+$/)
       .required()
       .messages({
-        "string.empty": `Harga tidak boleh kosong`,
-        "any.required": `Harga tidak boleh kosong`,
+        "string.empty": `Harga beli tidak boleh kosong`,
+        "any.required": `Harga beli tidak boleh kosong`,
+        "string.pattern.base": `Hanya angka`,
+      }),
+    price: Joi.string()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.empty": `Harga jual tidak boleh kosong`,
+        "any.required": `Harga jual tidak boleh kosong`,
         "string.pattern.base": `Hanya angka`,
       }),
     purchaseQty: Joi.string()
@@ -239,22 +247,7 @@ function IncomingCreate() {
                   </small>
                 </Form.Group>
               </Col>
-              <Col xs={12} md={12} className="pb-2">
-                <Form.Group>
-                  <Form.Label>Harga Beli</Form.Label>
-                  <Form.Control
-                    type="number"
-                    className={`cst-form-control ${
-                      errors.costPcs && "cst-form-invalid"
-                    }`}
-                    {...register("costPcs")}
-                    placeholder="Harga beli"
-                  />
-                  <small className="cst-text-negative ">
-                    {errors.costPcs?.message}
-                  </small>
-                </Form.Group>
-              </Col>
+
               <Col xs={6} md={6} className="pb-2">
                 <Form.Group>
                   <Form.Label>Qty</Form.Label>
@@ -319,6 +312,38 @@ function IncomingCreate() {
                   </small>
                 </Form.Group>
               </Col>
+              <Col xs={12} md={6} className="pb-2">
+                <Form.Group>
+                  <Form.Label>Harga Beli</Form.Label>
+                  <Form.Control
+                    type="number"
+                    className={`cst-form-control ${
+                      errors.costPcs && "cst-form-invalid"
+                    }`}
+                    {...register("costPcs")}
+                    placeholder="Harga beli"
+                  />
+                  <small className="cst-text-negative ">
+                    {errors.costPcs?.message}
+                  </small>
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={6} className="pb-2">
+                <Form.Group>
+                  <Form.Label>Harga Jual</Form.Label>
+                  <Form.Control
+                    type="number"
+                    className={`cst-form-control ${
+                      errors.price && "cst-form-invalid"
+                    }`}
+                    {...register("price")}
+                    placeholder="Harga jual"
+                  />
+                  <small className="cst-text-negative ">
+                    {errors.price?.message}
+                  </small>
+                </Form.Group>
+              </Col>
 
               <Row className="mx-0 my-5 justify-content-end">
                 <Col xs={5} md={4}>
@@ -355,7 +380,7 @@ function IncomingCreate() {
                       Total Barang: {dataList.length} Item
                     </h6>
                   </Col>
-                  <Col xs={6} md={3} className="px-2">
+                  <Col xs={6} md={5} className="px-2">
                     <h6 className="cst-text-secondary text-md-end">
                       Total Harga: IDR {getTotalPrice(dataList)}
                     </h6>
@@ -365,22 +390,13 @@ function IncomingCreate() {
                   <Table responsive hover>
                     <thead>
                       <tr>
-                        {[
-                          "Nama Barang",
-                          "Supplier",
-                          "Harga Barang",
-                          "Order Qty",
-                          "Unit",
-                          "Amount",
-                          "Hapus",
-                        ].map((i) => (
-                          <th
-                            key={i}
-                            className={`${i === "Hapus" && "text-center"}`}
-                          >
-                            {i}
-                          </th>
-                        ))}
+                        <th>Nama Barang</th>
+                        <th>Supplier</th>
+                        <th>Jumlah Pemesanan</th>
+                        <th className="text-end">Harga Barang</th>
+                        <th className="text-end">Amount</th>
+                        <th className="text-end">Harga Jual</th>
+                        <th className="text-center">Hapus</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -388,10 +404,27 @@ function IncomingCreate() {
                         <tr key={cell.itemName.value}>
                           <td>{cell.itemName.label}</td>
                           <td>{cell.supplier.label}</td>
-                          <td>IDR {convertIDR(cell.costPcs)}</td>
-                          <td>{cell.purchaseQty}</td>
-                          <td>{cell.unit}</td>
-                          <td>IDR {convertIDR(cell.amount)}</td>
+                          <td>
+                            {cell.purchaseQty} {cell.unit}
+                          </td>
+                          <td className="text-end">
+                            <div className="d-flex flex-column">
+                              {convertIDR(cell.costPcs)}
+                              <span className="cst-text-neutral">IDR</span>
+                            </div>
+                          </td>
+                          <td className="text-end">
+                            <div className="d-flex flex-column">
+                              {convertIDR(cell.amount)}
+                              <span className="cst-text-neutral">IDR</span>
+                            </div>
+                          </td>
+                          <td className="text-end">
+                            <div className="d-flex flex-column">
+                              {convertIDR(cell.price)}
+                              <span className="cst-text-neutral">IDR</span>
+                            </div>
+                          </td>
                           <td
                             className="cst-text-negative cst-clickable text-center"
                             onClick={() => {

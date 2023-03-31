@@ -6,11 +6,11 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.popover{
+.popover {
   margin-left: -30px;
 }
 
-.form-check-input:checked{
+.form-check-input:checked {
   background-color: $color-primary;
   border-color: $color-primary;
 }
@@ -18,7 +18,6 @@ input::-webkit-inner-spin-button {
 .form-check-input:focus {
   box-shadow: 0px 0px 2px 4px rgba($color-primary, 0.4) !important;
 }
-
 
 /* 
 X-SmallNone	<576px
@@ -30,7 +29,7 @@ Extra extra large	xxl	≥1400px
 */
 
 @media (max-width: 991px) {
-  .popover{
+  .popover {
     margin-left: -40px;
   }
 
@@ -48,6 +47,10 @@ Extra extra large	xxl	≥1400px
   .cst-float-off {
     margin-left: 10px !important;
     transition: 0.3s;
+  }
+
+  .cst-border-right {
+    border-right: none !important;
   }
 }
 
@@ -162,20 +165,20 @@ Extra extra large	xxl	≥1400px
 .cst-hover-color-respond {
   transition: 0.3s;
   &:hover {
-   color: lighten($color-primary, 29%);
+    color: lighten($color-primary, 29%);
     transition: 0.3s;
   }
 }
 
-.cst-h-sm{
-  max-height: 400px
+.cst-h-sm {
+  max-height: 400px;
 }
 
-.cst-h-md{
-  max-height: calc(100vh - 480px);  
+.cst-h-md {
+  max-height: calc(100vh - 480px);
 }
 
-.cst-y-scroll{
+.cst-y-scroll {
   overflow-y: auto;
 }
 
@@ -193,8 +196,8 @@ Extra extra large	xxl	≥1400px
 }
 
 .cst-form-counter {
-  border: 1px solid lighten($color-primary, 10%);  
-  padding: 2px 4px 2px 4px;  
+  border: 1px solid lighten($color-primary, 10%);
+  padding: 2px 4px 2px 4px;
   transition: 0.3s;
 
   &:focus {
@@ -205,11 +208,11 @@ Extra extra large	xxl	≥1400px
   }
 }
 
-.cst-form-control-inner-padding{
+.cst-form-control-inner-padding {
   padding-left: 35px;
 }
 
-.cst-form-icon-float{
+.cst-form-icon-float {
   position: absolute;
   color: $color-primary;
   top: 0;
@@ -217,9 +220,8 @@ Extra extra large	xxl	≥1400px
   left: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;  
+  justify-content: center;
   padding: 0px 10px;
-  
 }
 
 .cst-form-invalid {
@@ -244,8 +246,8 @@ Extra extra large	xxl	≥1400px
   border-bottom: 1px solid rgba($color-primary, 0.4);
 }
 
-.cst-border-right{
-  border-right: 1px dotted rgba($color-primary, 1);
+.cst-border-right {
+  border-right: 2px solid rgba($color-primary, 0.4);
 }
 
 .cst-btn-primary {
@@ -258,11 +260,11 @@ Extra extra large	xxl	≥1400px
     color: $color-primary;
   }
 
-  &:disabled{
+  &:disabled {
     background-color: $color-primary;
     opacity: 0.4;
-    color: $color-plain;        
-  } 
+    color: $color-plain;
+  }
 }
 
 .cst-btn-secondary {
@@ -319,7 +321,7 @@ Extra extra large	xxl	≥1400px
   border-radius: 100px;
 }
 
-.cst-chip-radius{
+.cst-chip-radius {
   border-radius: 20px;
 }
 
@@ -353,7 +355,7 @@ Extra extra large	xxl	≥1400px
 
 .cst-pagination-toolbar {
   border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;    
+  border-bottom-right-radius: 8px;
 }
 
 .cst-table {
@@ -383,7 +385,7 @@ Extra extra large	xxl	≥1400px
   }
 
   tbody tr {
-    cursor: pointer;    
+    cursor: pointer;
 
     &:hover {
       background-color: lighten($color-primary, 32%);
@@ -420,7 +422,7 @@ Extra extra large	xxl	≥1400px
   }
 
   tbody tr {
-    cursor: pointer;    
+    cursor: pointer;
 
     &:hover {
       background-color: lighten($color-secondary, 40%);
@@ -433,7 +435,3 @@ Extra extra large	xxl	≥1400px
     border-bottom-right-radius: 8px;
   }
 }
-
-
-
-
