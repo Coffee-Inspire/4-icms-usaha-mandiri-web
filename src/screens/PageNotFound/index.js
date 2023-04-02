@@ -1,11 +1,9 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 import Illustration from "../../assets/404.jpg";
-// import "./pageNotFound.scss";
 
 function PageNotFound() {
   return (
-    // <Container className="bg-info cst-aaa ">
     <Row className="mx-0 cst-pageNotFound-row-h">
       <Col
         md={12}
@@ -31,7 +29,6 @@ function PageNotFound() {
         </div>
       </Col>
     </Row>
-    // </Container>
   );
 }
 
