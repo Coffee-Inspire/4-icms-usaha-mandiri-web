@@ -8,6 +8,8 @@ import Outgoing from "../screens/Outgoing";
 import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
 import Journal from "../screens/Journal";
 
+import PageNotFound from "../screens/PageNotFound";
+
 const sitemap = [
   {
     element: <Stock />,
@@ -52,7 +54,7 @@ const sitemap = [
   //   path: "*",
   // },
   {
-    element: <>404</>,
+    element: <PageNotFound />,
     path: "/*",
   },
 ];

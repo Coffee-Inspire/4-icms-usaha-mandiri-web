@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import ValidationAlert from "./Alerts/ValidationAlert";
+
+import validator from "../../helpers/validator";
 
 function CustomerCreateModal({ show, close, handler }) {
   const schema = yup.object({
@@ -24,8 +28,16 @@ function CustomerCreateModal({ show, close, handler }) {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
+  const [validationAlertShow, setValidationAlertShow] = useState(false);
+
   const onSubmit = (data) => {
     // TODO Checking whitespace
+    const isValid = validator(data, ["address", "email"]);
+    if (!isValid) {
+      setValidationAlertShow(true);
+      return false;
+    }
+    setValidationAlertShow(false);
     handler(data);
     handleClose();
   };
@@ -45,11 +57,21 @@ function CustomerCreateModal({ show, close, handler }) {
         <Modal.Title>Tambah Pelanggan</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Row className="mx-0">
+          <Col className="px-3">
+            <ValidationAlert
+              show={validationAlertShow}
+              setShow={setValidationAlertShow}
+            />
+          </Col>
+        </Row>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
           <Row className="mx-0">
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
-                <Form.Label>Nama</Form.Label>
+                <Form.Label>
+                  Nama<span className="cst-text-negative">*</span>
+                </Form.Label>
                 <Form.Control
                   type="name"
                   {...register("name")}
@@ -65,7 +87,10 @@ function CustomerCreateModal({ show, close, handler }) {
             </Col>
             <Col xs={12} md={6} className="py-2">
               <Form.Group>
-                <Form.Label>Nomor Handphone / Telp</Form.Label>
+                <Form.Label>
+                  Nomor Handphone / Telp
+                  <span className="cst-text-negative">*</span>
+                </Form.Label>
 
                 <Form.Control
                   type="number"
@@ -111,6 +136,11 @@ function CustomerCreateModal({ show, close, handler }) {
                   {errors.address?.message}
                 </small>
               </Form.Group>
+            </Col>
+            <Col xs={12} md={12} className="my-2 text-end">
+              <small>
+                <span className="cst-text-negative">*</span> Wajib diisi
+              </small>
             </Col>
             <Col
               xs={12}

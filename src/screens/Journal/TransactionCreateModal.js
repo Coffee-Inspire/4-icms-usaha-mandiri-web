@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+
+import ValidationAlert from "./Alerts/ValidationAlert";
+
+import validator from "../../helpers/validator";
 
 function TransactionCreateModal({ show, close, handler }) {
   const schema = Joi.object({
@@ -32,8 +36,16 @@ function TransactionCreateModal({ show, close, handler }) {
     reset,
   } = useForm({ resolver: joiResolver(schema) });
 
+  const [validationAlertShow, setValidationAlertShow] = useState(false);
+
   const onSubmit = (data) => {
     // TODO Checking whitespace
+    const isValid = validator(data);
+    if (!isValid) {
+      setValidationAlertShow(true);
+      return false;
+    }
+    setValidationAlertShow(false);
     handler(data);
     handleClose();
   };
@@ -53,6 +65,14 @@ function TransactionCreateModal({ show, close, handler }) {
         <Modal.Title>Transaksi Manual</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Row className="mx-0">
+          <Col className="px-3">
+            <ValidationAlert
+              show={validationAlertShow}
+              setShow={setValidationAlertShow}
+            />
+          </Col>
+        </Row>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
           <Row className="mx-0">
             <Col xs={12} md={7} className="pb-2">
@@ -99,7 +119,9 @@ function TransactionCreateModal({ show, close, handler }) {
             </Col>
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
-                <Form.Label>Nominal</Form.Label>
+                <Form.Label>
+                  Nominal<span className="cst-text-negative">*</span>
+                </Form.Label>
                 <Form.Control
                   type="number"
                   {...register("mutation")}
@@ -116,7 +138,9 @@ function TransactionCreateModal({ show, close, handler }) {
 
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
-                <Form.Label>Catatan</Form.Label>
+                <Form.Label>
+                  Catatan<span className="cst-text-negative">*</span>
+                </Form.Label>
                 <Form.Control
                   as="textarea"
                   {...register("note")}

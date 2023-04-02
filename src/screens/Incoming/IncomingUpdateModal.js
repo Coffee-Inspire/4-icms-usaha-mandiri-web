@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Modal, Table, Row, Col, Form, Button } from "react-bootstrap";
+
+import InvalidReceiveAlert from "./Alerts/InvalidReceiveAlert";
 
 import convertIDR from "../../helpers/convertIDR";
-import { takeIcon } from "../../helpers/iconMapper";
 
 function IncomingUpdateModal({ show, close, id }) {
   const [data, setData] = useState({});
-  const [alertShow, setAlertShow] = useState(false);
+  const [invalidReceiveAlertShow, setInvalidReceiveAlertShow] = useState(false);
 
   const getData = () => {
     // ? For Development
@@ -141,16 +142,16 @@ function IncomingUpdateModal({ show, close, id }) {
     // TODO Check alphabetical value for mobile usage
     if (receivingValue < 1) {
       console.warn("value-is-minus validation");
-      setAlertShow(true);
+      setInvalidReceiveAlertShow(true);
       return false;
     }
     if (receivingValue > maxToReceive) {
       console.error("maxToReceive validation");
-      setAlertShow(true);
+      setInvalidReceiveAlertShow(true);
       return false;
     }
 
-    setAlertShow(false);
+    setInvalidReceiveAlertShow(false);
     console.log("IncomingDetailsId value-", IncomingDetailsId);
     console.log("receiving quantity value-", receivingValue);
     // * Hit API
@@ -255,19 +256,10 @@ function IncomingUpdateModal({ show, close, id }) {
         </Row>
         <Row className="mx-0 ">
           <Col xs={12}>
-            <Alert
-              show={alertShow}
-              transition
-              variant="danger"
-              onClose={() => setAlertShow(false)}
-              dismissible
-            >
-              <Alert.Heading>Oops, kamu gagal menyimpan barang</Alert.Heading>
-              <p>
-                Pastikan jumlah yang diinput tidak kosong dan tidak melebihi
-                batas maksimum pada jumlah pemesanan kamu ya {takeIcon("smile")}
-              </p>
-            </Alert>
+            <InvalidReceiveAlert
+              show={invalidReceiveAlertShow}
+              setShow={setInvalidReceiveAlertShow}
+            />
           </Col>
         </Row>
         <Row className="mx-0 my-1">

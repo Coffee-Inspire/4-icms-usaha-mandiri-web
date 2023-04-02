@@ -54,6 +54,27 @@ Extra extra large	xxl	≥1400px
   }
 }
 
+.cst-pageNotFound-row-h{    
+  min-height: 800px;
+}
+
+@media (max-width: 1400px){
+  .cst-pageNotFound-row-h{
+      min-height: 480px !important;
+  }
+}
+
+.cst-pageNotFound-img-frame{
+  width: 95%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cst-pageNotFound-img{
+width: 100%;
+height: 100%;
+}
+
 .cst-sidebar {
   background-color: $color-plain;
   width: 250px;

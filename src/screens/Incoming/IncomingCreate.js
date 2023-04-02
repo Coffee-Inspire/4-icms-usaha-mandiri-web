@@ -2,29 +2,23 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Table,
-  Alert,
-} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 
 import Header from "../../components/Header";
-import { takeIcon } from "../../helpers/iconMapper";
 import Subheader from "../../components/Subheader";
+import IsExistAlert from "./Alerts/IsExistAlert";
+
 import convertIDR from "../../helpers/convertIDR";
+import { takeIcon } from "../../helpers/iconMapper";
 
 function IncomingCreate() {
   const navigate = useNavigate();
 
   const [dataList, setDataList] = useState([]);
-  const [alertShow, setAlertShow] = useState(false);
+  const [isExistAlertShow, setIsExistAlertShow] = useState(false);
   const [rejected, setRejected] = useState("");
   const schema = Joi.object({
     itemName: Joi.object().required().messages({
@@ -89,10 +83,10 @@ function IncomingCreate() {
     );
     if (isExist) {
       setRejected(data.itemName.label);
-      setAlertShow(true);
+      setIsExistAlertShow(true);
       return;
     }
-    setAlertShow(false);
+    setIsExistAlertShow(false);
     setDataList([...dataList, data]);
   };
 
@@ -173,25 +167,19 @@ function IncomingCreate() {
       <Row className="mx-0">
         <Col xs={12} md={5} className="cst-border-right py-3">
           <Subheader>Input Data Barang</Subheader>
-          <Alert
-            show={alertShow}
-            transition
-            variant="danger"
-            onClose={() => setAlertShow(false)}
-            dismissible
-          >
-            <Alert.Heading>Oops, kamu gagal menambahkan barang</Alert.Heading>
-            <p>
-              {rejected} sudah ada di dalam{" "}
-              <strong className="cst-text-primary">Order List</strong>, mohon
-              untuk memilih barang yang lain ya {takeIcon("smile")}
-            </p>
-          </Alert>
+
+          <IsExistAlert
+            show={isExistAlertShow}
+            setShow={setIsExistAlertShow}
+            rejected={rejected}
+          />
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row>
               <Col xs={12} md={8} className="pb-2">
                 <Form.Group>
-                  <Form.Label>Nama Barang</Form.Label>
+                  <Form.Label>
+                    Nama Barang<span className="cst-text-negative">*</span>
+                  </Form.Label>
                   <Controller
                     name="itemName"
                     control={control}
@@ -211,7 +199,9 @@ function IncomingCreate() {
               </Col>
               <Col xs={12} md={4} className="pb-2">
                 <Form.Group>
-                  <Form.Label>Kategori</Form.Label>
+                  <Form.Label>
+                    Kategori<span className="cst-text-negative">*</span>
+                  </Form.Label>
                   <Controller
                     name="category"
                     control={control}
@@ -230,7 +220,9 @@ function IncomingCreate() {
               </Col>
               <Col xs={12} md={12} className="pb-2">
                 <Form.Group>
-                  <Form.Label>Pilih Supplier</Form.Label>
+                  <Form.Label>
+                    Pilih Supplier<span className="cst-text-negative">*</span>
+                  </Form.Label>
                   <Controller
                     name="supplier"
                     control={control}
@@ -250,7 +242,9 @@ function IncomingCreate() {
 
               <Col xs={6} md={6} className="pb-2">
                 <Form.Group>
-                  <Form.Label>Qty</Form.Label>
+                  <Form.Label>
+                    Qty<span className="cst-text-negative">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="number"
                     className={`cst-form-control ${
@@ -314,7 +308,9 @@ function IncomingCreate() {
               </Col>
               <Col xs={12} md={6} className="pb-2">
                 <Form.Group>
-                  <Form.Label>Harga Beli</Form.Label>
+                  <Form.Label>
+                    Harga Beli<span className="cst-text-negative">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="number"
                     className={`cst-form-control ${
@@ -330,7 +326,9 @@ function IncomingCreate() {
               </Col>
               <Col xs={12} md={6} className="pb-2">
                 <Form.Group>
-                  <Form.Label>Harga Jual</Form.Label>
+                  <Form.Label>
+                    Harga Jual<span className="cst-text-negative">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="number"
                     className={`cst-form-control ${
@@ -344,7 +342,11 @@ function IncomingCreate() {
                   </small>
                 </Form.Group>
               </Col>
-
+              <Col xs={12} md={12} className="my-2 text-end">
+                <small>
+                  <span className="cst-text-negative">*</span> Wajib diisi
+                </small>
+              </Col>
               <Row className="mx-0 my-5 justify-content-end">
                 <Col xs={5} md={4}>
                   <Button
