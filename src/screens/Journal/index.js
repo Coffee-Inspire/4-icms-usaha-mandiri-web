@@ -58,7 +58,7 @@ function Journal() {
       filter,
       search,
     };
-    console.log("SUPPLIER GET Parameter:", param);
+    console.log("JOURNAL GET Parameter:", param);
     // * Call API
 
     // ? For Development

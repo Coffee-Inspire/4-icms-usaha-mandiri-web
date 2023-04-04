@@ -7,6 +7,7 @@ import IncomingDetail from "../screens/Incoming/IncomingDetail";
 import Outgoing from "../screens/Outgoing";
 import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
 import Journal from "../screens/Journal";
+import User from "../screens/User";
 
 import PageNotFound from "../screens/PageNotFound";
 
@@ -47,6 +48,10 @@ const sitemap = [
   {
     element: <Journal />,
     path: "/journal",
+  },
+  {
+    element: <User />,
+    path: "/user",
   },
   // ? Default routing
   // {

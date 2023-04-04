@@ -129,6 +129,14 @@ height: 100%;
   background-color: lighten($color-negative, 53%);
 }
 
+.cst-bg-neutral-light {
+  background-color: lighten($color-neutral, 18%);
+}
+
+.cst-bg-neutral-lighter {
+  background-color: lighten($color-neutral,24%);
+}
+
 .cst-heading-bg {
   background-color: lighten($color-primary, 32%);
 }
@@ -165,6 +173,28 @@ height: 100%;
 
 .cst-text-neutral {
   color: $color-neutral;
+}
+
+.cst-guide-primary{
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: $color-primary;
+}
+
+.cst-guide-neutral{
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: $color-neutral;
+}
+
+.cst-w-min-content{
+  width: min-content;
+}
+
+.cst-w-100{
+  width: 100px;
 }
 
 .cst-letter-spacing-sm {

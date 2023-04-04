@@ -39,6 +39,7 @@ function TransactionCreateModal({ show, close, handler }) {
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
   const onSubmit = (data) => {
+    console.log(data);
     // TODO Checking whitespace
     const isValid = validator(data);
     if (!isValid) {
@@ -153,6 +154,11 @@ function TransactionCreateModal({ show, close, handler }) {
                   {errors.note?.message}
                 </small>
               </Form.Group>
+            </Col>
+            <Col xs={12} md={12} className="my-2 text-end">
+              <small>
+                <span className="cst-text-negative">*</span> Wajib diisi
+              </small>
             </Col>
             <Col
               xs={12}

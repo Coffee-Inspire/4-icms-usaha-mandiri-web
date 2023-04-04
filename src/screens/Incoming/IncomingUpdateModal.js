@@ -5,7 +5,7 @@ import InvalidReceiveAlert from "./Alerts/InvalidReceiveAlert";
 
 import convertIDR from "../../helpers/convertIDR";
 
-function IncomingUpdateModal({ show, close, id }) {
+function IncomingUpdateModal({ show, close, subjectData }) {
   const [data, setData] = useState({});
   const [invalidReceiveAlertShow, setInvalidReceiveAlertShow] = useState(false);
 

@@ -24,7 +24,7 @@ function Incoming() {
   const handleCloseCreateModal = () => setCreateModalShow(false);
 
   const [updateModalShow, setUpdateModalShow] = useState(false);
-  const [subjectId, setSubjectId] = useState("");
+  const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const columns = [
@@ -97,8 +97,8 @@ function Incoming() {
     navigate(`detail/${dataId}`);
   };
 
-  const triggerEdit = (dataId) => {
-    setSubjectId(dataId);
+  const triggerEdit = (targetData) => {
+    setSubjectData(targetData.id);
     setUpdateModalShow(true);
   };
 
@@ -131,7 +131,7 @@ function Incoming() {
       <IncomingUpdateModal
         show={updateModalShow}
         close={handleCloseUpdateModal}
-        id={subjectId}
+        subjectData={subjectData}
         // handler={}
       />
     </Container>

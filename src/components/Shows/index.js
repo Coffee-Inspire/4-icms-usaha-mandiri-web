@@ -8,6 +8,7 @@ import {
   OverlayTrigger,
   Popover,
   Button,
+  ToastBody,
 } from "react-bootstrap";
 
 import { takeIcon } from "../../helpers/iconMapper";
@@ -26,6 +27,7 @@ function Shows({
   setFilter,
   actionForEdit,
   actionForDetail,
+  actionForDelete,
 }) {
   let actionMethods = columns.find((col) => col.methods);
   actionMethods
@@ -131,7 +133,6 @@ function Shows({
               onClick={(e) => {
                 e.stopPropagation();
                 document.body.click();
-                console.log("View Detail - id:", record.id);
                 actionForDetail(record.id);
               }}
             >
@@ -144,9 +145,8 @@ function Shows({
               className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("Ubah - id:", record.id);
                 document.body.click();
-                actionForEdit(record.id);
+                actionForEdit(record);
               }}
             >
               <span>Ubah</span>
@@ -154,13 +154,13 @@ function Shows({
           )}
           {actionMethods.includes("delete") && (
             <>
-              <Separator className="mx-1 mt-2" />
+              {actionMethods.length > 1 && <Separator className="mx-1 mt-2" />}
               <div
                 className="cst-text-negative cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   document.body.click();
-                  console.log("Hapus - id:", record.id);
+                  actionForDelete(record.id);
                 }}
               >
                 <span>Hapus</span>
@@ -173,12 +173,15 @@ function Shows({
 
     const recognizedCell = (col) => {
       const value = record[col.bind];
-      const align = { textAlign: col.align || "center" };
+      const customized = {
+        textAlign: col.align || "center",
+        textTransform: col.textTransform || "",
+      };
 
       switch (col.type) {
         case "qty":
           return (
-            <td style={align} key={`${record.id}-${col.bind}`}>
+            <td style={customized} key={`${record.id}-${col.bind}`}>
               <div className="w-75 mx-auto">
                 <div className="d-flex flex-column">
                   <span>{`${value}`}</span>
@@ -190,7 +193,7 @@ function Shows({
         case "currency": {
           if (col.bind === "mutation") {
             return (
-              <td style={align} key={`${record.id}-${col.bind}`}>
+              <td style={customized} key={`${record.id}-${col.bind}`}>
                 <div className="w-75 mx-auto">
                   <div className="d-flex flex-column">
                     <span
@@ -207,7 +210,7 @@ function Shows({
             );
           } else
             return (
-              <td style={align} key={`${record.id}-${col.bind}`}>
+              <td style={customized} key={`${record.id}-${col.bind}`}>
                 <div className="w-75 mx-auto">
                   <div className="d-flex flex-column">
                     <span>{`${convertIDR(value)}`}</span>
@@ -240,7 +243,7 @@ function Shows({
         }
         case "activeStatus":
           return (
-            <td style={align} key={`${record.id}-${col.bind}`}>
+            <td style={customized} key={`${record.id}-${col.bind}`}>
               {value ? (
                 <div className="cst-bg-positive-light cst-chip-radius d-flex">
                   <span className="cst-text-positive w-100">Aktif</span>
@@ -252,9 +255,33 @@ function Shows({
               )}
             </td>
           );
+        case "userStatus":
+          return (
+            <td style={customized} key={`${record.id}-${col.bind}`}>
+              {value ? (
+                <span className="bg-danger">
+                  <div className="cst-bg-neutral-light cst-chip-radius cst-w-100 mx-auto cst-text-primary px-2">
+                    <div className="d-flex align-items-center">
+                      <div className="cst-guide-primary mx-1" />
+                      <span>Aktif</span>
+                    </div>
+                  </div>
+                </span>
+              ) : (
+                <span>
+                  <div className="cst-bg-neutral-lighter cst-chip-radius cst-w-100 mx-auto cst-text-secondary px-2 ">
+                    <div className="d-flex align-items-center">
+                      <div className="cst-guide-neutral mx-1" />
+                      <span>Nonaktif</span>
+                    </div>
+                  </div>
+                </span>
+              )}
+            </td>
+          );
         default:
           return (
-            <td style={align} key={`${record.id}-${col.bind}`}>
+            <td style={customized} key={`${record.id}-${col.bind}`}>
               <div className="d-flex justify-content-center">
                 <div className="w-75">{value}</div>
               </div>
