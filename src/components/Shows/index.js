@@ -8,9 +8,8 @@ import {
   OverlayTrigger,
   Popover,
   Button,
-  ToastBody,
 } from "react-bootstrap";
-
+import NoData from "../../assets/NoData.jpg";
 import { takeIcon } from "../../helpers/iconMapper";
 import Separator from "../Separator";
 import convertIDR from "../../helpers/convertIDR";
@@ -356,17 +355,30 @@ function Shows({
           </Form>
         </Col>
       </Row>
-
-      <Table responsive className="cst-table">
-        <thead>
-          <tr>{renderColumns()}</tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.id}>{renderCells(row)}</tr>
-          ))}
-        </tbody>
-      </Table>
+      {rows.length > 0 ? (
+        <Table responsive className="cst-table">
+          <thead>
+            <tr>{renderColumns()}</tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.id}>{renderCells(row)}</tr>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <div className="d-flex flex-column">
+          <img
+            style={{ width: "200px", height: "200px" }}
+            className="align-self-center"
+            alt=""
+            src={NoData}
+          />
+          <strong className="mt-2 mb-3 text-center cst-text-secondary">
+            Data tidak ditemukan
+          </strong>
+        </div>
+      )}
       <Row className="cst-heading-bg cst-pagination-toolbar cst-text-secondary mx-0 fw-bold d-flex justify-content-end">
         <Col
           xs={5}

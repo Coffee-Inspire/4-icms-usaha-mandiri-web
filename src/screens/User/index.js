@@ -127,7 +127,7 @@ function Supplier() {
         address: "Tangerang 28761",
       },
     ];
-    setData(dummy);
+    //setData(dummy);
     setTotalPage(5);
   };
 
