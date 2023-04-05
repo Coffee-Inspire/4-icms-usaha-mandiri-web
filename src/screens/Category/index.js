@@ -4,13 +4,13 @@ import { Container } from "react-bootstrap";
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
-import UserCreateModal from "./UserCreateModal";
-import UserUpdateModal from "./UserUpdateModal";
+import CategoryCreateModa from "./CategoryCreateModal";
+import CategoryUpdateModal from "./CategoryUpdateModal";
 
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 
-function User() {
+function Category() {
   const [data, setData] = useState([]);
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
@@ -27,32 +27,16 @@ function User() {
 
   const columns = [
     {
-      label: "username",
-      bind: "userName",
-      align: "left",
-    },
-    {
-      label: "nama lengkap",
-      bind: "fullName",
+      label: "Nama",
+      bind: "name",
       align: "left",
       textTransform: "capitalize",
     },
     {
-      label: "Telp",
-      bind: "contact",
-    },
-    {
-      label: "Alamat",
-      bind: "address",
-    },
-    {
-      label: "e-mail",
-      bind: "email",
-    },
-    {
-      label: "status",
-      bind: "activeStatus",
-      type: "userStatus",
+      label: "Deskripsi",
+      bind: "note",
+      align: "left",
+      textTransform: "capitalize",
     },
     {
       label: takeIcon("menuVertical"),
@@ -76,55 +60,28 @@ function User() {
     const dummy = [
       {
         id: "1",
-        userName: "ricky",
-        fullName: "ricky wijaya",
-        role: {
-          id: "11",
-          name: "administrator",
-        },
-        activeStatus: true,
-        email: "ricky@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Jln Bekasi 29443",
+        name: "kayu",
+        note: "lorem ipsum",
       },
       {
         id: "2",
-        userName: "effendy",
-        fullName: "effendy tan",
-        role: {
-          id: "11",
-          name: "administrator",
-        },
-        activeStatus: true,
-        email: "effendy@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Jln Bekasi 29443",
+        name: "pasir dan semen",
+        note: "lorem ipsum",
       },
       {
         id: "3",
-        userName: "jessica",
-        fullName: "jessica tan",
-        role: {
-          id: "11",
-          name: "administrator",
-        },
-        activeStatus: false,
-        email: "jessica@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Jln Bekasi 29443",
+        name: "batu",
+        note: "lorem ipsum",
       },
       {
         id: "4",
-        userName: "johnny",
-        fullName: "johnny ng",
-        role: {
-          id: "22",
-          name: "normal",
-        },
-        activeStatus: true,
-        email: "johnny@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Tangerang 28761",
+        name: "listrik",
+        note: "lorem ipsum",
+      },
+      {
+        id: "5",
+        name: "cat",
+        note: "lorem ipsum",
       },
     ];
     setData(dummy);
@@ -151,10 +108,10 @@ function User() {
   return (
     <Container fluid className="p-4">
       <Header>
-        <span>USERS</span>
+        <span>KATEGORI</span>
       </Header>
       <ButtonAddRow handler={() => setCreateModalShow(true)}>
-        Tambah User
+        Tambah Kategori
       </ButtonAddRow>
       <Shows
         columns={columns}
@@ -169,12 +126,12 @@ function User() {
         actionForEdit={triggerEdit}
         actionForDelete={triggerDelete}
       />
-      <UserCreateModal
+      <CategoryCreateModa
         show={createModalShow}
         close={handleCloseCreateModal}
         handler={createData}
       />
-      <UserUpdateModal
+      <CategoryUpdateModal
         show={updateModalShow}
         close={handleCloseUpdateModal}
         subjectData={subjectData}
@@ -183,4 +140,4 @@ function User() {
   );
 }
 
-export default User;
+export default Category;

@@ -11,7 +11,7 @@ function ValidationAlert({ show, setShow }) {
       onClose={() => setShow(false)}
       dismissible
     >
-      <Alert.Heading>Oops, kamu gagal menyimpan transaksi</Alert.Heading>
+      <Alert.Heading>Oops, kamu gagal menyimpan kategori</Alert.Heading>
       <p>
         Pastikan data yang diisi sudah benar dan tidak boleh kosong ya{" "}
         {takeIcon("smile")}

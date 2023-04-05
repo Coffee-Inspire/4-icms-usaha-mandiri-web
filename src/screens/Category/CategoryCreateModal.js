@@ -1,31 +1,41 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 
 import ValidationAlert from "./Alerts/ValidationAlert";
 
-function UserUpdateModal({ show, close, subjectData = {} }) {
+import validator from "../../helpers/validator";
+
+function CategoryCreateModa({ show, close, handler }) {
   const schema = Joi.object({
-    activeStatus: Joi.boolean(),
+    name: Joi.string().required().messages({
+      "string.empty": `Nama kategori tidak boleh kosong`,
+      "any.required": `Nama kategori tidak boleh kosong`,
+    }),
+    note: Joi.string().allow(""),
   });
 
   const {
+    register,
     handleSubmit,
     formState: { errors },
-    control,
     reset,
   } = useForm({ resolver: joiResolver(schema) });
 
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
   const onSubmit = (data) => {
-    const params = {
-      id: subjectData.id,
-      activeStatus: data.activeStatus,
-    };
-    console.log("Updating =>", params);
+    const isValid = validator(data, ["note"]);
+    if (!isValid) {
+      setValidationAlertShow(true);
+      return false;
+    }
+    setValidationAlertShow(false);
+
+    handler(data);
+    handleClose();
   };
 
   const handleClose = () => {
@@ -40,7 +50,7 @@ function UserUpdateModal({ show, close, subjectData = {} }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Perbaharui User</Modal.Title>
+        <Modal.Title>Tambah Kategori</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row className="mx-0">
@@ -55,52 +65,34 @@ function UserUpdateModal({ show, close, subjectData = {} }) {
           <Row className="mx-0">
             <Col md={12} lg={12} className="py-2">
               <Form.Group>
-                <Form.Label>Status User</Form.Label>
-
-                <Controller
-                  shouldUnregister
-                  control={control}
-                  name="activeStatus"
-                  defaultValue={subjectData && subjectData.activeStatus}
-                  render={({ field }) => (
-                    <Form.Group {...field} className="d-flex">
-                      <div className="d-flex me-3 me-md-4">
-                        <Form.Check
-                          type="radio"
-                          name="activeStatus"
-                          id="statusActive"
-                          value={true}
-                          className="cst-clickable me-2"
-                          defaultChecked={subjectData.activeStatus}
-                        />
-                        <Form.Label
-                          htmlFor="statusActive"
-                          className="cst-click  able"
-                        >
-                          {"Aktif"}
-                        </Form.Label>
-                      </div>
-                      <div className="cst-clickable d-flex me-3 me-md-4">
-                        <Form.Check
-                          type="radio"
-                          name="activeStatus"
-                          id="statusInactive"
-                          value={false}
-                          className="cst-clickable me-2"
-                          defaultChecked={!subjectData.activeStatus}
-                        />
-                        <Form.Label
-                          htmlFor="statusInactive"
-                          className="cst-clickable"
-                        >
-                          {"Tidak Aktif"}
-                        </Form.Label>
-                      </div>
-                    </Form.Group>
-                  )}
+                <Form.Label>
+                  Nama Kategori<span className="cst-text-negative">*</span>
+                </Form.Label>
+                <Form.Control
+                  {...register("name")}
+                  className={`cst-form-control ${
+                    errors.name && "cst-form-invalid"
+                  }`}
+                  placeholder=" Nama Kategori"
                 />
                 <small className="cst-text-negative ">
-                  {errors.unit?.message}
+                  {errors.name?.message}
+                </small>
+              </Form.Group>
+            </Col>
+            <Col md={12} lg={12} className="py-2">
+              <Form.Group>
+                <Form.Label>Deskripsi</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  {...register("note")}
+                  className={`cst-form-control ${
+                    errors.note && "cst-form-invalid"
+                  }`}
+                  placeholder="Deskripsi"
+                />
+                <small className="cst-text-negative ">
+                  {errors.note?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -129,7 +121,7 @@ function UserUpdateModal({ show, close, subjectData = {} }) {
                   variant="none"
                   className="cst-btn-secondary w-100"
                 >
-                  Simpan
+                  Buat Kategori
                 </Button>
               </Col>
             </Col>
@@ -140,4 +132,4 @@ function UserUpdateModal({ show, close, subjectData = {} }) {
   );
 }
 
-export default UserUpdateModal;
+export default CategoryCreateModa;
