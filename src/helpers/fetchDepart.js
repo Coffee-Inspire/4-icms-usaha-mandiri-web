@@ -1,8 +1,6 @@
-import React from "react";
 import axios from "axios";
 import { host, pathPrefix } from "../appsetting/config";
 
-const baseURL = "";
 const auditor = () => {
   const token = localStorage.getItem("token");
   return `Bearer ${token}`;
@@ -36,6 +34,15 @@ async function fetchDepart(
   //     ...
   //   }
   // }
+
+  try {
+    const res = await axios(request);
+    if (res.status >= 200 && res.status < 400) {
+      return res;
+    } else throw res;
+  } catch (error) {
+    console.log("Triggering exception: ", error);
+  }
 
   const res = await axios(request);
   return res;
