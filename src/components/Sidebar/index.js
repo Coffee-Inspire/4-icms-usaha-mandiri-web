@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../../index.scss";
 import { Navbar, Nav, Collapse } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 

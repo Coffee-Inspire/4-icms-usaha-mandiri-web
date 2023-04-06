@@ -19,6 +19,8 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 0px 2px 4px rgba($color-primary, 0.4) !important;
 }
 
+
+
 /* 
 X-SmallNone	<576px
 Small	sm	≥576px
@@ -52,6 +54,25 @@ Extra extra large	xxl	≥1400px
   .cst-border-right {
     border-right: none !important;
   }
+
+  .cst-border-radius-right-xs{
+        border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  // .cst-border-radius-left{
+  //   border-top-left-radius: 10px;
+  //   border-bottom-left-radius: 10px;
+  // }
+
+  // .cst-border-radius-right{
+  //   border-top-right-radius: 10px;
+  //   border-bottom-right-radius: 10px;
+  // }
+}
+
+.cst-login-carousel-caption-margin{     
+  margin-top: 135px ;
 }
 
 .cst-pageNotFound-row-h{    
@@ -121,6 +142,19 @@ height: 100%;
   background-color: $color-primary;
 }
 
+.cst-bg-primary-light {
+  background-color: lighten($color-primary, 23%);
+}
+
+
+.cst-bg-secondary {
+  background-color: $color-secondary;
+}
+
+.cst-bg-plain {
+  background-color: $color-plain;
+}
+
 .cst-bg-positive-light {
   background-color: lighten($color-positive, 53%);
 }
@@ -174,7 +208,6 @@ height: 100%;
 .cst-text-neutral {
   color: $color-neutral;
 }
-
 .cst-guide-primary{
   width: 10px;
   height: 10px;
@@ -311,12 +344,13 @@ height: 100%;
 
 .cst-btn-primary {
   background-color: $color-primary;
-  color: $color-plain;
+  color: $color-plain;  
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $color-plain;
     border: 1px solid $color-primary;
     color: $color-primary;
+    font-weight: bold;
   }
 
   &:disabled {
@@ -410,6 +444,16 @@ height: 100%;
 .cst-avatar {
   width: 30px;
   height: 30px;
+}
+
+.cst-border-radius-left{
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.cst-border-radius-right{
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .cst-pagination-toolbar {
