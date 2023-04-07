@@ -1,5 +1,7 @@
 @import "./colorbase.scss";
 
+// ? Bootstrap replacers
+// * Remove arrow in form input number type
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -8,6 +10,7 @@ input::-webkit-inner-spin-button {
 
 .popover {
   margin-left: -30px;
+  position:fixed !important; // * Reduce flickering issue when first rendered
 }
 
 .form-check-input:checked {
@@ -19,8 +22,7 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 0px 2px 4px rgba($color-primary, 0.4) !important;
 }
 
-
-
+// * Note: Bootstrap breakpoints
 /* 
 X-SmallNone	<576px
 Small	sm	≥576px
@@ -30,6 +32,7 @@ Extra large	xl	≥1200px
 Extra extra large	xxl	≥1400px
 */
 
+// ? Breakpoint declarations
 @media (max-width: 991px) {
   .popover {
     margin-left: -40px;
@@ -71,6 +74,7 @@ Extra extra large	xxl	≥1400px
   }
 }
 
+// ? Customed style
 .cst-sidebar {
   background-color: $color-plain;
   width: 250px;
