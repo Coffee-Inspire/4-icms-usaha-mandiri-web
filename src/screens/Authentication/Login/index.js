@@ -18,6 +18,7 @@ function Login() {
     username: "",
     password: "",
   });
+  const [isPwd, setIsPwd] = useState(true);
 
   const [invalidAlertShow, setInvalidAlertShow] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -119,7 +120,7 @@ function Login() {
               </Form.Label>
               <div className="position-relative">
                 <Form.Control
-                  type="password"
+                  type={isPwd ? "password" : "text"}
                   className="cst-form-control cst-form-control-inner-padding"
                   placeholder="Password"
                   onChange={(e) =>
@@ -127,6 +128,12 @@ function Login() {
                   }
                 />
                 <span className="cst-form-icon-float">{takeIcon("lock")}</span>
+                <span
+                  className="cst-form-icon-float-end cst-clickable"
+                  onClick={() => setIsPwd(!isPwd)}
+                >
+                  {isPwd ? takeIcon("eye") : takeIcon("eyeSlash")}
+                </span>
               </div>
             </Form.Group>
             <Form.Group className="text-center mt-4">
