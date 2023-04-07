@@ -24,9 +24,6 @@ function Sidebar({ prefix, expanded }) {
       } text-nowrap pb-5`}
     >
       <Navbar.Brand>
-        {/* <div className="cst-text-primary p-2 my-5 text-center">
-          <h5 className="fw-bold"> Usaha Mandiri</h5>
-        </div> */}
         <div className="text-center">
           <img src={logo} alt="" className="my-5" />
         </div>

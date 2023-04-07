@@ -1,6 +1,5 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
-// import { takeIcon } from "../../../helpers/iconMapper";
 
 function InvalidAlert({ show, setShow, message }) {
   return (

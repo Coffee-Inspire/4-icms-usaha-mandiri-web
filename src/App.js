@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import PrivateRoutes from "./helpers/PrivateRoutes";
 import Login from "./screens/Authentication/Login";
 import MainLayout from "./screens/MainLayout";
@@ -16,6 +21,7 @@ function App() {
               path={`${prefix}/*`}
             />
           </Route>
+          <Route element={<Navigate to="/login" replace={true} />} path="/*" />
         </Routes>
       </Router>
     </>
