@@ -89,14 +89,13 @@ function Login() {
               <strong>Inventory and Cash Monitoring</strong>
             </small>
           </div>
-          <div className="mt-3">
+
+          <Form className="my-5">
             <InvalidAlert
               show={invalidAlertShow}
               setShow={setInvalidAlertShow}
               message={alertMessage}
             />
-          </div>
-          <Form className="my-5">
             <Form.Group className="my-3">
               <Form.Label className="mb-1 cst-text-secondary fw-bold">
                 <small>Username</small>

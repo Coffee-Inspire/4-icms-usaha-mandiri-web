@@ -11,7 +11,6 @@ function InvalidAlert({ show, setShow, message }) {
       onClose={() => setShow(false)}
       dismissible
     >
-      <Alert.Heading>Login gagal</Alert.Heading>
       <small>{message}</small>
     </Alert>
   );
