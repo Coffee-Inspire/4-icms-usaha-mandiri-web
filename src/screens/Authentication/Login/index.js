@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Carousel, Row, Col, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Carousel,
+  Row,
+  Col,
+  Form,
+  Button,
+  Spinner,
+} from "react-bootstrap";
 
 import InvalidAlert from "../Alerts/InvalidAlert";
 import Logo from "../../../assets/logo.png";
@@ -60,10 +68,6 @@ function Login() {
         setIsLoading(false);
       });
   };
-
-  useEffect(() => {
-    setInvalidAlertShow(false);
-  }, []);
 
   return (
     <Container
@@ -144,7 +148,13 @@ function Login() {
                 onClick={(e) => submitLogin(e)}
                 disabled={isLoading}
               >
-                Login
+                {!isLoading ? (
+                  <span className="px-1">Login</span>
+                ) : (
+                  <span className="px-3">
+                    <Spinner animation="border" variant="light" size="sm" />
+                  </span>
+                )}
               </Button>
             </Form.Group>
           </Form>
