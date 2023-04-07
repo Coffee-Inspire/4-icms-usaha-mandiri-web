@@ -175,11 +175,11 @@ height: 100%;
   background-color: lighten($color-primary, 32%);
 }
 
-.cst-avatar-bg {
-  // background-color: lighten($color-secondary, 32%);
-  background-color: $color-secondary;
-  color: $color-plain;
-}
+// .cst-avatar-bg {
+//   // background-color: lighten($color-secondary, 32%);
+//   background-color: $color-secondary;
+//   color: $color-plain;
+// }
 
 .cst-text-primary {
   color: $color-primary;
@@ -268,6 +268,10 @@ height: 100%;
 
 .cst-h-md {
   max-height: calc(100vh - 480px);
+}
+
+.cst-m-xs{
+  min-width: 250px;
 }
 
 .cst-y-scroll {
@@ -453,10 +457,10 @@ height: 100%;
   transition: 0.3s;
 }
 
-.cst-avatar {
-  width: 30px;
-  height: 30px;
-}
+// .cst-avatar {
+//   width: 30px;
+//   height: 30px;
+// }
 
 .cst-border-radius-left{
   border-top-left-radius: 10px;

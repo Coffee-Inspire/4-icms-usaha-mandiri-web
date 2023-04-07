@@ -1,8 +1,56 @@
 import React from "react";
-import { Container, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Popover,
+  OverlayTrigger,
+} from "react-bootstrap";
+
 import { takeIcon } from "../../helpers/iconMapper";
 
 function ProfileBar({ expanded, setExpanded }) {
+  const navigate = useNavigate();
+  const handleLogout = () => {};
+
+  const popover = (
+    <Popover id="popover-basic" className="cst-m-xs py-1 px-2">
+      {/* <Popover.Header as="h3">Popover right</Popover.Header> */}
+      <Row className="mx-0 ">
+        <Col xs={5} className="text-center py-2 px-1">
+          <span
+            style={{ width: "50px", height: "50px", padding: "5px" }}
+            className="cst-text-plain cst-bg-secondary d-flex justify-content-center align-items-center rounded-circle mx-auto mb-1"
+          >
+            {takeIcon("avatar")}
+          </span>
+          <p className="m-0">
+            {" "}
+            <small>username</small>
+          </p>
+
+          <small className="m-0 cst-text-neutral">Administrator</small>
+        </Col>
+        <Col
+          xs={7}
+          className="d-flex flex-column justify-content-between py-2 px-1"
+        >
+          <p className="text-center m-0">
+            <small>Acount Full Name</small>
+          </p>
+
+          <small
+            className="cst-clickable cst-hover-color-respond cst-text-primary text-end"
+            onClick={() => handleLogout()}
+          >
+            <strong>Logout</strong>
+          </small>
+        </Col>
+      </Row>
+    </Popover>
+  );
   return (
     <Container
       fluid
@@ -19,9 +67,19 @@ function ProfileBar({ expanded, setExpanded }) {
       </Button>
       <div className="d-flex align-items-center me-md-3">
         Hi, <strong className="ms-1 me-2">{"Admin"}</strong>
-        <span className="cst-avatar-bg cst-avatar d-flex justify-content-center align-items-center rounded-circle">
-          {takeIcon("avatar")}
-        </span>
+        <OverlayTrigger
+          rootClose
+          trigger="click"
+          placement="bottom"
+          overlay={popover}
+        >
+          <span
+            style={{ width: "30px", height: "30px", padding: "5px" }}
+            className="cst-clickable cst-bg-secondary cst-text-plain d-flex justify-content-center align-items-center rounded-circle"
+          >
+            {takeIcon("avatar")}
+          </span>
+        </OverlayTrigger>
       </div>
     </Container>
   );
