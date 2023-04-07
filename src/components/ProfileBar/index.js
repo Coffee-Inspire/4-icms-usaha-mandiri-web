@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Container,
   Button,
@@ -13,11 +14,15 @@ import { takeIcon } from "../../helpers/iconMapper";
 
 function ProfileBar({ expanded, setExpanded }) {
   const navigate = useNavigate();
-  const handleLogout = () => {};
 
+  const { profileData } = useSelector((state) => state.profileReducer);
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    navigate("/login");
+  };
+  console.log(profileData);
   const popover = (
     <Popover id="popover-basic" className="cst-m-xs py-1 px-2">
-      {/* <Popover.Header as="h3">Popover right</Popover.Header> */}
       <Row className="mx-0 ">
         <Col xs={5} className="text-center py-2 px-1">
           <span
@@ -28,25 +33,28 @@ function ProfileBar({ expanded, setExpanded }) {
           </span>
           <p className="m-0">
             {" "}
-            <small>username</small>
+            <small>{profileData.username}</small>
           </p>
 
-          <small className="m-0 cst-text-neutral">Administrator</small>
+          <small className="m-0 cst-text-neutral">
+            {profileData.role ? profileData.role.name : "user_role"}
+          </small>
         </Col>
         <Col
           xs={7}
           className="d-flex flex-column justify-content-between py-2 px-1"
         >
-          <p className="text-center m-0">
-            <small>Acount Full Name</small>
+          <p className="cst-text-primary text-center my-auto text-capitalize">
+            <strong>{profileData.fullname}</strong>
           </p>
-
-          <small
-            className="cst-clickable cst-hover-color-respond cst-text-primary text-end"
-            onClick={() => handleLogout()}
-          >
-            <strong>Logout</strong>
-          </small>
+          <span className="text-end">
+            <small
+              className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
+              onClick={() => handleLogout()}
+            >
+              <strong>Logout</strong>
+            </small>
+          </span>
         </Col>
       </Row>
     </Popover>
@@ -66,7 +74,10 @@ function ProfileBar({ expanded, setExpanded }) {
         {expanded ? takeIcon("chevronRight") : takeIcon("chevronLeft")}
       </Button>
       <div className="d-flex align-items-center me-md-3">
-        Hi, <strong className="ms-1 me-2">{"Admin"}</strong>
+        Hi,{" "}
+        <strong className="ms-1 me-2 text-capitalize">
+          {profileData.username}
+        </strong>
         <OverlayTrigger
           rootClose
           trigger="click"

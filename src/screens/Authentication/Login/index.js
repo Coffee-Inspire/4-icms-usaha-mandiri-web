@@ -15,12 +15,15 @@ import Logo from "../../../assets/logo.png";
 import CarouselImg1 from "../../../assets/Good team-pana.svg";
 import CarouselImg2 from "../../../assets/Visual data-pana.svg";
 import CarouselImg3 from "../../../assets/Creative team-pana.svg";
+import { useDispatch } from "react-redux";
+import { saveProfile } from "../../../actions/profileAction";
 
 import authApi from "../../../apis/auth.js";
 import { takeIcon } from "../../../helpers/iconMapper";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [loginParam, setLoginParam] = useState({
     username: "",
@@ -52,18 +55,19 @@ function Login() {
     authApi
       .login(loginParam)
       .then((res) => {
-        if (!res.data.token) {
-          console.error("error: ", res.data.data);
-          setAlertMessage(res.data.data);
+        if (res.status === 200) {
+          const payload = res.data.data;
+          dispatch(saveProfile(payload));
+          const token = res.data.token;
+          localStorage.setItem("access_token", token);
+          navigate("/dashboard");
+        } else {
+          console.error("error: ", res.message);
+          setAlertMessage(res.response.data.error.message);
           setInvalidAlertShow(true);
-          return;
         }
-        // const payload = res.data.data
-        // TODO saving payload in redux store and dispatch it when needed.
-        const token = res.data.token;
-        localStorage.setItem("access_token", token);
-        navigate("/dashboard");
       })
+      .catch((err) => console.log("LOGIN CATCH ", err))
       .finally(() => {
         setIsLoading(false);
       });
