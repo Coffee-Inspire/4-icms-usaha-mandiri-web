@@ -11,12 +11,12 @@ const auth = {
     return fetchDepart(url, options);
   },
 
-  verifyToken: (params) => {
+  verify: (params) => {
     const options = {
       method: "POST",
       body: params,
     };
-    let url = `${base}/verifyToken`;
+    let url = `${base}/verify`;
     return fetchDepart(url, options);
   },
 };

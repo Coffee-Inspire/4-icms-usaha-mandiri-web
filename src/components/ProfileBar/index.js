@@ -20,7 +20,6 @@ function ProfileBar({ expanded, setExpanded }) {
     localStorage.removeItem("access_token");
     navigate("/login");
   };
-  console.log(profileData);
   const popover = (
     <Popover id="popover-basic" className="cst-m-xs py-1 px-2">
       <Row className="mx-0 ">
@@ -37,7 +36,7 @@ function ProfileBar({ expanded, setExpanded }) {
           </p>
 
           <small className="m-0 cst-text-neutral">
-            {profileData.role ? profileData.role.name : "user_role"}
+            {profileData.role ? profileData.role.role_name : "role_unknown"}
           </small>
         </Col>
         <Col

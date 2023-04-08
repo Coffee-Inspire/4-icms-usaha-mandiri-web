@@ -61,13 +61,11 @@ function Login() {
           const token = res.data.token;
           localStorage.setItem("access_token", token);
           navigate("/dashboard");
-        } else {
-          console.error("error: ", res.message);
+        } else if (res.response && res.response.status === 403) {
           setAlertMessage(res.response.data.error.message);
           setInvalidAlertShow(true);
         }
       })
-      .catch((err) => console.log("LOGIN CATCH ", err))
       .finally(() => {
         setIsLoading(false);
       });

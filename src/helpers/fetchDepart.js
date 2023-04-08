@@ -1,6 +1,7 @@
 import axios from "axios";
 import { host, pathPrefix } from "../appsetting/config";
 import auditor from "./auditor";
+import errorHandler from "./errorHandler";
 
 async function fetchDepart(
   url,
@@ -33,12 +34,11 @@ async function fetchDepart(
 
   try {
     const res = await axios(request);
-    // return res;
     if (res.status >= 200 && res.status < 400) {
       return res;
     }
   } catch (error) {
-    console.log("Triggering exception: ", error);
+    errorHandler(error);
     return error;
   }
 }
