@@ -7,7 +7,7 @@ async function fetchDepart(
   url,
   options = { method: "GET", body: {}, contentType: "application/json" }
 ) {
-  const authorization = auditor();
+  const authorization = `Bearer ${auditor()}`;
   const completeURL = `${host}${pathPrefix}${url}`;
   const request = {
     method: options.method,

@@ -43,6 +43,7 @@ function UserCreateModal({ show, close, handler }) {
       "string.empty": `Alamat tidak boleh kosong`,
       "any.required": `Alamat tidak boleh kosong`,
     }),
+    active_status: Joi.boolean(),
     // type: Joi.string().default("DB").messages({
     //   "string.empty": `Tipe tidak boleh kosong`,
     //   "any.required": `Tipe tidak boleh kosong`,
@@ -284,7 +285,7 @@ function UserCreateModal({ show, close, handler }) {
               </Form.Group>
             </Col>
 
-            <Col md={12} lg={12} className="py-2">
+            <Col md={12} lg={8} className="py-2">
               <Form.Group>
                 <Form.Label>
                   Alamat<span className="cst-text-negative">*</span>
@@ -301,6 +302,28 @@ function UserCreateModal({ show, close, handler }) {
                   {errors.address?.message}
                 </small>
               </Form.Group>
+            </Col>
+
+            <Col md={12} lg={4} className="py-2 d-flex">
+              <Controller
+                control={control}
+                name="active_status"
+                // defaultValue={subjectData && subjectData.active_status}
+
+                render={({ field }) => (
+                  <Form.Group
+                    {...field}
+                    className="d-flex align-items-center my-auto"
+                  >
+                    <Form.Check
+                      type="switch"
+                      name="active_status"
+                      defaultChecked={true}
+                    />
+                    <Form.Label className="m-0">Status User</Form.Label>
+                  </Form.Group>
+                )}
+              />
             </Col>
 
             <Col md={12} lg={12} className="my-2 text-end">

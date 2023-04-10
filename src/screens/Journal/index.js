@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -18,6 +18,7 @@ function Journal() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -52,6 +53,7 @@ function Journal() {
   ];
 
   const getData = () => {
+    setIsLoading(true);
     const param = {
       page,
       limit: limit.value,
@@ -147,6 +149,7 @@ function Journal() {
     setData(dummy);
     setBalance("1234567890");
     setTotalPage(5);
+    setIsLoading(false);
   };
 
   const createData = (param) => {
@@ -161,9 +164,13 @@ function Journal() {
     <Container fluid className="p-4">
       <Header>
         <span>JURNAL TRANSAKSI</span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
       <div className="d-flex justify-content-between align-items-center">
-        <ButtonAddRow handler={() => setCreateModalShow(true)}>
+        <ButtonAddRow
+          handler={() => setCreateModalShow(true)}
+          disabled={isLoading}
+        >
           Transaksi Manual
         </ButtonAddRow>
         <div className="text-end">

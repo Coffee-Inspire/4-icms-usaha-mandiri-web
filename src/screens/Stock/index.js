@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -15,6 +15,7 @@ function Stock() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const columns = [
     {
@@ -65,6 +66,7 @@ function Stock() {
   ];
 
   const getData = () => {
+    setIsLoading(true);
     const param = {
       page,
       limit: limit.value,
@@ -179,6 +181,7 @@ function Stock() {
     ];
     setData(dummy);
     setTotalPage(5);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -188,7 +191,8 @@ function Stock() {
   return (
     <Container fluid className="p-4">
       <Header>
-        <span>STOK BARANG</span>
+        <span>STOK BARANG </span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
       <Shows
         columns={columns}

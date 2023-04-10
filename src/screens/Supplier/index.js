@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -16,6 +16,7 @@ function Supplier() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -56,6 +57,7 @@ function Supplier() {
   ];
 
   const getData = () => {
+    setIsLoading(true);
     const param = {
       page,
       limit: limit.value,
@@ -151,6 +153,7 @@ function Supplier() {
     ];
     setData(dummy);
     setTotalPage(5);
+    setIsLoading(false);
   };
 
   const createData = (param) => {
@@ -165,8 +168,12 @@ function Supplier() {
     <Container fluid className="p-4">
       <Header>
         <span>SUPPLIER</span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
-      <ButtonAddRow handler={() => setCreateModalShow(true)}>
+      <ButtonAddRow
+        handler={() => setCreateModalShow(true)}
+        disabled={isLoading}
+      >
         Tambah Supplier
       </ButtonAddRow>
       <Shows

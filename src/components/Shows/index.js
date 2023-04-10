@@ -309,7 +309,6 @@ function Shows({
           return <td key={`${record.id}-${col.bind}`}>-</td>;
       }
     };
-
     return columns.map((col) =>
       Object.keys(record).find((cell) => cell == col.bind)
         ? recognizedCell(col)

@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Table,
+  Spinner,
+} from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -17,6 +25,7 @@ import { takeIcon } from "../../helpers/iconMapper";
 function IncomingCreate() {
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [dataList, setDataList] = useState([]);
   const [isExistAlertShow, setIsExistAlertShow] = useState(false);
   const [rejected, setRejected] = useState("");
@@ -163,6 +172,7 @@ function IncomingCreate() {
           {takeIcon("backspace")}
         </span>
         <span>ORDER BARANG</span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
       <Row className="mx-0">
         <Col xs={12} md={5} className="cst-border-right py-3">
@@ -187,7 +197,7 @@ function IncomingCreate() {
                       <CreatableSelect
                         {...field}
                         options={dummyItemOptions}
-                        isDisabled={isFetching}
+                        isDisabled={isLoading}
                         placeholder="Pilih atau buat barang"
                       />
                     )}
@@ -210,6 +220,7 @@ function IncomingCreate() {
                         {...field}
                         options={dummyCategoryOptions}
                         placeholder="Kategori"
+                        isDisabled={isLoading}
                       />
                     )}
                   />
@@ -231,6 +242,7 @@ function IncomingCreate() {
                         {...field}
                         options={dummySupplyOptions}
                         placeholder="Pilih supplier"
+                        isDisabled={isLoading}
                       />
                     )}
                   />
@@ -352,6 +364,7 @@ function IncomingCreate() {
                   <Button
                     variant="none"
                     className="cst-btn-danger w-100"
+                    disabled={isLoading}
                     // onClick={() => reset()}
                   >
                     Bersihkan
@@ -363,6 +376,7 @@ function IncomingCreate() {
                     type="submit"
                     variant="none"
                     className="cst-btn-secondary w-100"
+                    disabled={isLoading}
                   >
                     Tambahkan ke list
                   </Button>
@@ -453,9 +467,11 @@ function IncomingCreate() {
                       variant="none"
                       className="cst-btn-danger w-100"
                       onClick={() => setDataList([])}
+                      disabled={isLoading}
                     >
                       Ulangi
                     </Button>
+                    r
                   </Col>
 
                   <Col xs={5} md={4}>
@@ -464,6 +480,7 @@ function IncomingCreate() {
                       // onClick={() => setShow(true)}
                       variant="none"
                       className="cst-btn-secondary w-100"
+                      disabled={isLoading}
                     >
                       Buat Order
                     </Button>

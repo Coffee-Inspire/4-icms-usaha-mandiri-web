@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -19,9 +19,7 @@ function Incoming() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-
-  const [createModalShow, setCreateModalShow] = useState(false);
-  const handleCloseCreateModal = () => setCreateModalShow(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [updateModalShow, setUpdateModalShow] = useState(false);
   const [subjectData, setSubjectData] = useState({});
@@ -56,6 +54,7 @@ function Incoming() {
   ];
 
   const getData = () => {
+    setIsLoading(true);
     const param = {
       page,
       limit: limit.value,
@@ -91,6 +90,7 @@ function Incoming() {
     ];
     setData(dummy);
     setTotalPage(5);
+    setIsLoading(false);
   };
 
   const triggerDetail = (dataId) => {
@@ -110,8 +110,9 @@ function Incoming() {
     <Container fluid className="p-4">
       <Header>
         <span>BARANG MASUK</span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
-      <ButtonAddRow handler={() => navigate("create")}>
+      <ButtonAddRow handler={() => navigate("create")} disabled={isLoading}>
         Order Barang
       </ButtonAddRow>
       <Shows

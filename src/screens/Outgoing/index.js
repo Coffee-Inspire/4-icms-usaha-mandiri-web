@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -18,6 +18,7 @@ function Outgoing() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -55,6 +56,7 @@ function Outgoing() {
   ];
 
   const getData = () => {
+    setIsLoading(true);
     const param = {
       page,
       limit: limit.value,
@@ -101,6 +103,7 @@ function Outgoing() {
     ];
     setData(dummy);
     setTotalPage(5);
+    setIsLoading(false);
   };
 
   const createData = (param) => {
@@ -115,8 +118,11 @@ function Outgoing() {
     <Container fluid className="p-4">
       <Header>
         <span>BARANG TERJUAL</span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
-      <ButtonAddRow handler={() => navigate("create")}>Kasir</ButtonAddRow>
+      <ButtonAddRow handler={() => navigate("create")} disabled={isLoading}>
+        Kasir
+      </ButtonAddRow>
       <Shows
         columns={columns}
         rows={data}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -7,6 +7,7 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import UserCreateModal from "./UserCreateModal";
 import UserUpdateModal from "./UserUpdateModal";
 
+import userApi from "../../apis/user";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 
@@ -17,6 +18,7 @@ function User() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -28,14 +30,19 @@ function User() {
   const columns = [
     {
       label: "username",
-      bind: "userName",
+      bind: "username",
       align: "left",
     },
     {
       label: "nama lengkap",
-      bind: "fullName",
+      bind: "fullname",
       align: "left",
       textTransform: "capitalize",
+    },
+    {
+      label: "role",
+      bind: "role_name",
+      align: "left",
     },
     {
       label: "Telp",
@@ -44,6 +51,7 @@ function User() {
     {
       label: "Alamat",
       bind: "address",
+      align: "left",
     },
     {
       label: "e-mail",
@@ -51,7 +59,7 @@ function User() {
     },
     {
       label: "status",
-      bind: "activeStatus",
+      bind: "active_status",
       type: "userStatus",
     },
     {
@@ -63,72 +71,93 @@ function User() {
   ];
 
   const getData = () => {
-    const param = {
+    setIsLoading(true);
+    const params = {
       page,
       limit: limit.value,
       filter,
       search,
     };
-    console.log("USERS GET Parameter:", param);
-    // * Call API
 
+    // * Call API
+    userApi
+      .getAll(params)
+      .then((res) => {
+        const normalized = res.data.data.map(
+          (i) =>
+            (i = {
+              ...i,
+              role_name: i.role.role_name,
+            })
+        );
+        setData(normalized);
+      })
+      .finally(setIsLoading(false));
     // ? For Development
-    const dummy = [
-      {
-        id: "1",
-        userName: "ricky",
-        fullName: "ricky wijaya",
-        role: {
-          id: "11",
-          name: "administrator",
-        },
-        activeStatus: true,
-        email: "ricky@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Jln Bekasi 29443",
-      },
-      {
-        id: "2",
-        userName: "effendy",
-        fullName: "effendy tan",
-        role: {
-          id: "11",
-          name: "administrator",
-        },
-        activeStatus: true,
-        email: "effendy@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Jln Bekasi 29443",
-      },
-      {
-        id: "3",
-        userName: "jessica",
-        fullName: "jessica tan",
-        role: {
-          id: "11",
-          name: "administrator",
-        },
-        activeStatus: false,
-        email: "jessica@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Jln Bekasi 29443",
-      },
-      {
-        id: "4",
-        userName: "johnny",
-        fullName: "johnny ng",
-        role: {
-          id: "22",
-          name: "normal",
-        },
-        activeStatus: true,
-        email: "johnny@gmail.com",
-        contact: "0822 8356 9190",
-        address: "Tangerang 28761",
-      },
-    ];
-    setData(dummy);
-    setTotalPage(5);
+    // // const dummy = [
+    //   {
+    //     id: "1",
+    //     userName: "ricky",
+    //     fullName: "ricky wijaya",
+    //     role: {
+    //       id: "11",
+    //       name: "administrator",
+    //     },
+    //     activeStatus: true,
+    //     email: "ricky@gmail.com",
+    //     contact: "0822 8356 9190",
+    //     address: "Jln Bekasi 29443",
+    //   },
+    //   {
+    //     id: "2",
+    //     userName: "effendy",
+    //     fullName: "effendy tan",
+    //     role: {
+    //       id: "11",
+    //       name: "administrator",
+    //     },
+    //     activeStatus: true,
+    //     email: "effendy@gmail.com",
+    //     contact: "0822 8356 9190",
+    //     address: "Jln Bekasi 29443",
+    //   },
+    //   {
+    //     id: "3",
+    //     userName: "jessica",
+    //     fullName: "jessica tan",
+    //     role: {
+    //       id: "11",
+    //       name: "administrator",
+    //     },
+    //     activeStatus: false,
+    //     email: "jessica@gmail.com",
+    //     contact: "0822 8356 9190",
+    //     address: "Jln Bekasi 29443",
+    //   },
+    //   {
+    //     id: "4",
+    //     userName: "johnny",
+    //     fullName: "johnny ng",
+    //     role: {
+    //       id: "22",
+    //       name: "normal",
+    //     },
+    //     activeStatus: true,
+    //     email: "johnny@gmail.com",
+    //     contact: "0822 8356 9190",
+    //     address: "Tangerang 28761",
+    //   },
+    // // ];
+    // // setData(dummy);
+    // // setTotalPage(5);
+  };
+
+  const updateData = (updateParams) => {
+    setIsLoading(true);
+    userApi
+      .update(updateParams)
+      .then(() => getData())
+      .finally(setIsLoading(false));
   };
 
   const triggerDelete = (dataId) => {
@@ -152,8 +181,12 @@ function User() {
     <Container fluid className="p-4">
       <Header>
         <span>USERS</span>
+        {isLoading && <Spinner className="mx-3" />}
       </Header>
-      <ButtonAddRow handler={() => setCreateModalShow(true)}>
+      <ButtonAddRow
+        handler={() => setCreateModalShow(true)}
+        disabled={isLoading}
+      >
         Tambah User
       </ButtonAddRow>
       <Shows
@@ -178,6 +211,7 @@ function User() {
         show={updateModalShow}
         close={handleCloseUpdateModal}
         subjectData={subjectData}
+        handler={updateData}
       />
     </Container>
   );
