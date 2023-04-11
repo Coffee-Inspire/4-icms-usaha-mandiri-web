@@ -10,7 +10,7 @@ input::-webkit-inner-spin-button {
 
 .popover {
   margin-left: -30px;
-  position:fixed !important; // * Reduce flickering issue when first rendered
+  position: fixed !important; // * Reduce flickering issue when first rendered
 }
 
 .form-check-input:checked {
@@ -58,19 +58,19 @@ Extra extra large	xxl	≥1400px
     border-right: none !important;
   }
 
-  .cst-border-radius-right-xs{
-        border-top-right-radius: 10px;
+  .cst-border-radius-right-xs {
+    border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
 }
 
-.cst-login-carousel-caption-margin{     
-  margin-top: 135px ;
+.cst-login-carousel-caption-margin {
+  margin-top: 135px;
 }
 
-@media (max-width: 1400px){
-  .cst-pageNotFound-row-h{
-      min-height: 480px !important;
+@media (max-width: 1400px) {
+  .cst-pageNotFound-row-h {
+    min-height: 480px !important;
   }
 }
 
@@ -125,7 +125,6 @@ Extra extra large	xxl	≥1400px
   background-color: lighten($color-primary, 23%);
 }
 
-
 .cst-bg-secondary {
   background-color: $color-secondary;
 }
@@ -147,7 +146,7 @@ Extra extra large	xxl	≥1400px
 }
 
 .cst-bg-neutral-lighter {
-  background-color: lighten($color-neutral,24%);
+  background-color: lighten($color-neutral, 24%);
 }
 
 .cst-heading-bg {
@@ -181,25 +180,25 @@ Extra extra large	xxl	≥1400px
 .cst-text-neutral {
   color: $color-neutral;
 }
-.cst-guide-primary{
+.cst-guide-primary {
   width: 10px;
   height: 10px;
   border-radius: 5px;
   background-color: $color-primary;
 }
 
-.cst-guide-neutral{
+.cst-guide-neutral {
   width: 10px;
   height: 10px;
   border-radius: 5px;
   background-color: $color-neutral;
 }
 
-.cst-w-min-content{
+.cst-w-min-content {
   width: min-content;
 }
 
-.cst-w-100{
+.cst-w-100 {
   width: 100px;
 }
 
@@ -231,8 +230,8 @@ Extra extra large	xxl	≥1400px
   }
 }
 
-.cst-min-h-md{    
-  min-height: 800px;
+.cst-min-h-md {
+  min-height: 500px;
 }
 
 .cst-h-xs {
@@ -247,7 +246,7 @@ Extra extra large	xxl	≥1400px
   max-height: calc(100vh - 480px);
 }
 
-.cst-m-xs{
+.cst-m-xs {
   min-width: 250px;
 }
 
@@ -335,9 +334,10 @@ Extra extra large	xxl	≥1400px
 
 .cst-btn-primary {
   background-color: $color-primary;
-  color: $color-plain;  
+  color: $color-plain;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: $color-plain;
     border: 1px solid $color-primary;
     color: $color-primary;
@@ -432,12 +432,12 @@ Extra extra large	xxl	≥1400px
   transition: 0.3s;
 }
 
-.cst-border-radius-left{
+.cst-border-radius-left {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
 
-.cst-border-radius-right{
+.cst-border-radius-right {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -496,7 +496,7 @@ Extra extra large	xxl	≥1400px
     vertical-align: middle;
   }
 
-  thead tr th {    
+  thead tr th {
     background-color: lighten($color-secondary, 38%);
     text-transform: uppercase;
     color: $color-primary;

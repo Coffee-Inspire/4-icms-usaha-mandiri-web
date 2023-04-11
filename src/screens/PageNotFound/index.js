@@ -16,7 +16,7 @@ function PageNotFound() {
             src={Illustration}
           />
         </Col>
-        <Col xs={12} sm={12} md={12} lg={12} xl={5} className="d-flex">
+        <Col xs={12} sm={12} md={12} lg={12} xl={6} className="d-flex">
           <div className="pt-3 px-4 m-auto my-lg-auto mx-xl-0 text-center text-xl-start">
             <h1 className="cst-text-primary">
               <strong>Opss...</strong>
