@@ -400,7 +400,7 @@ function Shows({
           className="d-flex justify-content-end align-items-center py-1"
         >
           <small>
-            Page {page} <span>of {"99"}</span>
+            Page {page} <span>of {totalPage}</span>
           </small>
           <small
             className="cst-item px-2 mx-2 p-1"
@@ -410,7 +410,9 @@ function Shows({
           </small>
           <small
             className="cst-item px-2 mx-2 p-1"
-            onClick={() => handleNextPage()}
+            onClick={() => {
+              handleNextPage();
+            }}
           >
             {takeIcon("chevronRight")}
           </small>

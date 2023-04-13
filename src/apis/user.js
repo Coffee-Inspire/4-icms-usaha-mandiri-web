@@ -2,12 +2,13 @@ import fetchDepart from "../helpers/fetchDepart";
 
 const base = `/user`;
 const user = {
-  getAll: (param) => {
+  getAll: (params) => {
+    const { page, limit, sort, filter, search } = params;
     const options = {
       method: "GET",
     };
 
-    let url = `${base}/`;
+    let url = `${base}/?page=${page}&limit=${limit}`;
     return fetchDepart(url, options);
   },
 

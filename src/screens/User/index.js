@@ -83,6 +83,7 @@ function User() {
     userApi
       .getAll(params)
       .then((res) => {
+        const dataLength = res.data.dataLength;
         const normalized = res.data.data.map(
           (i) =>
             (i = {
@@ -91,6 +92,7 @@ function User() {
             })
         );
         setData(normalized);
+        setTotalPage(Math.ceil(dataLength / params.limit));
       })
       .finally(setIsLoading(false));
     // ? For Development

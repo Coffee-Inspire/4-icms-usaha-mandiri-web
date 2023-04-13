@@ -8,10 +8,10 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.popover {
-  margin-left: -30px;
-  position: fixed !important; // * Reduce flickering issue when first rendered
-}
+// .popover {
+//   margin-left: -30px;
+//   position: fixed !important; // * Reduce flickering issue when first rendered
+// }
 
 .form-check-input:checked {
   background-color: $color-primary;
@@ -75,6 +75,21 @@ Extra extra large	xxl	≥1400px
 }
 
 // ? Customed style
+
+@media print {
+  .cst-print-only {
+    display: block !important;
+  }
+
+  .cst-browser-only {
+    display: none !important;
+  }
+}
+
+.cst-print-only {
+  display: none;
+}
+
 .cst-sidebar {
   background-color: $color-plain;
   width: 250px;
@@ -250,6 +265,10 @@ Extra extra large	xxl	≥1400px
   min-width: 250px;
 }
 
+.cst-w-sm {
+  width: 60px;
+}
+
 .cst-y-scroll {
   overflow-y: auto;
 }
@@ -364,26 +383,40 @@ Extra extra large	xxl	≥1400px
 }
 
 .cst-btn-neutral {
-  background-color: $color-primary;
-  color: $color-plain;
+  background-color: $color-neutral;
+  // color: $color-plain;
   transition: 0.3s;
 
   &:hover {
-    background-color: darken($color-primary, 20%);
-    color: $color-plain;
+    background-color: darken($color-neutral, 20%);
+    // color: $color-plain;
     transition: 0.3s;
   }
 }
 
-.cst-btn-success {
+.cst-btn-warning {
   background-color: $color-warning;
   color: $color-plain;
   transition: 0.3s;
 
-  &:hover {
-    background-color: darken($color-warning, 20%);
+  // &:hover {
+  //   background-color: darken($color-warning, 20%);
+  //   color: $color-plain;
+  //   transition: 0.3s;
+  // }
+
+  &:hover,
+  &:focus {
+    background-color: $color-plain;
+    border: 1px solid $color-warning;
+    color: $color-warning;
+    font-weight: bold;
+  }
+
+  &:disabled {
+    background-color: $color-warning;
+    opacity: 0.4;
     color: $color-plain;
-    transition: 0.3s;
   }
 }
 
@@ -396,6 +429,25 @@ Extra extra large	xxl	≥1400px
     background-color: darken($color-negative, 20%);
     color: $color-plain;
     transition: 0.3s;
+  }
+}
+
+.cst-btn-plain {
+  background-color: $color-plain;
+  color: $color-primary;
+  // font-weight: bold;
+
+  &:hover,
+  &:focus {
+    background-color: $color-primary;
+    border: 1px solid $color-plain;
+    color: $color-plain;
+  }
+
+  &:disabled {
+    background-color: $color-neutral;
+    opacity: 0.4;
+    color: $color-plain;
   }
 }
 
