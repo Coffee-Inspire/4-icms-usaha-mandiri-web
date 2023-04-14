@@ -8,9 +8,10 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+// * Reduce flickering issue when first rendered, need further research
 // .popover {
 //   margin-left: -30px;
-//   position: fixed !important; // * Reduce flickering issue when first rendered
+//   position: fixed !important;
 // }
 
 .form-check-input:checked {
@@ -74,8 +75,7 @@ Extra extra large	xxl	≥1400px
   }
 }
 
-// ? Customed style
-
+// ? Print page
 @media print {
   .cst-print-only {
     display: block !important;
@@ -84,8 +84,26 @@ Extra extra large	xxl	≥1400px
   .cst-browser-only {
     display: none !important;
   }
+
+  .cst-print-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    font-size: 14px;
+
+    th {
+      text-align: center;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 5px;
+    }
+  }
 }
 
+// ? Customed style
 .cst-print-only {
   display: none;
 }

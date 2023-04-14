@@ -86,17 +86,14 @@ function OutgoingCreate() {
     amount: 0,
   };
 
-  const [chainModalShow, setChainModalShow] = useState(true);
+  const [chainModalShow, setChainModalShow] = useState(false);
 
   const handleAddRow = () => {
     setCart((cart) => [...cart, initialCartRow]);
   };
 
-  // console.log("CART", cart);
-
   const handleAssignStockToCart = (targetIndex, item) => {
     // * Hit GetItemById API ,requesting for stock price
-
     // ? For Development
     const dummyItemPrice = [
       {
@@ -125,7 +122,7 @@ function OutgoingCreate() {
 
     setCart(
       cart.map((c, idx) => {
-        if (idx == targetIndex) {
+        if (idx === targetIndex) {
           return {
             ...c,
             itemId: item.value,
@@ -143,11 +140,9 @@ function OutgoingCreate() {
   };
 
   const handleAssignQtyToCart = (targetIndex, value) => {
-    // setCart
-
     setCart(
       cart.map((c, idx) => {
-        if (idx == targetIndex) {
+        if (idx === targetIndex) {
           return { ...c, soldQty: value, amount: value * c.price };
         } else {
           return c;
@@ -161,6 +156,10 @@ function OutgoingCreate() {
     setCart(newData);
   };
 
+  // ? For Development
+  const [dummyApiResultReturn, setDummyApiResultReturn] = useState({
+    incomingNo: "UM/RCPT/23/3/0001",
+  });
   const handleSubmit = () => {
     const params = {
       customer: customer,
@@ -170,6 +169,15 @@ function OutgoingCreate() {
       user: profileData.id,
     };
     console.log("Full Params =>", params);
+
+    // ? For Development
+    const d = {
+      ...params,
+      customer: customer.label,
+      date: moment().format("D-MM-YYYY"),
+    };
+    setDummyApiResultReturn({ ...dummyApiResultReturn, ...d });
+
     setChainModalShow(true);
   };
 
@@ -235,8 +243,6 @@ function OutgoingCreate() {
         <span>KASIR</span>
       </Header>
       <Row className="mx-0 pt-3">
-        {/* <Col xs={12} className="bg-warning">
-          <Row> */}
         <Col xs={12} md={6}>
           <Card className="mb-4">
             <Card.Header className="cst-bg-secondary cst-text-plain">
@@ -258,7 +264,7 @@ function OutgoingCreate() {
                 </Col>
                 <Col xs={3} className="my-2 px-0 d-flex  justify-content-end">
                   <small className="my-auto text-end">
-                    <strong>User</strong>
+                    <strong>Operator</strong>
                   </small>
                 </Col>
                 <Col xs={9}>
@@ -285,11 +291,6 @@ function OutgoingCreate() {
                   </small>
                 </Col>
                 <Col xs={9} className="my-2">
-                  {/* <Form.Control
-                    className="cst-form-control py-1 px-2"
-                    value={invoiceInfo.date}
-                    disabled
-                  /> */}
                   <Select
                     isClearable
                     options={dummyCustomerOptions}
@@ -332,9 +333,6 @@ function OutgoingCreate() {
         </Col>
         <Col xs={12}>
           <Row>
-            <Col xs={12} className="cst-print-only mb-5">
-              title here
-            </Col>
             <Col xs={12} className="mb-3">
               <Table hover bordered responsive>
                 <thead>
@@ -466,16 +464,6 @@ function OutgoingCreate() {
             </Col>
             <Col xs={12}>
               <Row className="d-flex justify-content-end my-4">
-                {/* <Col xs={12} md={2} className="my-2">
-                  <Button
-                    variant="none"
-                    className="cst-btn-warning w-100 d-flex justify-content-center align-items-center"
-                    onClick={() => handlePrint()}
-                  >
-                    <span>{takeIcon("print")}</span>
-                    <span className="mx-2">Cetak Nota</span>
-                  </Button>
-                </Col> */}
                 <Col xs={12} md={2} className="my-2">
                   <Button
                     variant="none"
@@ -497,9 +485,7 @@ function OutgoingCreate() {
         close={() => setChainModalShow(false)}
         handlePrint={handlePrint}
       />
-
-      {/* Print  */}
-      <Receipt innerRef={printRef} cart={cart} />
+      <Receipt innerRef={printRef} data={dummyApiResultReturn} />
     </Container>
   );
 }
