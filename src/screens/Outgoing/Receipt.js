@@ -3,7 +3,6 @@ import Logo from "../../assets/logo.png";
 import convertIDR from "../../helpers/convertIDR";
 
 function Receipt({ innerRef, data }) {
-  console.log(data);
   const headingCellStyle = {
     border: "1px solid rgba(0,0,0,1)",
     padding: "2px 10px 2px 10px",
@@ -17,57 +16,12 @@ function Receipt({ innerRef, data }) {
     contact: "08271272372",
   };
 
-  const dummyData = { ...data };
-  // const dummyData = {
-  //   incomingNo: "UM/RCPT/23/3/0001",
-  //   customer: "Jonathan Lee",
-  //   date: "4-15-2023",
-  //   totalPrice: 1220000,
-  //   cart: [
-  //     {
-  //       itemId: "111",
-  //       itemName: 'PIPA RUBEKA 4"',
-  //       price: 10000,
-  //       qty: 0,
-  //       soldQty: "5",
-  //       unit: "pcs",
-  //       amount: 50000,
-  //     },
-  //     {
-  //       itemId: "112",
-  //       itemName: "SIKA NAT HITAM",
-  //       price: 40000,
-  //       qty: 0,
-  //       soldQty: "8",
-  //       unit: "pcs",
-  //       amount: 320000,
-  //     },
-  //     {
-  //       itemId: "333",
-  //       itemName: "KAWAT LAS",
-  //       price: 150000,
-  //       qty: 0,
-  //       soldQty: "1",
-  //       unit: "box",
-  //       amount: 150000,
-  //     },
-  //     {
-  //       itemId: "114",
-  //       itemName: "KABEL MERAH ROLL",
-  //       price: 350000,
-  //       qty: 0,
-  //       soldQty: "2",
-  //       unit: "pcs",
-  //       amount: 700000,
-  //     },
-  //   ],
-  // };
   return (
     <div className="cst-print-only p-5" ref={innerRef}>
       <div className="d-flex mb-4">
         <div className="w-50">
           <img
-            style={{ width: "310px", height: "40px" }}
+            style={{ width: "250px", height: "30px" }}
             className="mb-2"
             alt=""
             src={Logo}
@@ -78,19 +32,17 @@ function Receipt({ innerRef, data }) {
           </div>
         </div>
         <div className="w-50 text-end">
-          <h5 className="cst-text-negative fw-bold mb-4">
-            {dummyData.incomingNo}
-          </h5>
+          <h5 className="cst-text-negative fw-bold mb-4">{data.incomingNo}</h5>
           <div className="d-flex justify-content-end">
             <table>
               <thead>
                 <tr>
                   <td style={headingCellStyle}>Tanggal</td>
-                  <td style={headingCellStyle}>{dummyData.date}</td>
+                  <td style={headingCellStyle}>{data.date}</td>
                 </tr>
                 <tr>
                   <td style={headingCellStyle}>Kepada Yth</td>
-                  <td style={headingCellStyle}>{dummyData.customer}</td>
+                  <td style={headingCellStyle}>{data.customer}</td>
                 </tr>
               </thead>
             </table>
@@ -116,9 +68,9 @@ function Receipt({ innerRef, data }) {
             </tr>
           </thead>
           <tbody>
-            {dummyData.cart &&
-              dummyData.cart.length > 0 &&
-              dummyData.cart.map((i, index) => (
+            {data.cart &&
+              data.cart.length > 0 &&
+              data.cart.map((i, index) => (
                 <tr key={index}>
                   <td className="text-center">{index + 1}</td>
                   <td>{i.itemName}</td>
@@ -130,8 +82,7 @@ function Receipt({ innerRef, data }) {
           </tbody>
         </table>
         <div className="border border-dark text-end py-1 px-2">
-          <span className="fw-bold">TOTAL: </span>{" "}
-          {convertIDR(dummyData.totalPrice)}
+          <span className="fw-bold">TOTAL: </span> {convertIDR(data.totalPrice)}
         </div>
         <div className="my-3 d-flex justify-content-between">
           <div

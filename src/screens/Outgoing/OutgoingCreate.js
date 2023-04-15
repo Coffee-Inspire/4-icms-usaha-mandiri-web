@@ -173,7 +173,7 @@ function OutgoingCreate() {
     // ? For Development
     const d = {
       ...params,
-      customer: customer.label,
+      customer: customer ? customer.label : "",
       date: moment().format("D-MM-YYYY"),
     };
     setDummyApiResultReturn({ ...dummyApiResultReturn, ...d });
