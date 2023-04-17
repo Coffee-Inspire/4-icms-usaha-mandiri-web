@@ -106,6 +106,21 @@ function User() {
       .finally(setIsLoading(false));
   };
 
+  const createData = (param) => {
+    setIsLoading(true);
+    userApi
+      .create(param)
+      .then(() => {
+        getData();
+      })
+      .finally(setIsLoading(false));
+  };
+
+  const triggerEdit = (targetData) => {
+    setSubjectData(targetData);
+    setUpdateModalShow(true);
+  };
+
   const updateData = (updateParams) => {
     setIsLoading(true);
     userApi
@@ -119,22 +134,6 @@ function User() {
     userApi
       .delete(targetId)
       .then(() => getData())
-      .finally(setIsLoading(false));
-  };
-
-  const triggerEdit = (targetData) => {
-    setSubjectData(targetData);
-    setUpdateModalShow(true);
-  };
-
-  const createData = (param) => {
-    setIsLoading(true);
-    // * Call API
-    userApi
-      .create(param)
-      .then(() => {
-        getData();
-      })
       .finally(setIsLoading(false));
   };
 

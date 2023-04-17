@@ -7,17 +7,19 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import CategoryCreateModa from "./CategoryCreateModal";
 import CategoryUpdateModal from "./CategoryUpdateModal";
 
+import categoryApi from "../../apis/category";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 
 function Category() {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -29,7 +31,7 @@ function Category() {
   const columns = [
     {
       label: "Nama",
-      bind: "name",
+      bind: "category_name",
       align: "left",
       textTransform: "capitalize",
     },
@@ -37,7 +39,6 @@ function Category() {
       label: "Deskripsi",
       bind: "note",
       align: "left",
-      textTransform: "capitalize",
     },
     {
       label: takeIcon("menuVertical"),
@@ -49,50 +50,30 @@ function Category() {
 
   const getData = () => {
     setIsLoading(true);
-    const param = {
+    const params = {
       page,
       limit: limit.value,
       filter,
       search,
     };
-    console.log("USERS GET Parameter:", param);
-    // * Call API
-
-    // ? For Development
-    const dummy = [
-      {
-        id: "1",
-        name: "kayu",
-        note: "lorem ipsum",
-      },
-      {
-        id: "2",
-        name: "pasir dan semen",
-        note: "lorem ipsum",
-      },
-      {
-        id: "3",
-        name: "batu",
-        note: "lorem ipsum",
-      },
-      {
-        id: "4",
-        name: "listrik",
-        note: "lorem ipsum",
-      },
-      {
-        id: "5",
-        name: "cat",
-        note: "lorem ipsum",
-      },
-    ];
-    setData(dummy);
-    setTotalPage(5);
-    setIsLoading(false);
+    categoryApi
+      .getAll(params)
+      .then((res) => {
+        const dataLength = res.data.dataLength;
+        setData(res.data.data);
+        setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .finally(setIsLoading(false));
   };
 
-  const triggerDelete = (dataId) => {
-    console.log("Delete =>", dataId);
+  const createData = (param) => {
+    setIsLoading(true);
+    categoryApi
+      .create(param)
+      .then(() => {
+        getData();
+      })
+      .finally(setIsLoading(false));
   };
 
   const triggerEdit = (targetData) => {
@@ -100,8 +81,12 @@ function Category() {
     setUpdateModalShow(true);
   };
 
-  const createData = (param) => {
-    console.log("Current POST Parameter:", param);
+  const triggerDelete = (targetId) => {
+    setIsLoading(true);
+    categoryApi
+      .delete(targetId)
+      .then(() => getData())
+      .finally(setIsLoading(false));
   };
 
   useEffect(() => {

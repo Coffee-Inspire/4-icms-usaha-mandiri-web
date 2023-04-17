@@ -10,7 +10,7 @@ import validator from "../../helpers/validator";
 
 function CategoryCreateModa({ show, close, handler }) {
   const schema = Joi.object({
-    name: Joi.string().required().messages({
+    category_name: Joi.string().required().messages({
       "string.empty": `Nama kategori tidak boleh kosong`,
       "any.required": `Nama kategori tidak boleh kosong`,
     }),
@@ -69,14 +69,14 @@ function CategoryCreateModa({ show, close, handler }) {
                   Nama Kategori<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
-                  {...register("name")}
+                  {...register("category_name")}
                   className={`cst-form-control ${
-                    errors.name && "cst-form-invalid"
+                    errors.category_name && "cst-form-invalid"
                   }`}
                   placeholder=" Nama Kategori"
                 />
                 <small className="cst-text-negative ">
-                  {errors.name?.message}
+                  {errors.category_name?.message}
                 </small>
               </Form.Group>
             </Col>
