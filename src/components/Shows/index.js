@@ -282,7 +282,7 @@ function Shows({
           return (
             <td style={customized} key={`${record.id}-${col.bind}`}>
               <div className="d-flex justify-content-center">
-                <div className="w-75">{value}</div>
+                <div className="w-75">{value || "-"}</div>
               </div>
             </td>
           );

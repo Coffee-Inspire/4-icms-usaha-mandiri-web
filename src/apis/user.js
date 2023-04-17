@@ -8,7 +8,17 @@ const user = {
       method: "GET",
     };
 
-    let url = `${base}/?page=${page}&limit=${limit}`;
+    let url = `${base}/?page=${page}&limit=${limit}&search=${search}`;
+    return fetchDepart(url, options);
+  },
+
+  create: (params) => {
+    const options = {
+      method: "POST",
+      body: params,
+    };
+
+    let url = `/auth/createuser`;
     return fetchDepart(url, options);
   },
 

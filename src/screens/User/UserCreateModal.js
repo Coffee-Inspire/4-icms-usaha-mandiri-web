@@ -3,7 +3,6 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-import roleOptions from "../../options/roleOptions.json";
 import Select from "react-select";
 
 import ValidationAlert from "./Alerts/ValidationAlert";
@@ -11,13 +10,13 @@ import PasswordConfirmUnmatched from "./Alerts/PasswordConfirmUnmatched";
 
 import validator from "../../helpers/validator";
 
-function UserCreateModal({ show, close, handler }) {
+function UserCreateModal({ show, close, roleOptions, handler }) {
   const schema = Joi.object({
-    userName: Joi.string().required().messages({
+    username: Joi.string().required().messages({
       "string.empty": `Username tidak boleh kosong`,
       "any.required": `Username tidak boleh kosong`,
     }),
-    fullName: Joi.string().required().messages({
+    fullname: Joi.string().required().messages({
       "string.empty": `Nama Lengkap tidak boleh kosong`,
       "any.required": `Nama Lengkap tidak boleh kosong`,
     }),
@@ -30,7 +29,7 @@ function UserCreateModal({ show, close, handler }) {
       "any.required": `Mohon untuk konfirmasi password kamu ya`,
     }),
     email: Joi.string().allow(""),
-    role: Joi.object().default({ value: "administrator" }),
+    role_id: Joi.object().default(roleOptions[0]),
     contact: Joi.string()
       .pattern(/^[0-9]+$/)
       .required()
@@ -43,13 +42,8 @@ function UserCreateModal({ show, close, handler }) {
       "string.empty": `Alamat tidak boleh kosong`,
       "any.required": `Alamat tidak boleh kosong`,
     }),
-    active_status: Joi.boolean(),
-    // type: Joi.string().default("DB").messages({
-    //   "string.empty": `Tipe tidak boleh kosong`,
-    //   "any.required": `Tipe tidak boleh kosong`,
-    // }),
+    active_status: Joi.boolean().default(true),
   });
-
   const {
     register,
     handleSubmit,
@@ -62,7 +56,7 @@ function UserCreateModal({ show, close, handler }) {
   const [passUnmatched, setPassUnmatched] = useState(false);
 
   const onSubmit = (data) => {
-    data = { ...data, role: data.role.value };
+    data = { ...data, role_id: data.role_id.value };
     const passwordConfirmValid =
       data.password.trim() === data.passwordConfirm.trim();
     if (!passwordConfirmValid) {
@@ -70,7 +64,7 @@ function UserCreateModal({ show, close, handler }) {
       return false;
     }
     setPassUnmatched(false);
-    const isValid = validator(data, ["email", "role"]);
+    const isValid = validator(data, ["email", "role_id", "active_status"]);
     if (!isValid) {
       setValidationAlertShow(true);
       return false;
@@ -110,62 +104,20 @@ function UserCreateModal({ show, close, handler }) {
         </Row>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
           <Row className="mx-0">
-            {/* <Col md={12} lg={7} className="pb-2">
-              <Form.Group>
-                <Form.Label>Tipe Transaksi</Form.Label>
-
-                <Controller
-                  control={control}
-                  name="type"
-                  render={({ field }) => (
-                    <Form.Group {...field} className="d-flex">
-                      <div className="d-flex me-3 me-lg-4">
-                        <Form.Check
-                          type="radio"
-                          name="type"
-                          id="typeDB"
-                          value="DB"
-                          className="cst-clickable me-2"
-                          defaultChecked
-                        />
-                        <Form.Label htmlFor="typeDB" className="cst-clickable">
-                          {"Uang Keluar (DB) "}
-                        </Form.Label>
-                      </div>
-                      <div className="cst-clickable d-flex me-3 me-lg-4">
-                        <Form.Check
-                          type="radio"
-                          name="type"
-                          id="typeCR"
-                          value="CR"
-                          className="cst-clickable me-2"
-                        />
-                        <Form.Label htmlFor="typeCR" className="cst-clickable">
-                          {"Uang Masuk (CR) "}
-                        </Form.Label>
-                      </div>
-                    </Form.Group>
-                  )}
-                />
-                <small className="cst-text-negative ">
-                  {errors.unit?.message}
-                </small>
-              </Form.Group>
-            </Col> */}
             <Col md={12} lg={12} className="py-2">
               <Form.Group>
                 <Form.Label>
                   Username<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
-                  {...register("userName")}
+                  {...register("username")}
                   className={`cst-form-control ${
-                    errors.userName && "cst-form-invalid"
+                    errors.username && "cst-form-invalid"
                   }`}
                   placeholder="Username"
                 />
                 <small className="cst-text-negative ">
-                  {errors.userName?.message}
+                  {errors.username?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -176,14 +128,14 @@ function UserCreateModal({ show, close, handler }) {
                   Nama Lengkap<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
-                  {...register("fullName")}
+                  {...register("fullname")}
                   className={`cst-form-control ${
-                    errors.fullName && "cst-form-invalid"
+                    errors.fullname && "cst-form-invalid"
                   }`}
                   placeholder="Nama Lengkap"
                 />
                 <small className="cst-text-negative ">
-                  {errors.fullName?.message}
+                  {errors.fullname?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -267,7 +219,7 @@ function UserCreateModal({ show, close, handler }) {
               <Form.Group>
                 <Form.Label>Role</Form.Label>
                 <Controller
-                  name="role"
+                  name="role_id"
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -280,7 +232,7 @@ function UserCreateModal({ show, close, handler }) {
                   )}
                 />
                 <small className="cst-text-negative ">
-                  {errors.role?.message}
+                  {errors.role_id?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -308,18 +260,12 @@ function UserCreateModal({ show, close, handler }) {
               <Controller
                 control={control}
                 name="active_status"
-                // defaultValue={subjectData && subjectData.active_status}
-
                 render={({ field }) => (
                   <Form.Group
                     {...field}
                     className="d-flex align-items-center my-auto"
                   >
-                    <Form.Check
-                      type="switch"
-                      name="active_status"
-                      defaultChecked={true}
-                    />
+                    <Form.Check type="switch" defaultChecked={true} />
                     <Form.Label className="m-0">Status User</Form.Label>
                   </Form.Group>
                 )}

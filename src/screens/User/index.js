@@ -8,17 +8,21 @@ import UserCreateModal from "./UserCreateModal";
 import UserUpdateModal from "./UserUpdateModal";
 
 import userApi from "../../apis/user";
+import roleApi from "../../apis/role";
+import selections from "../../helpers/selections";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 
 function User() {
   const [data, setData] = useState([]);
+  const [roleOptions, setRoleOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -26,7 +30,6 @@ function User() {
   const [updateModalShow, setUpdateModalShow] = useState(false);
   const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
-
   const columns = [
     {
       label: "username",
@@ -70,6 +73,14 @@ function User() {
     },
   ];
 
+  const getRoleSource = () => {
+    setIsLoading(true);
+    roleApi
+      .getAll()
+      .then((res) => setRoleOptions(selections(res.data.data, "role_name")))
+      .finally(setIsLoading(false));
+  };
+
   const getData = () => {
     setIsLoading(true);
     const params = {
@@ -95,63 +106,6 @@ function User() {
         setTotalPage(Math.ceil(dataLength / params.limit));
       })
       .finally(setIsLoading(false));
-    // ? For Development
-    // // const dummy = [
-    //   {
-    //     id: "1",
-    //     userName: "ricky",
-    //     fullName: "ricky wijaya",
-    //     role: {
-    //       id: "11",
-    //       name: "administrator",
-    //     },
-    //     activeStatus: true,
-    //     email: "ricky@gmail.com",
-    //     contact: "0822 8356 9190",
-    //     address: "Jln Bekasi 29443",
-    //   },
-    //   {
-    //     id: "2",
-    //     userName: "effendy",
-    //     fullName: "effendy tan",
-    //     role: {
-    //       id: "11",
-    //       name: "administrator",
-    //     },
-    //     activeStatus: true,
-    //     email: "effendy@gmail.com",
-    //     contact: "0822 8356 9190",
-    //     address: "Jln Bekasi 29443",
-    //   },
-    //   {
-    //     id: "3",
-    //     userName: "jessica",
-    //     fullName: "jessica tan",
-    //     role: {
-    //       id: "11",
-    //       name: "administrator",
-    //     },
-    //     activeStatus: false,
-    //     email: "jessica@gmail.com",
-    //     contact: "0822 8356 9190",
-    //     address: "Jln Bekasi 29443",
-    //   },
-    //   {
-    //     id: "4",
-    //     userName: "johnny",
-    //     fullName: "johnny ng",
-    //     role: {
-    //       id: "22",
-    //       name: "normal",
-    //     },
-    //     activeStatus: true,
-    //     email: "johnny@gmail.com",
-    //     contact: "0822 8356 9190",
-    //     address: "Tangerang 28761",
-    //   },
-    // // ];
-    // // setData(dummy);
-    // // setTotalPage(5);
   };
 
   const updateData = (updateParams) => {
@@ -172,11 +126,19 @@ function User() {
   };
 
   const createData = (param) => {
-    console.log("Current POST Parameter:", param);
+    setIsLoading(true);
+    // * Call API
+    userApi
+      .create(param)
+      .then(() => {
+        getData();
+      })
+      .finally(setIsLoading(false));
   };
 
   useEffect(() => {
     getData();
+    getRoleSource();
   }, [limit, page, filter, search]);
 
   return (
@@ -207,6 +169,7 @@ function User() {
       <UserCreateModal
         show={createModalShow}
         close={handleCloseCreateModal}
+        roleOptions={roleOptions}
         handler={createData}
       />
       <UserUpdateModal
