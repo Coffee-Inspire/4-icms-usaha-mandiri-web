@@ -31,6 +31,15 @@ const user = {
     let url = `${base}/update`;
     return fetchDepart(url, options);
   },
+
+  delete: (targetId) => {
+    const options = {
+      method: "DELETE",
+    };
+
+    let url = `${base}/delete?id=${targetId}`;
+    return fetchDepart(url, options);
+  },
 };
 
 export default user;

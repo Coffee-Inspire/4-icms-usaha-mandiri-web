@@ -89,8 +89,6 @@ function User() {
       filter,
       search,
     };
-
-    // * Call API
     userApi
       .getAll(params)
       .then((res) => {
@@ -116,8 +114,12 @@ function User() {
       .finally(setIsLoading(false));
   };
 
-  const triggerDelete = (dataId) => {
-    console.log("Delete =>", dataId);
+  const triggerDelete = (targetId) => {
+    setIsLoading(true);
+    userApi
+      .delete(targetId)
+      .then(() => getData())
+      .finally(setIsLoading(false));
   };
 
   const triggerEdit = (targetData) => {
