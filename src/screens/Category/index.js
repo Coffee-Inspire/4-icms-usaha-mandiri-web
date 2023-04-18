@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
 import CategoryCreateModa from "./CategoryCreateModal";
 import CategoryUpdateModal from "./CategoryUpdateModal";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 import categoryApi from "../../apis/category";
 import limitOptions from "../../options/tableLimitOptions.json";
@@ -27,6 +28,8 @@ function Category() {
   const [updateModalShow, setUpdateModalShow] = useState(false);
   const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
+
+  const [confirmModalShow, setConfirmModalShow] = useState(true);
 
   const columns = [
     {
@@ -81,7 +84,12 @@ function Category() {
     setUpdateModalShow(true);
   };
 
-  const triggerDelete = (targetId) => {
+  const triggerDelete = (targetData) => {
+    setSubjectData(targetData);
+    setConfirmModalShow(true);
+  };
+
+  const deleteData = (targetId) => {
     setIsLoading(true);
     categoryApi
       .delete(targetId)
@@ -126,6 +134,12 @@ function Category() {
       <CategoryUpdateModal
         show={updateModalShow}
         close={handleCloseUpdateModal}
+        subjectData={subjectData}
+      />
+      <ConfirmationModal
+        show={confirmModalShow}
+        close={() => setConfirmModalShow(false)}
+        handler={deleteData}
         subjectData={subjectData}
       />
     </Container>

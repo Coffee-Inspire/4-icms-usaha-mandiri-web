@@ -159,7 +159,7 @@ function Shows({
                 onClick={(e) => {
                   e.stopPropagation();
                   document.body.click();
-                  actionForDelete(record.id);
+                  actionForDelete(record);
                 }}
               >
                 <span>Hapus</span>
