@@ -106,8 +106,8 @@ function Outgoing() {
     setIsLoading(false);
   };
 
-  const createData = (param) => {
-    console.log("OUTGOING POST Parameter:", param);
+  const triggerDetail = (dataId) => {
+    navigate(`detail/${dataId}`);
   };
 
   useEffect(() => {
@@ -133,6 +133,7 @@ function Outgoing() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        actionForDetail={triggerDetail}
       />
     </Container>
   );

@@ -29,7 +29,7 @@ function Category() {
   const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
-  const [confirmModalShow, setConfirmModalShow] = useState(true);
+  const [confirmModalShow, setConfirmModalShow] = useState(false);
 
   const columns = [
     {
@@ -104,7 +104,7 @@ function Category() {
   return (
     <Container fluid className="p-4">
       <Header>
-        <span>KATEGORI</span>
+        <span>KATEGORI BARANG</span>
         {isLoading && <Spinner className="mx-3" />}
       </Header>
       <ButtonAddRow

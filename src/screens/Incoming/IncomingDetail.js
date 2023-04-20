@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Table, Row, Col } from "react-bootstrap";
 
 import Header from "../../components/Header";
+
 import { takeIcon } from "../../helpers/iconMapper";
 import convertIDR from "../../helpers/convertIDR";
 
@@ -172,7 +173,7 @@ function IncomingDetail() {
           className="cst-clickable cst-hover-color-respond me-2"
           onClick={() => navigate(-1)}
         >
-          {takeIcon("chevronLeft")}
+          {takeIcon("backspace")}
         </span>
         <span>DETAIL BARANG MASUK</span>
       </Header>

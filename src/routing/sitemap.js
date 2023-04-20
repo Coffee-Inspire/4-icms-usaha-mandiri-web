@@ -5,6 +5,7 @@ import Incoming from "../screens/Incoming";
 import IncomingCreate from "../screens/Incoming/IncomingCreate";
 import IncomingDetail from "../screens/Incoming/IncomingDetail";
 import Outgoing from "../screens/Outgoing";
+import OutgoingDetail from "../screens/Outgoing/OutgoingDetail";
 import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
 import Journal from "../screens/Journal";
 import User from "../screens/User";
@@ -40,6 +41,10 @@ const sitemap = [
   {
     element: <Outgoing />,
     path: "/outgoing",
+  },
+  {
+    element: <OutgoingDetail />,
+    path: "/outgoing/detail/:id",
   },
   {
     element: <OutgoingCreate />,
