@@ -45,7 +45,8 @@ Extra extra large	xxl	≥1400px
   }
 
   .cst-float-on {
-    margin-left: 215px !important;
+    // margin-left: 215px !important;
+    margin-left: 180px !important;
     z-index: 2;
     transition: 0.3s;
   }
@@ -494,7 +495,7 @@ Extra extra large	xxl	≥1400px
 .cst-float-on {
   margin-left: -40px;
   z-index: 2;
-  transition: 0.3s;
+  transition: 0.3s;  
 }
 
 .cst-float-off {

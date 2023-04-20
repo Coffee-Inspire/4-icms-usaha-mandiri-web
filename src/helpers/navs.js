@@ -2,16 +2,16 @@ import { takeIcon } from "./iconMapper";
 
 const navs = [
   {
-    label: "Inventory",
+    label: "Inventaris",
     icon: takeIcon("inventory"),
     childs: [
       {
-        label: "Stocks",
+        label: "Stok Barang",
         icon: takeIcon("stock"),
         destination: "/stock",
       },
       {
-        label: "Customers",
+        label: "Pelanggan",
         icon: takeIcon("customer"),
         destination: "/customer",
       },
@@ -23,37 +23,37 @@ const navs = [
     ],
   },
   {
-    label: "Goods",
+    label: "Aktivitas Dagang",
     icon: takeIcon("good"),
     childs: [
       {
-        label: "Incomings",
+        label: "Pembelian",
         icon: takeIcon("stock"),
         destination: "/incoming",
       },
       {
-        label: "Outgoings",
+        label: "Penjualan",
         icon: takeIcon("outgoing"),
         destination: "/outgoing",
       },
       {
-        label: "Journal",
+        label: "Jurnal Transaksi",
         icon: takeIcon("journal"),
         destination: "/journal",
       },
     ],
   },
   {
-    label: "Config",
+    label: "Konfigurasi",
     icon: takeIcon("config"),
     childs: [
       {
-        label: "Users",
+        label: "Pengguna",
         icon: takeIcon("user"),
         destination: "/user",
       },
       {
-        label: "Categories",
+        label: "Kategori Barang",
         icon: takeIcon("category"),
         destination: "/category",
       },

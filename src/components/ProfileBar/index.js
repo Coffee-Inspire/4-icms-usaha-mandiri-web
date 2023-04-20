@@ -70,7 +70,8 @@ function ProfileBar({ expanded, setExpanded }) {
         }  cst-btn-primary cst-btn-eclipse d-flex justify-content-center align-items-center`}
         onClick={() => setExpanded(!expanded)}
       >
-        {expanded ? takeIcon("chevronRight") : takeIcon("chevronLeft")}
+        {/* {expanded ? takeIcon("chevronRight") : takeIcon("chevronLeft")} */}
+        {takeIcon("burger")}
       </Button>
       <div className="d-flex align-items-center me-md-3">
         Hi,{" "}
