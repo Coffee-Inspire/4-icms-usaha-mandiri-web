@@ -188,7 +188,7 @@ function IncomingCreate() {
           className="cst-clickable cst-hover-color-respond me-2"
           onClick={() => navigate(-1)}
         >
-          {takeIcon("backspace")}
+          {takeIcon("chevronLeft")}
         </span>
         <span>ORDER BARANG</span>
         {isLoading && <Spinner className="mx-3" />}

@@ -172,7 +172,7 @@ function IncomingDetail() {
           className="cst-clickable cst-hover-color-respond me-2"
           onClick={() => navigate(-1)}
         >
-          {takeIcon("backspace")}
+          {takeIcon("chevronLeft")}
         </span>
         <span>DETAIL BARANG MASUK</span>
       </Header>

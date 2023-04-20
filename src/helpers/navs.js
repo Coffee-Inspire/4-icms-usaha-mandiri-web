@@ -23,7 +23,7 @@ const navs = [
     ],
   },
   {
-    label: "Aktivitas Dagang",
+    label: "Aktivitas Bisnis",
     icon: takeIcon("good"),
     childs: [
       {
