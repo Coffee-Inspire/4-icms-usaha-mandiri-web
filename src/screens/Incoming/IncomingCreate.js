@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
@@ -27,6 +27,8 @@ function IncomingCreate() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [dataList, setDataList] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [note, setNote] = useState("");
   const [isExistAlertShow, setIsExistAlertShow] = useState(false);
   const [rejected, setRejected] = useState("");
   const schema = Joi.object({
@@ -34,15 +36,15 @@ function IncomingCreate() {
       "string.empty": `Nama barang tidak boleh kosong`,
       "any.required": `Nama barang tidak boleh kosong`,
     }),
-    supplier: Joi.object().required().messages({
+    supplier_id: Joi.object().required().messages({
       "string.empty": `Nama supplier tidak boleh kosong`,
       "any.required": `Nama supplier tidak boleh kosong`,
     }),
-    category: Joi.object().required().messages({
+    category_id: Joi.object().required().messages({
       "string.empty": `Kategori tidak boleh kosong`,
       "any.required": `Kategori tidak boleh kosong`,
     }),
-    costPcs: Joi.string()
+    purchase_price: Joi.string()
       .pattern(/^[0-9]+$/)
       .required()
       .messages({
@@ -58,7 +60,7 @@ function IncomingCreate() {
         "any.required": `Harga jual tidak boleh kosong`,
         "string.pattern.base": `Hanya angka`,
       }),
-    purchaseQty: Joi.string()
+    purchase_qty: Joi.string()
       .pattern(/^[0-9]+$/)
       .required()
       .messages({
@@ -85,7 +87,7 @@ function IncomingCreate() {
     // TODO Checking whitespace
     // handler(data);
     // handleClose();
-    data.amount = data.costPcs * data.purchaseQty;
+    data.total_amount = data.purchase_price * data.purchase_qty;
     // TODO Checking if item name already exist in dataList
     const isExist = dataList.find(
       (i) => i.itemName.value === data.itemName.value
@@ -99,9 +101,22 @@ function IncomingCreate() {
     setDataList([...dataList, data]);
   };
 
-  const getTotalPrice = (data) => {
-    const s = data.reduce((a, b) => a + b.amount, 0);
-    return convertIDR(s);
+  const createData = () => {
+    const newDataList = dataList.map(
+      (i) =>
+        (i = {
+          ...i,
+          itemName: i.itemName.value,
+          supplier_id: i.supplier_id.value,
+          category_id: i.category_id.value,
+        })
+    );
+    const params = {
+      total_purchase: totalPrice,
+      note: note,
+      data: newDataList,
+    };
+    console.log("Full Params => ", params);
   };
 
   // ? For Development
@@ -160,7 +175,11 @@ function IncomingCreate() {
     },
   ];
 
-  const [isFetching, setIsFetching] = useState(false);
+  useEffect(() => {
+    // * Computed total price
+    const s = dataList.reduce((a, b) => a + b.total_amount, 0);
+    setTotalPrice(s);
+  }, [dataList]);
 
   return (
     <Container fluid className="p-4">
@@ -213,7 +232,7 @@ function IncomingCreate() {
                     Kategori<span className="cst-text-negative">*</span>
                   </Form.Label>
                   <Controller
-                    name="category"
+                    name="category_id"
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -225,7 +244,7 @@ function IncomingCreate() {
                     )}
                   />
                   <small className="cst-text-negative ">
-                    {errors.category?.message}
+                    {errors.category_id?.message}
                   </small>
                 </Form.Group>
               </Col>
@@ -235,7 +254,7 @@ function IncomingCreate() {
                     Pilih Supplier<span className="cst-text-negative">*</span>
                   </Form.Label>
                   <Controller
-                    name="supplier"
+                    name="supplier_id"
                     control={control}
                     render={({ field }) => (
                       <Select
@@ -247,7 +266,7 @@ function IncomingCreate() {
                     )}
                   />
                   <small className="cst-text-negative ">
-                    {errors.supplier?.message}
+                    {errors.supplier_id?.message}
                   </small>
                 </Form.Group>
               </Col>
@@ -260,13 +279,13 @@ function IncomingCreate() {
                   <Form.Control
                     type="number"
                     className={`cst-form-control ${
-                      errors.purchaseQty && "cst-form-invalid"
+                      errors.purchase_qty && "cst-form-invalid"
                     }`}
-                    {...register("purchaseQty")}
+                    {...register("purchase_qty")}
                     placeholder="Qty"
                   />
                   <small className="cst-text-negative ">
-                    {errors.purchaseQty?.message}
+                    {errors.purchase_qty?.message}
                   </small>
                 </Form.Group>
               </Col>
@@ -326,13 +345,13 @@ function IncomingCreate() {
                   <Form.Control
                     type="number"
                     className={`cst-form-control ${
-                      errors.costPcs && "cst-form-invalid"
+                      errors.purchase_price && "cst-form-invalid"
                     }`}
-                    {...register("costPcs")}
+                    {...register("purchase_price")}
                     placeholder="Harga beli"
                   />
                   <small className="cst-text-negative ">
-                    {errors.costPcs?.message}
+                    {errors.purchase_price?.message}
                   </small>
                 </Form.Group>
               </Col>
@@ -398,7 +417,7 @@ function IncomingCreate() {
                   </Col>
                   <Col xs={6} md={5} className="px-2">
                     <h6 className="cst-text-secondary text-md-end">
-                      Total Harga: IDR {getTotalPrice(dataList)}
+                      Total Harga: IDR {convertIDR(totalPrice)}
                     </h6>
                   </Col>
                 </Row>
@@ -419,19 +438,19 @@ function IncomingCreate() {
                       {dataList.map((cell) => (
                         <tr key={cell.itemName.value}>
                           <td>{cell.itemName.label}</td>
-                          <td>{cell.supplier.label}</td>
+                          <td>{cell.supplier_id.label}</td>
                           <td>
-                            {cell.purchaseQty} {cell.unit}
+                            {cell.purchase_qty} {cell.unit}
                           </td>
                           <td className="text-end">
                             <div className="d-flex flex-column">
-                              {convertIDR(cell.costPcs)}
+                              {convertIDR(cell.purchase_price)}
                               <span className="cst-text-neutral">IDR</span>
                             </div>
                           </td>
                           <td className="text-end">
                             <div className="d-flex flex-column">
-                              {convertIDR(cell.amount)}
+                              {convertIDR(cell.total_amount)}
                               <span className="cst-text-neutral">IDR</span>
                             </div>
                           </td>
@@ -460,7 +479,11 @@ function IncomingCreate() {
                   </Table>
                 </div>
                 <Form.Label>Catatan</Form.Label>
-                <Form.Control as="textarea" />
+                <Form.Control
+                  as="textarea"
+                  placeholder="Catatan (opsional)"
+                  onChange={(e) => setNote(e.target.value)}
+                />
                 <Row className="mx-0 my-5 justify-content-end">
                   <Col xs={5} md={3}>
                     <Button
@@ -471,13 +494,13 @@ function IncomingCreate() {
                     >
                       Ulangi
                     </Button>
-                    r
                   </Col>
 
                   <Col xs={5} md={4}>
                     <Button
                       // onClick={() => navigate(-1)}
                       // onClick={() => setShow(true)}
+                      onClick={() => createData()}
                       variant="none"
                       className="cst-btn-secondary w-100"
                       disabled={isLoading}
