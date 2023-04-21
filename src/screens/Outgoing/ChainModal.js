@@ -5,11 +5,6 @@ import { takeIcon } from "../../helpers/iconMapper";
 function ChainModal({ show, close, handlePrint }) {
   return (
     <Modal centered show={show} onHide={close}>
-      {/* <Modal.Header
-        closeVariant="white"
-        className="cst-bg-primary cst-text-plain"
-        closeButton
-      ></Modal.Header> */}
       <Modal.Body>
         <div className="my-2 text-center">
           <span className="cst-text-positive">{takeIcon("bigSuccess")}</span>

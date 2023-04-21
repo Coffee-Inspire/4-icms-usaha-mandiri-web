@@ -4,7 +4,9 @@ import { Container, Spinner } from "react-bootstrap";
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
+import customerApi from "../../apis/customer";
 import limitOptions from "../../options/tableLimitOptions.json";
 import CustomerCreateModal from "./CustomerCreateModal";
 import { takeIcon } from "../../helpers/iconMapper";
@@ -18,14 +20,19 @@ function Customer() {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [subjectData, setSubjectData] = useState({});
+
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
+
+  const [confirmModalShow, setConfirmModalShow] = useState(false);
 
   const columns = [
     {
       label: "Nama",
-      bind: "name",
+      bind: "guest_name",
       align: "left",
+      textTransform: "capitalize",
     },
     {
       label: "Telp",
@@ -49,109 +56,49 @@ function Customer() {
 
   const getData = () => {
     setIsLoading(true);
-    const param = {
+    const params = {
       page,
       limit: limit.value,
       filter,
       search,
     };
-    console.log("CUSTOMER GET Parameter:", param);
     // * Call API
-
-    // ? For Development
-    const dummy = [
-      {
-        id: "1",
-        name: "Paulin Mayasari",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "2",
-        name: "Cayadi Natsir",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "3",
-        name: "Mala Puspita",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "4",
-        name: "Laksana Simanjuntak",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "5",
-        name: "Lala Nuraini",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "6",
-        name: "Ina Nuraini",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "7",
-        name: "Qori Pudjiastuti",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "8",
-        name: "Kezia Mardhiyah",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "9",
-        name: "Capa Damanik",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "10",
-        name: "Karsa Maulana",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "11",
-        name: "Joko Januar",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-      {
-        id: "12",
-        name: "Nova Wahyuni",
-        contact: "0123-12312-1231",
-        email: "customer@mail.com",
-        address: "Jln Kembang Ayu 23, Jakarta",
-      },
-    ];
-    setData(dummy);
-    setTotalPage(5);
-    setIsLoading(false);
+    customerApi
+      .getAll(params)
+      .then((res) => {
+        const dataLength = res.data.dataLength;
+        setData(res.data.data);
+        setTotalPage(dataLength);
+      })
+      .finally(() => setIsLoading(false));
   };
 
-  const createData = (param) => {
-    console.log("Current POST Parameter:", param);
+  const createData = (params) => {
+    setIsLoading(true);
+    customerApi
+      .create(params)
+      .then(() => {
+        getData();
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const triggerEdit = (targetData) => {
+    setSubjectData(targetData);
+    // setUpdateModalShow(true);
+  };
+
+  const triggerDelete = (targetData) => {
+    setSubjectData(targetData);
+    setConfirmModalShow(true);
+  };
+
+  const deleteData = (targetId) => {
+    setIsLoading(true);
+    customerApi
+      .delete(targetId)
+      .then(() => getData())
+      .finally(setIsLoading(false));
   };
 
   useEffect(() => {
@@ -180,11 +127,19 @@ function Customer() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        actionForEdit={triggerEdit}
+        actionForDelete={triggerDelete}
       />
       <CustomerCreateModal
         show={createModalShow}
         close={handleCloseCreateModal}
         handler={createData}
+      />
+      <ConfirmationModal
+        show={confirmModalShow}
+        close={() => setConfirmModalShow(false)}
+        handler={deleteData}
+        subjectData={subjectData}
       />
     </Container>
   );

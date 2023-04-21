@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
 
 import ValidationAlert from "./Alerts/ValidationAlert";
 
 import validator from "../../helpers/validator";
 
 function CustomerCreateModal({ show, close, handler }) {
-  const schema = yup.object({
-    name: yup.string().required().min(2),
-    contact: yup
-      .string()
-      .matches(/^[0-9]+$/, "Invalid value")
-      .min(6)
-      .max(16)
-      .required(),
-    email: yup.string().email(),
-    address: yup.string(),
+  const schema = Joi.object({
+    guest_name: Joi.string().required().messages({
+      "string.empty": `Nama pelanggan tidak boleh kosong`,
+      "any.required": `Nama pelanggan tidak boleh kosong`,
+    }),
+    contact: Joi.string()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.empty": `Nomor telepon tidak boleh kosong`,
+        "any.required": `Nomor telepon tidak boleh kosong`,
+        "string.pattern.base": `Nomor telepon tidak valid`,
+      }),
+    email: Joi.string().allow(""),
+    address: Joi.string().allow(""),
   });
 
   const {
@@ -26,7 +31,7 @@ function CustomerCreateModal({ show, close, handler }) {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: joiResolver(schema) });
 
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
@@ -74,14 +79,14 @@ function CustomerCreateModal({ show, close, handler }) {
                 </Form.Label>
                 <Form.Control
                   type="name"
-                  {...register("name")}
+                  {...register("guest_name")}
                   className={`cst-form-control ${
-                    errors.name && "cst-form-invalid"
+                    errors.guest_name && "cst-form-invalid"
                   }`}
                   placeholder="Nama"
                 />
                 <small className="cst-text-negative ">
-                  {errors.name?.message}
+                  {errors.guest_name?.message}
                 </small>
               </Form.Group>
             </Col>
