@@ -68,7 +68,10 @@ function ProfileBar({ expanded, setExpanded }) {
         className={`cst-float-on  ${
           expanded && "cst-float-off"
         }  cst-btn-primary cst-btn-eclipse d-flex justify-content-center align-items-center`}
-        onClick={() => setExpanded(!expanded)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setExpanded(!expanded);
+        }}
       >
         {/* {expanded ? takeIcon("chevronRight") : takeIcon("chevronLeft")} */}
         {takeIcon("burger")}

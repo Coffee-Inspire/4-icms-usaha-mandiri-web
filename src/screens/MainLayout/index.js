@@ -11,15 +11,25 @@ function MainLayout({ prefix }) {
     <Container fluid className="p-0 vh-100">
       <Sidebar prefix={prefix} expanded={expanded} />
       <div
-        className={`cst-content ${expanded && "cst-content-extended"} w-100`}
+        className={`cst-content ${
+          expanded && "cst-content-extended"
+        } w-100 vh-100`}
       >
-        <ProfileBar expanded={expanded} setExpanded={setExpanded} />
-        <Routes>
-          {sitemap.length > 0 &&
-            sitemap.map((r) => (
-              <Route key={r.path} element={r.element} path={r.path} />
-            ))}
-        </Routes>
+        <div className="position-relative bg-inf vh-100">
+          <ProfileBar expanded={expanded} setExpanded={setExpanded} />
+          <Routes>
+            {sitemap.length > 0 &&
+              sitemap.map((r) => (
+                <Route key={r.path} element={r.element} path={r.path} />
+              ))}
+          </Routes>
+          {!expanded && (
+            <div
+              className="cst-sidebar-overlay"
+              onClick={() => setExpanded(true)}
+            />
+          )}
+        </div>
       </div>
     </Container>
   );
