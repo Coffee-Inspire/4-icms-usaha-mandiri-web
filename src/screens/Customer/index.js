@@ -68,7 +68,7 @@ function Customer() {
       .then((res) => {
         const dataLength = res.data.dataLength;
         setData(res.data.data);
-        setTotalPage(dataLength);
+        setTotalPage(Math.ceil(dataLength / params.limit));
       })
       .finally(() => setIsLoading(false));
   };
