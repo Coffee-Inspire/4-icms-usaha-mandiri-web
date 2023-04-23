@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
 import UserCreateModal from "./UserCreateModal";
 import UserUpdateModal from "./UserUpdateModal";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 import userApi from "../../apis/user";
 import roleApi from "../../apis/role";
@@ -30,6 +31,9 @@ function User() {
   const [updateModalShow, setUpdateModalShow] = useState(false);
   const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
+
+  const [confirmModalShow, setConfirmModalShow] = useState(false);
+
   const columns = [
     {
       label: "username",
@@ -131,7 +135,12 @@ function User() {
       .finally(setIsLoading(false));
   };
 
-  const triggerDelete = (targetId) => {
+  const triggerDelete = (targetData) => {
+    setSubjectData(targetData);
+    setConfirmModalShow(true);
+  };
+
+  const deleteData = (targetId) => {
     setIsLoading(true);
     userApi
       .delete(targetId)
@@ -184,6 +193,12 @@ function User() {
         close={handleCloseUpdateModal}
         subjectData={subjectData}
         handler={updateData}
+      />
+      <ConfirmationModal
+        show={confirmModalShow}
+        close={() => setConfirmModalShow(false)}
+        handler={deleteData}
+        subjectData={subjectData}
       />
     </Container>
   );
