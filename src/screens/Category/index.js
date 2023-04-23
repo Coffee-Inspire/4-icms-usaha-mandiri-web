@@ -84,6 +84,14 @@ function Category() {
     setUpdateModalShow(true);
   };
 
+  const editData = (params) => {
+    setIsLoading(true);
+    categoryApi
+      .update(params)
+      .then(() => getData())
+      .finally(setIsLoading(false));
+  };
+
   const triggerDelete = (targetData) => {
     setSubjectData(targetData);
     setConfirmModalShow(true);
@@ -134,6 +142,7 @@ function Category() {
       <CategoryUpdateModal
         show={updateModalShow}
         close={handleCloseUpdateModal}
+        handler={editData}
         subjectData={subjectData}
       />
       <ConfirmationModal

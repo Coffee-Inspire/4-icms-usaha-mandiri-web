@@ -8,9 +8,9 @@ import ValidationAlert from "./Alerts/ValidationAlert";
 
 import validator from "../../helpers/validator";
 
-function CategoryUpdateModal({ show, close, subjectData = {} }) {
+function CategoryUpdateModal({ show, close, handler, subjectData = {} }) {
   const schema = Joi.object({
-    name: Joi.string().required().messages({
+    category_name: Joi.string().required().messages({
       "string.empty": `Nama kategori tidak boleh kosong`,
       "any.required": `Nama kategori tidak boleh kosong`,
     }),
@@ -35,8 +35,10 @@ function CategoryUpdateModal({ show, close, subjectData = {} }) {
     setValidationAlertShow(false);
     const params = {
       id: subjectData.id,
-      ...subjectData,
+      ...data,
     };
+    handler(params);
+    close();
     // * Hit API
   };
 
@@ -61,10 +63,6 @@ function CategoryUpdateModal({ show, close, subjectData = {} }) {
               show={validationAlertShow}
               setShow={setValidationAlertShow}
             />
-            {/* <PasswordConfirmUnmatched
-              show={passUnmatched}
-              setShow={setPassUnmatched}
-            /> */}
           </Col>
         </Row>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
@@ -75,15 +73,15 @@ function CategoryUpdateModal({ show, close, subjectData = {} }) {
                   Nama Kategori<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
-                  {...register("name")}
-                  defaultValue={subjectData && subjectData.name}
+                  {...register("category_name")}
+                  defaultValue={subjectData && subjectData.category_name}
                   className={`cst-form-control ${
-                    errors.name && "cst-form-invalid"
+                    errors.category_name && "cst-form-invalid"
                   }`}
                   placeholder=" Nama Kategori"
                 />
                 <small className="cst-text-negative ">
-                  {errors.name?.message}
+                  {errors.category_name?.message}
                 </small>
               </Form.Group>
             </Col>
