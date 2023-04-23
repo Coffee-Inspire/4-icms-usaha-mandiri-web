@@ -1,38 +1,53 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as yup from "yup";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
 
 import ValidationAlert from "./Alerts/ValidationAlert";
 
 import validator from "../../helpers/validator";
 
 function SupplierCreateModal({ show, close, handler }) {
-  const schema = yup.object({
-    name: yup.string().required().min(2),
-    personContact: yup
-      .string()
-      .matches(/^[0-9]+$/, "Invalid value")
-      .min(6)
-      .max(16)
-      .required(),
-    companyContact: yup
-      .string()
-      .matches(/^[0-9]+$/, "Invalid value")
-      .min(6)
-      .max(16)
-      .required(),
-    email: yup.string().email(),
-    address: yup.string().required(),
+  const schema = Joi.object({
+    supplier_name: Joi.string().required().messages({
+      "string.empty": `Nama supplier tidak boleh kosong`,
+      "any.required": `Nama supplier tidak boleh kosong`,
+    }),
+    person_contact: Joi.string()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.empty": `Telp pribadi tidak boleh kosong`,
+        "any.required": `Telp pribadi tidak boleh kosong`,
+        "string.pattern.base": `Telp pribadi tidak valid`,
+      }),
+    company_contact: Joi.string()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.empty": `Telp kantor tidak boleh kosong`,
+        "any.required": `Telp kantor tidak boleh kosong`,
+        "string.pattern.base": `Telp kantor tidak valid`,
+      }),
+
+    email: Joi.string().allow(""),
+    address: Joi.string().required().messages({
+      "string.empty": `Alamat tidak boleh kosong`,
+      "any.required": `Alamat tidak boleh kosong`,
+    }),
+    active_status: Joi.boolean().default(true),
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
     reset,
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: joiResolver(schema) });
 
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
@@ -75,18 +90,18 @@ function SupplierCreateModal({ show, close, handler }) {
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
                 <Form.Label>
-                  Nama<span className="cst-text-negative">*</span>
+                  Nama supplier<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
                   type="name"
-                  {...register("name")}
+                  {...register("supplier_name")}
                   className={`cst-form-control ${
-                    errors.name && "cst-form-invalid"
+                    errors.supplier_name && "cst-form-invalid"
                   }`}
-                  placeholder="Nama"
+                  placeholder="Nama supplier"
                 />
                 <small className="cst-text-negative ">
-                  {errors.name?.message}
+                  {errors.supplier_name?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -97,14 +112,14 @@ function SupplierCreateModal({ show, close, handler }) {
                 </Form.Label>
                 <Form.Control
                   type="number"
-                  {...register("personContact")}
+                  {...register("person_contact")}
                   className={`cst-form-control ${
-                    errors.personContact && "cst-form-invalid"
+                    errors.person_contact && "cst-form-invalid"
                   }`}
                   placeholder="Telp Pribadi"
                 />
                 <small className="cst-text-negative ">
-                  {errors.personContact?.message}
+                  {errors.person_contact?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -114,14 +129,14 @@ function SupplierCreateModal({ show, close, handler }) {
                   Telp Kantor<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
-                  {...register("companyContact")}
+                  {...register("company_contact")}
                   className={`cst-form-control ${
-                    errors.companyContact && "cst-form-invalid"
+                    errors.company_contact && "cst-form-invalid"
                   }`}
                   placeholder="Telp Kantor"
                 />
                 <small className="cst-text-negative ">
-                  {errors.companyContact?.message}
+                  {errors.company_contact?.message}
                 </small>
               </Form.Group>
             </Col>
@@ -139,6 +154,21 @@ function SupplierCreateModal({ show, close, handler }) {
                   {errors.email?.message}
                 </small>
               </Form.Group>
+            </Col>
+            <Col xs={12} md={6} className="py-2 d-flex">
+              <Controller
+                control={control}
+                name="active_status"
+                render={({ field }) => (
+                  <Form.Group
+                    {...field}
+                    className="d-flex align-items-center my-auto"
+                  >
+                    <Form.Check type="switch" defaultChecked={true} />
+                    <Form.Label className="m-0">Status Supplier</Form.Label>
+                  </Form.Group>
+                )}
+              />
             </Col>
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
