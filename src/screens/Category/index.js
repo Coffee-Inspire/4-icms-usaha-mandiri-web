@@ -62,8 +62,8 @@ function Category() {
     categoryApi
       .getAll(params)
       .then((res) => {
-        const dataLength = res.data.dataLength;
-        setData(res.data.data);
+        const dataLength = res.data.data.count;
+        setData(res.data.data.rows);
         setTotalPage(Math.ceil(dataLength / params.limit));
       })
       .finally(setIsLoading(false));
@@ -108,6 +108,10 @@ function Category() {
   useEffect(() => {
     getData();
   }, [limit, page, filter, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit, search]);
 
   return (
     <Container fluid className="p-4">

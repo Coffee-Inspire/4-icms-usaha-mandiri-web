@@ -342,16 +342,14 @@ function Shows({
           </OverlayTrigger>
         </Col>
         <Col xs={7} md={4} className="px-0">
-          <Form>
-            <Form.Group className=" position-relative">
-              <Form.Control
-                placeholder="Search"
-                onChange={(e) => setSearch(e.target.value)}
-                className="cst-form-control cst-form-control-inner-padding"
-              />
-              <span className="cst-form-icon-float">{takeIcon("search")}</span>
-            </Form.Group>
-          </Form>
+          <Form.Group className=" position-relative">
+            <Form.Control
+              placeholder="Search"
+              onChange={(e) => setSearch(e.target.value)}
+              className="cst-form-control cst-form-control-inner-padding"
+            />
+            <span className="cst-form-icon-float">{takeIcon("search")}</span>
+          </Form.Group>
         </Col>
       </Row>
       {rows.length > 0 ? (

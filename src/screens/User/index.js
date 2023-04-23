@@ -77,7 +77,9 @@ function User() {
     setIsLoading(true);
     roleApi
       .getAll()
-      .then((res) => setRoleOptions(selections(res.data.data, "role_name")))
+      .then((res) =>
+        setRoleOptions(selections(res.data.data.rows, "role_name"))
+      )
       .finally(setIsLoading(false));
   };
 
@@ -92,8 +94,8 @@ function User() {
     userApi
       .getAll(params)
       .then((res) => {
-        const dataLength = res.data.dataLength;
-        const normalized = res.data.data.map(
+        const dataLength = res.data.data.count;
+        const normalized = res.data.data.rows.map(
           (i) =>
             (i = {
               ...i,
@@ -141,6 +143,10 @@ function User() {
     getData();
     getRoleSource();
   }, [limit, page, filter, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit, search]);
 
   return (
     <Container fluid className="p-4">
