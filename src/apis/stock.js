@@ -1,19 +1,14 @@
-// import { host } from "../appsetting/config";
 import fetchDepart from "../helpers/fetchDepart";
-import axios from "axios";
 
-const base = `/item`;
+const base = `/stock`;
 const stock = {
-  getAll: ({ page = "1", limit = "5", filter = "", search = "" }) => {
-    console.log(page, limit, filter, search);
-
+  getAll: (params) => {
+    const { page, limit, sort, filter, search } = params;
     const options = {
       method: "GET",
-      body: {},
     };
 
-    let url = `${base}`;
-    // * Concating url string with query parameters
+    let url = `${base}/?page=${page}&limit=${limit}&search=${search}`;
     return fetchDepart(url, options);
   },
 };
