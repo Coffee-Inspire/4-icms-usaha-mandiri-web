@@ -4,6 +4,7 @@ import { Container, Spinner } from "react-bootstrap";
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
+import CustomerUpdateModal from "./CustomerUpdateModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 
 import customerApi from "../../apis/customer";
@@ -13,17 +14,20 @@ import { takeIcon } from "../../helpers/iconMapper";
 
 function Customer() {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [subjectData, setSubjectData] = useState({});
+
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [subjectData, setSubjectData] = useState({});
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
+
+  const [updateModalShow, setUpdateModalShow] = useState(false);
+  const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const [confirmModalShow, setConfirmModalShow] = useState(false);
 
@@ -85,7 +89,15 @@ function Customer() {
 
   const triggerEdit = (targetData) => {
     setSubjectData(targetData);
-    // setUpdateModalShow(true);
+    setUpdateModalShow(true);
+  };
+
+  const editData = (params) => {
+    setIsLoading(true);
+    customerApi
+      .update(params)
+      .then(() => getData())
+      .finally(setIsLoading(false));
   };
 
   const triggerDelete = (targetData) => {
@@ -138,6 +150,12 @@ function Customer() {
         show={createModalShow}
         close={handleCloseCreateModal}
         handler={createData}
+      />
+      <CustomerUpdateModal
+        show={updateModalShow}
+        close={handleCloseUpdateModal}
+        handler={editData}
+        subjectData={subjectData}
       />
       <ConfirmationModal
         show={confirmModalShow}

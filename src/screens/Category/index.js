@@ -21,12 +21,12 @@ function Category() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+  const [subjectData, setSubjectData] = useState({});
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
 
   const [updateModalShow, setUpdateModalShow] = useState(false);
-  const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const [confirmModalShow, setConfirmModalShow] = useState(false);
