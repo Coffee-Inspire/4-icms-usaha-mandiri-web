@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -46,6 +46,10 @@ function CategoryUpdateModal({ show, close, handler, subjectData = {} }) {
     reset();
     close();
   };
+
+  useEffect(() => {
+    reset();
+  }, [subjectData]);
 
   return (
     <Modal size="lg" centered show={show} onHide={handleClose}>
