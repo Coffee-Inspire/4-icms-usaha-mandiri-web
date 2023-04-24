@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 
@@ -8,35 +8,49 @@ import ValidationAlert from "./Alerts/ValidationAlert";
 
 import validator from "../../helpers/validator";
 
-function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
+function SupplierUpdateModal({ show, close, handler, subjectData = {} }) {
   const schema = Joi.object({
-    guest_name: Joi.string().required().messages({
-      "string.empty": `Nama pelanggan tidak boleh kosong`,
-      "any.required": `Nama pelanggan tidak boleh kosong`,
+    supplier_name: Joi.string().required().messages({
+      "string.empty": `Nama supplier tidak boleh kosong`,
+      "any.required": `Nama supplier tidak boleh kosong`,
     }),
-    contact: Joi.string()
+    person_contact: Joi.string()
       .pattern(/^[0-9]+$/)
       .required()
       .messages({
-        "string.empty": `Nomor telepon tidak boleh kosong`,
-        "any.required": `Nomor telepon tidak boleh kosong`,
-        "string.pattern.base": `Nomor telepon tidak valid`,
+        "string.empty": `Telp pribadi tidak boleh kosong`,
+        "any.required": `Telp pribadi tidak boleh kosong`,
+        "string.pattern.base": `Telp pribadi tidak valid`,
       }),
+    company_contact: Joi.string()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.empty": `Telp kantor tidak boleh kosong`,
+        "any.required": `Telp kantor tidak boleh kosong`,
+        "string.pattern.base": `Telp kantor tidak valid`,
+      }),
+
     email: Joi.string().allow(""),
-    address: Joi.string().allow(""),
+    address: Joi.string().required().messages({
+      "string.empty": `Alamat tidak boleh kosong`,
+      "any.required": `Alamat tidak boleh kosong`,
+    }),
+    active_status: Joi.boolean().default(true),
   });
 
   const {
     handleSubmit,
     formState: { errors },
     register,
+    control,
     reset,
   } = useForm({ resolver: joiResolver(schema) });
 
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
   const onSubmit = (data) => {
-    const isValid = validator(data, ["address", "email"]);
+    const isValid = validator(data, ["email"]);
     if (!isValid) {
       setValidationAlertShow(true);
       return false;
@@ -66,7 +80,7 @@ function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Perbaharui Pelanggan</Modal.Title>
+        <Modal.Title>Perbaharui Supplier</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row className="mx-0">
@@ -82,47 +96,62 @@ function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
                 <Form.Label>
-                  Nama<span className="cst-text-negative">*</span>
+                  Nama supplier<span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
                   type="name"
-                  {...register("guest_name")}
+                  {...register("supplier_name")}
                   className={`cst-form-control ${
-                    errors.guest_name && "cst-form-invalid"
+                    errors.supplier_name && "cst-form-invalid"
                   }`}
-                  placeholder="Nama"
-                  defaultValue={subjectData && subjectData.guest_name}
+                  placeholder="Nama supplier"
+                  defaultValue={subjectData && subjectData.supplier_name}
                 />
                 <small className="cst-text-negative ">
-                  {errors.guest_name?.message}
+                  {errors.supplier_name?.message}
                 </small>
               </Form.Group>
             </Col>
             <Col xs={12} md={6} className="py-2">
               <Form.Group>
                 <Form.Label>
-                  Nomor Handphone / Telp
-                  <span className="cst-text-negative">*</span>
+                  Telp Pribadi<span className="cst-text-negative">*</span>
                 </Form.Label>
-
                 <Form.Control
                   type="number"
-                  {...register("contact")}
+                  {...register("person_contact")}
                   className={`cst-form-control ${
-                    errors.contact && "cst-form-invalid"
+                    errors.person_contact && "cst-form-invalid"
                   }`}
-                  placeholder="Nomor Handphone / Telp"
-                  defaultValue={subjectData && subjectData.contact}
+                  placeholder="Telp Pribadi"
+                  defaultValue={subjectData && subjectData.person_contact}
                 />
                 <small className="cst-text-negative ">
-                  {errors.contact?.message}
+                  {errors.person_contact?.message}
+                </small>
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6} className="py-2">
+              <Form.Group>
+                <Form.Label>
+                  Telp Kantor<span className="cst-text-negative">*</span>
+                </Form.Label>
+                <Form.Control
+                  {...register("company_contact")}
+                  className={`cst-form-control ${
+                    errors.company_contact && "cst-form-invalid"
+                  }`}
+                  placeholder="Telp Kantor"
+                  defaultValue={subjectData && subjectData.company_contact}
+                />
+                <small className="cst-text-negative ">
+                  {errors.company_contact?.message}
                 </small>
               </Form.Group>
             </Col>
             <Col xs={12} md={6} className="py-2">
               <Form.Group>
                 <Form.Label>E-Mail</Form.Label>
-
                 <Form.Control
                   {...register("email")}
                   className={`cst-form-control ${
@@ -136,9 +165,29 @@ function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
                 </small>
               </Form.Group>
             </Col>
+            <Col xs={12} md={6} className="py-2 d-flex">
+              <Controller
+                control={control}
+                name="active_status"
+                render={({ field }) => (
+                  <Form.Group
+                    {...field}
+                    className="d-flex align-items-center my-auto"
+                  >
+                    <Form.Check
+                      type="switch"
+                      defaultChecked={subjectData && subjectData.active_status}
+                    />
+                    <Form.Label className="m-0">Status Supplier</Form.Label>
+                  </Form.Group>
+                )}
+              />
+            </Col>
             <Col xs={12} md={12} className="py-2">
               <Form.Group>
-                <Form.Label>Alamat</Form.Label>
+                <Form.Label>
+                  Alamat<span className="cst-text-negative">*</span>
+                </Form.Label>
                 <Form.Control
                   as="textarea"
                   {...register("address")}
@@ -188,4 +237,4 @@ function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
   );
 }
 
-export default CustomerUpdateModal;
+export default SupplierUpdateModal;

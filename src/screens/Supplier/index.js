@@ -5,6 +5,8 @@ import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
 import SupplierCreateModal from "./SupplierCreateModal";
+import SupplierUpdateModal from "./SupplierUpdateModal";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 import supplierApi from "../../apis/supplier";
 import limitOptions from "../../options/tableLimitOptions.json";
@@ -12,15 +14,22 @@ import { takeIcon } from "../../helpers/iconMapper";
 
 function Supplier() {
   const [data, setData] = useState([]);
+  const [subjectData, setSubjectData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
+
+  const [updateModalShow, setUpdateModalShow] = useState(false);
+  const handleCloseUpdateModal = () => setUpdateModalShow(false);
+
+  const [confirmModalShow, setConfirmModalShow] = useState(false);
 
   const columns = [
     {
@@ -86,6 +95,32 @@ function Supplier() {
       .finally(() => setIsLoading(false));
   };
 
+  const triggerEdit = (targetData) => {
+    setSubjectData(targetData);
+    setUpdateModalShow(true);
+  };
+
+  const editData = (params) => {
+    setIsLoading(true);
+    supplierApi
+      .update(params)
+      .then(() => getData())
+      .finally(setIsLoading(false));
+  };
+
+  const triggerDelete = (targetData) => {
+    setSubjectData(targetData);
+    setConfirmModalShow(true);
+  };
+
+  const deleteData = (targetId) => {
+    setIsLoading(true);
+    supplierApi
+      .delete(targetId)
+      .then(() => getData())
+      .finally(setIsLoading(false));
+  };
+
   useEffect(() => {
     getData();
   }, [limit, page, filter, search]);
@@ -116,11 +151,25 @@ function Supplier() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        actionForEdit={triggerEdit}
+        actionForDelete={triggerDelete}
       />
       <SupplierCreateModal
         show={createModalShow}
         close={handleCloseCreateModal}
         handler={createData}
+      />
+      <SupplierUpdateModal
+        show={updateModalShow}
+        close={handleCloseUpdateModal}
+        handler={editData}
+        subjectData={subjectData}
+      />
+      <ConfirmationModal
+        show={confirmModalShow}
+        close={() => setConfirmModalShow(false)}
+        handler={deleteData}
+        subjectData={subjectData}
       />
     </Container>
   );

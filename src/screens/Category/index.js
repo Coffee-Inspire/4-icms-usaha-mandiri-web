@@ -14,6 +14,7 @@ import { takeIcon } from "../../helpers/iconMapper";
 
 function Category() {
   const [data, setData] = useState([]);
+  const [subjectData, setSubjectData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const [limit, setLimit] = useState(limitOptions[0]);
@@ -21,7 +22,6 @@ function Category() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [subjectData, setSubjectData] = useState({});
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);

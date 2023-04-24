@@ -39,7 +39,6 @@ function CategoryUpdateModal({ show, close, handler, subjectData = {} }) {
     };
     handler(params);
     close();
-    // * Hit API
   };
 
   const handleClose = () => {
