@@ -193,6 +193,10 @@ Extra extra large	xxl	≥1400px
   background-color: lighten($color-negative, 53%);
 }
 
+.cst-bg-warning-light {
+  background-color: lighten($color-warning, 43%);
+}
+
 .cst-bg-neutral-light {
   background-color: lighten($color-neutral, 18%);
 }

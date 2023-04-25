@@ -61,13 +61,18 @@ function Stock() {
       type: "date",
     },
     {
+      label: "Status",
+      bind: "status",
+      type: "stockStatus",
+    },
+    {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
       methods: ["edit", "delete", "detail"],
     },
   ];
-  console.log(data);
+
   const getData = () => {
     setIsLoading(true);
     const params = {
@@ -87,6 +92,7 @@ function Stock() {
               ...i,
               category_name: i.Item_category.category_name,
               supplier_name: i.supplier.supplier_name,
+              status: i.qty === 0 ? "OUT" : i.qty <= 80 ? "LIMIT" : "READY",
             })
         );
         setData(normalized);

@@ -279,6 +279,36 @@ function Shows({
               )}
             </td>
           );
+        case "stockStatus":
+          const current = (key) => {
+            return {
+              OUT: {
+                label: "Out of Stock",
+                type: "negative",
+              },
+              LIMIT: {
+                label: "Limited Stock",
+                type: "warning",
+              },
+              READY: {
+                label: "Ready Stock",
+                type: "positive",
+              },
+            }[key];
+          };
+          return (
+            <td style={customized} key={`${record.id}-${col.bind}`}>
+              <div
+                className={`cst-bg-${
+                  current(value).type
+                }-light cst-chip-radius d-flex`}
+              >
+                <span className={`cst-text-${current(value).type} w-100`}>
+                  {current(value).label}
+                </span>
+              </div>
+            </td>
+          );
         case "date":
           return (
             <td style={customized} key={`${record.id}-${col.bind}`}>
