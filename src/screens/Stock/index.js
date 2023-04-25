@@ -21,16 +21,16 @@ function Stock() {
   const columns = [
     {
       label: "Nama",
-      bind: "name",
+      bind: "item_name",
       align: "left",
     },
     {
       label: "Kategori",
-      bind: "category",
+      bind: "category_name",
     },
     {
       label: "Supplier",
-      bind: "supplier",
+      bind: "supplier_name",
     },
     {
       label: "Qty",
@@ -40,23 +40,25 @@ function Stock() {
     },
     {
       label: "Modal",
-      bind: "cost",
+      bind: "purchase_price",
       type: "currency",
       align: "right",
     },
     {
       label: "HPP",
-      bind: "hpp",
+      bind: "price",
       type: "currency",
       align: "right",
     },
     {
       label: "Tgl Order",
-      bind: "lastOrderDate",
+      bind: "last_order_date",
+      type: "date",
     },
     {
       label: "Tgl Restock",
-      bind: "lastRestockDate",
+      bind: "last_restock_date",
+      type: "date",
     },
     {
       label: takeIcon("menuVertical"),
@@ -65,7 +67,7 @@ function Stock() {
       methods: ["edit", "delete", "detail"],
     },
   ];
-
+  console.log(data);
   const getData = () => {
     setIsLoading(true);
     const params = {
@@ -79,116 +81,18 @@ function Stock() {
       .getAll(params)
       .then((res) => {
         const dataLength = res.data.data.count;
-        setData(res.data.data.rows);
+        const normalized = res.data.data.rows.map(
+          (i) =>
+            (i = {
+              ...i,
+              category_name: i.Item_category.category_name,
+              supplier_name: i.supplier.supplier_name,
+            })
+        );
+        setData(normalized);
         setTotalPage(Math.ceil(dataLength / params.limit));
       })
       .finally(() => setIsLoading(false));
-
-    // // ? For Development
-    // const dummy = [
-    //   {
-    //     id: "1",
-    //     name: "KUSEN 2S",
-    //     lastOrderDate: "20/03/2023",
-    //     qty: "50",
-    //     cost: "30000",
-    //     hpp: "50000",
-    //     category: "KAYU",
-    //     lastRestockDate: "21/03/2023",
-    //     supplier: "PT. Sinar Abadi",
-    //   },
-    //   {
-    //     id: "2",
-    //     name: "KUSEN 3S",
-    //     lastOrderDate: "20/03/2023",
-    //     qty: "16",
-    //     cost: "30000",
-    //     hpp: "50000",
-    //     category: "KAYU",
-    //     lastRestockDate: "21/03/2023",
-    //     supplier: "PT. Sinar Abadi",
-    //   },
-    //   {
-    //     id: "3",
-    //     name: "KUSEN 4S",
-    //     lastOrderDate: "20/03/2023",
-    //     qty: "21",
-    //     cost: "30000",
-    //     hpp: "50000",
-    //     category: "KAYU",
-    //     lastRestockDate: "21/03/2023",
-    //     supplier: "PT. Alco Jaya",
-    //   },
-    //   {
-    //     id: "4",
-    //     name: "SEMEN HITAM",
-    //     lastOrderDate: "18/03/2023",
-    //     qty: "62",
-    //     cost: "35000",
-    //     hpp: "55000",
-    //     category: "PASIR",
-    //     lastRestockDate: "18/03/2023",
-    //     supplier: "PT. Alco Jaya",
-    //   },
-    //   {
-    //     id: "5",
-    //     name: "BATA MERAH",
-    //     lastOrderDate: "18/03/2023",
-    //     qty: "259",
-    //     cost: "900",
-    //     hpp: "1200",
-    //     category: "BATU",
-    //     lastRestockDate: "18/03/2023",
-    //     supplier: "PT. Alco Jaya",
-    //   },
-    //   {
-    //     id: "6",
-    //     name: "PASIR TONGKANG DUM",
-    //     lastOrderDate: "12/03/2023",
-    //     qty: "7",
-    //     cost: "130000",
-    //     hpp: "180000",
-    //     category: "PASIR",
-    //     lastRestockDate: "14/03/2023",
-    //     supplier: "PT. Sinar Abadi",
-    //   },
-    //   {
-    //     id: "7",
-    //     name: "PIPA RUBEKA 4M",
-    //     lastOrderDate: "19/03/2023",
-    //     qty: "44",
-    //     cost: "4000",
-    //     hpp: "8000",
-    //     category: "PIPA",
-    //     lastRestockDate: "20/03/2023",
-    //     supplier: "PT. Sinar Abadi",
-    //   },
-    //   {
-    //     id: "8",
-    //     name: "PIPA RUBEKA 5M",
-    //     lastOrderDate: "19/03/2023",
-    //     qty: "23",
-    //     cost: "4000",
-    //     hpp: "8000",
-    //     category: "PIPA",
-    //     lastRestockDate: "20/03/2023",
-    //     supplier: "PT. Sinar Abadi",
-    //   },
-    //   {
-    //     id: "9",
-    //     name: "KABEL MERAH ROLL",
-    //     lastOrderDate: "17/03/2023",
-    //     qty: "12",
-    //     cost: "90000",
-    //     hpp: "120000",
-    //     category: "KABEL",
-    //     lastRestockDate: "17/03/2023",
-    //     supplier: "PT. Sinar Abadi",
-    //   },
-    // ];
-    // setData(dummy);
-    // setTotalPage(5);
-    // setIsLoading(false);
   };
 
   useEffect(() => {

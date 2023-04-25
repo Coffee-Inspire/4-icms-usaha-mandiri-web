@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import Select from "react-select";
 import {
   Row,
@@ -276,6 +277,16 @@ function Shows({
                   </div>
                 </span>
               )}
+            </td>
+          );
+        case "date":
+          return (
+            <td style={customized} key={`${record.id}-${col.bind}`}>
+              <div className="d-flex justify-content-center">
+                <div className="w-75">
+                  {value ? moment(value).format("DD-MM-YYYY") : "-"}
+                </div>
+              </div>
             </td>
           );
         default:
