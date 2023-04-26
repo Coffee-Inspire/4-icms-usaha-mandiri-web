@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
+import ActionPopup from "../../components/ActionPopup";
 
 import stockApi from "../../apis/stock";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function Stock() {
   const [data, setData] = useState([]);
@@ -17,6 +19,9 @@ function Stock() {
   const [totalPage, setTotalPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
+
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -85,18 +90,23 @@ function Stock() {
     stockApi
       .getAll(params)
       .then((res) => {
+        if (res.status !== 200) throw res;
         const dataLength = res.data.data.count;
         const normalized = res.data.data.rows.map(
           (i) =>
             (i = {
               ...i,
-              category_name: i.Item_category.category_name,
+              category_name: i.item_category.category_name,
               supplier_name: i.supplier.supplier_name,
               status: i.qty === 0 ? "OUT" : i.qty <= 80 ? "LIMIT" : "READY",
             })
         );
         setData(normalized);
         setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
   };
@@ -107,10 +117,7 @@ function Stock() {
 
   return (
     <Container fluid className="p-4">
-      <Header>
-        <span>STOK BARANG </span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"stok barang"} isLoading={isLoading} />
       <Shows
         columns={columns}
         rows={data}
@@ -123,6 +130,11 @@ function Stock() {
         setFilter={setFilter}
         actionForEdit={null}
         actionForDelete={null}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

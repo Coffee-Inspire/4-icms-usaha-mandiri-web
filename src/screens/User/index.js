@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -7,12 +7,14 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import UserCreateModal from "./UserCreateModal";
 import UserUpdateModal from "./UserUpdateModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import ActionPopup from "../../components/ActionPopup";
 
 import userApi from "../../apis/user";
 import roleApi from "../../apis/role";
 import selections from "../../helpers/selections";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function User() {
   const [data, setData] = useState([]);
@@ -33,6 +35,8 @@ function User() {
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const [confirmModalShow, setConfirmModalShow] = useState(false);
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -81,9 +85,14 @@ function User() {
     setIsLoading(true);
     roleApi
       .getAll()
-      .then((res) =>
-        setRoleOptions(selections(res.data.data.rows, "role_name"))
-      )
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setRoleOptions(selections(res.data.data.rows, "role_name"));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -98,6 +107,7 @@ function User() {
     userApi
       .getAll(params)
       .then((res) => {
+        if (res.status !== 200) throw res;
         const dataLength = res.data.data.count;
         const normalized = res.data.data.rows.map(
           (i) =>
@@ -109,6 +119,10 @@ function User() {
         setData(normalized);
         setTotalPage(Math.ceil(dataLength / params.limit));
       })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -116,8 +130,18 @@ function User() {
     setIsLoading(true);
     userApi
       .create(param)
-      .then(() => {
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menambahkan pengguna",
+        });
+        setActionAlertShow(true);
         getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
       })
       .finally(setIsLoading(false));
   };
@@ -131,7 +155,19 @@ function User() {
     setIsLoading(true);
     userApi
       .update(updateParams)
-      .then(() => getData())
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil memperbaharui pengguna",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -144,7 +180,19 @@ function User() {
     setIsLoading(true);
     userApi
       .delete(targetId)
-      .then(() => getData())
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menghapus pengguna",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -159,10 +207,7 @@ function User() {
 
   return (
     <Container fluid className="p-4">
-      <Header>
-        <span>USERS</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"daftar pengguna"} isLoading={isLoading} />
       <ButtonAddRow
         handler={() => setCreateModalShow(true)}
         disabled={isLoading}
@@ -199,6 +244,11 @@ function User() {
         close={() => setConfirmModalShow(false)}
         handler={deleteData}
         subjectData={subjectData}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

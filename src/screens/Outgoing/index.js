@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
+import ActionPopup from "../../components/ActionPopup";
 
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function Outgoing() {
   const navigate = useNavigate();
@@ -20,8 +22,8 @@ function Outgoing() {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [createModalShow, setCreateModalShow] = useState(false);
-  const handleCloseCreateModal = () => setCreateModalShow(false);
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -116,10 +118,7 @@ function Outgoing() {
 
   return (
     <Container fluid className="p-4">
-      <Header>
-        <span>BARANG TERJUAL</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"penjualan"} isLoading={isLoading} />
       <ButtonAddRow handler={() => navigate("create")} disabled={isLoading}>
         Kasir
       </ButtonAddRow>
@@ -134,6 +133,11 @@ function Outgoing() {
         setSearch={setSearch}
         setFilter={setFilter}
         actionForDetail={triggerDetail}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

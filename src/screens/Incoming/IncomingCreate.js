@@ -2,15 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Table,
-  Spinner,
-} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -18,19 +10,26 @@ import Joi from "joi";
 import Header from "../../components/Header";
 import Subheader from "../../components/Subheader";
 import IsExistAlert from "./Alerts/IsExistAlert";
+import ActionPopup from "../../components/ActionPopup";
 
 import convertIDR from "../../helpers/convertIDR";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function IncomingCreate() {
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [dataList, setDataList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [note, setNote] = useState("");
+
   const [isExistAlertShow, setIsExistAlertShow] = useState(false);
   const [rejected, setRejected] = useState("");
+
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
+
   const schema = Joi.object({
     itemName: Joi.object().required().messages({
       "string.empty": `Nama barang tidak boleh kosong`,
@@ -183,16 +182,7 @@ function IncomingCreate() {
 
   return (
     <Container fluid className="p-4">
-      <Header className="d-flex align-items-center">
-        <span
-          className="cst-clickable cst-hover-color-respond me-2"
-          onClick={() => navigate(-1)}
-        >
-          {takeIcon("chevronLeft")}
-        </span>
-        <span>ORDER BARANG</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"pemesanan barang"} isLoading={isLoading} />
       <Row className="mx-0">
         <Col xs={12} md={5} className="cst-border-right py-3">
           <Subheader>Input Data Barang</Subheader>
@@ -514,6 +504,11 @@ function IncomingCreate() {
           </Container>
         </Col>
       </Row>
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
+      />
     </Container>
   );
 }

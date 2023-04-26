@@ -15,10 +15,14 @@ import {
 import { useReactToPrint } from "react-to-print";
 
 import Header from "../../components/Header";
-import { takeIcon } from "../../helpers/iconMapper";
-import convertIDR from "../../helpers/convertIDR";
 import Receipt from "./Receipt";
 import ChainModal from "./ChainModal";
+import ActionPopup from "../../components/ActionPopup";
+
+import customerApi from "../../apis/customer";
+import convertIDR from "../../helpers/convertIDR";
+import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function OutgoingCreate() {
   const navigate = useNavigate();
@@ -28,24 +32,24 @@ function OutgoingCreate() {
   });
 
   // ? For Development
-  const dummyCustomerOptions = [
-    {
-      value: "1",
-      label: "Desmond Tan",
-    },
-    {
-      value: "2",
-      label: "Jonathan Lee",
-    },
-    {
-      value: "3",
-      label: "Michelle Wong",
-    },
-    {
-      value: "4",
-      label: "Amelia Ng",
-    },
-  ];
+  // const dummyCustomerOptions = [
+  //   {
+  //     value: "1",
+  //     label: "Desmond Tan",
+  //   },
+  //   {
+  //     value: "2",
+  //     label: "Jonathan Lee",
+  //   },
+  //   {
+  //     value: "3",
+  //     label: "Michelle Wong",
+  //   },
+  //   {
+  //     value: "4",
+  //     label: "Amelia Ng",
+  //   },
+  // ];
 
   const dummyItemOptions = [
     {
@@ -63,6 +67,8 @@ function OutgoingCreate() {
   ];
 
   const { profileData } = useSelector((state) => state.profileReducer);
+  const [isLoading, setIsLoading] = useState(false);
+  const [customerOptions, setCustomerOptions] = useState([]);
   const [invoiceInfo, setInvoiceInfo] = useState({
     date: "",
     user: "",
@@ -87,6 +93,42 @@ function OutgoingCreate() {
   };
 
   const [chainModalShow, setChainModalShow] = useState(false);
+
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
+
+  const getCustomerSource = () => {
+    setIsLoading(true);
+    customerApi
+      .getDataSource()
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setCustomerOptions(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const getCustomerInfo = (customerId) => {
+    setIsLoading(true);
+    const params = {
+      id: customerId,
+    };
+    customerApi
+      .getById(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setCustomerInfo(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   const handleAddRow = () => {
     setCart((cart) => [...cart, initialCartRow]);
@@ -187,40 +229,41 @@ function OutgoingCreate() {
       date: currentDate,
       user: profileData.fullname,
     });
+    getCustomerSource();
     setCart([initialCartRow]);
   }, []);
 
   useEffect(() => {
     if (customer !== null) {
       // * Hit single GetByID API, request for customer data
-
-      // ? For Development
-      const dummyCustomerInfo = [
-        {
-          id: "1",
-          contact: "082283569190",
-          address: "Avr River 149 Road, Jt Street 19221",
-        },
-        {
-          id: "2",
-          contact: "082283561143",
-          address: "Bencholeen Sideways 301, 19228",
-        },
-        {
-          id: "3",
-          contact: "082283569187",
-          address: "Anderson Hills, Rochor Road 52",
-        },
-        {
-          id: "4",
-          contact: "082283566570",
-          address: "MTS Apartement 709, B-Side Doorways 19885",
-        },
-      ];
-      const getCustomerInfo = dummyCustomerInfo.find(
-        (i) => i.id === customer.value
-      );
-      setCustomerInfo(getCustomerInfo);
+      getCustomerInfo(customer.value);
+      // // ? For Development
+      // const dummyCustomerInfo = [
+      //   {
+      //     id: "1",
+      //     contact: "082283569190",
+      //     address: "Avr River 149 Road, Jt Street 19221",
+      //   },
+      //   {
+      //     id: "2",
+      //     contact: "082283561143",
+      //     address: "Bencholeen Sideways 301, 19228",
+      //   },
+      //   {
+      //     id: "3",
+      //     contact: "082283569187",
+      //     address: "Anderson Hills, Rochor Road 52",
+      //   },
+      //   {
+      //     id: "4",
+      //     contact: "082283566570",
+      //     address: "MTS Apartement 709, B-Side Doorways 19885",
+      //   },
+      // ];
+      // const getCustomerInfo = dummyCustomerInfo.find(
+      //   (i) => i.id === customer.value
+      // );
+      // setCustomerInfo(getCustomerInfo);
     } else setCustomerInfo(null);
   }, [customer]);
 
@@ -233,15 +276,7 @@ function OutgoingCreate() {
 
   return (
     <Container fluid className="p-4">
-      <Header className="d-flex align-items-center">
-        <span
-          className="cst-clickable cst-hover-color-respond me-2"
-          onClick={() => navigate(-1)}
-        >
-          {takeIcon("chevronLeft")}
-        </span>
-        <span>KASIR</span>
-      </Header>
+      <Header headerLabel={"kasir"} isLoading={isLoading} />
       <Row className="mx-0 pt-3">
         <Col xs={12} md={6}>
           <Card className="mb-4">
@@ -293,7 +328,7 @@ function OutgoingCreate() {
                 <Col xs={9} className="my-2">
                   <Select
                     isClearable
-                    options={dummyCustomerOptions}
+                    options={customerOptions}
                     placeholder="Pilih Pelanggan"
                     onChange={(e) => setCustomer(e)}
                   />
@@ -308,7 +343,7 @@ function OutgoingCreate() {
                     <Col xs={9} className="my-1">
                       <Form.Control
                         className="cst-form-control py-1 px-2"
-                        value={customerInfo.contact}
+                        defaultValue={customerInfo && customerInfo.contact}
                         disabled
                       />
                     </Col>
@@ -321,7 +356,7 @@ function OutgoingCreate() {
                       <Form.Control
                         as="textarea"
                         className="cst-form-control py-1 px-2"
-                        value={customerInfo.address}
+                        defaultValue={customerInfo && customerInfo.address}
                         disabled
                       />
                     </Col>
@@ -486,6 +521,11 @@ function OutgoingCreate() {
         handlePrint={handlePrint}
       />
       <Receipt innerRef={printRef} data={dummyApiResultReturn} />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
+      />
     </Container>
   );
 }

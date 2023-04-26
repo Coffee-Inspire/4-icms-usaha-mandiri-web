@@ -1,12 +1,14 @@
 import React from "react";
+import { Spinner } from "react-bootstrap";
 
-function Header({ children, className }) {
+function Header({ className, headerLabel, isLoading }) {
   return (
-    <h2
-      className={`${className} cst-letter-spacing cst-text-secondary cst-border-bottom fw-bold pb-3`}
+    <div
+      className={`${className} cst-border-bottom cst-text-secondary cst-letter-spacing d-flex align-items-center pb-3`}
     >
-      {children}
-    </h2>
+      <h2 className="text-uppercase fw-bold m-0">{headerLabel}</h2>
+      {isLoading && <Spinner className="mx-3" />}
+    </div>
   );
 }
 

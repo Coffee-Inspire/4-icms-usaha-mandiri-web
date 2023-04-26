@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -7,10 +7,12 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import CategoryCreateModa from "./CategoryCreateModal";
 import CategoryUpdateModal from "./CategoryUpdateModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import ActionPopup from "../../components/ActionPopup";
 
 import categoryApi from "../../apis/category";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function Category() {
   const [data, setData] = useState([]);
@@ -30,6 +32,8 @@ function Category() {
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const [confirmModalShow, setConfirmModalShow] = useState(false);
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -62,9 +66,14 @@ function Category() {
     categoryApi
       .getAll(params)
       .then((res) => {
+        if (res.status !== 200) throw res;
         const dataLength = res.data.data.count;
         setData(res.data.data.rows);
         setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
       })
       .finally(setIsLoading(false));
   };
@@ -73,8 +82,18 @@ function Category() {
     setIsLoading(true);
     categoryApi
       .create(param)
-      .then(() => {
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menambahkan kategori barang",
+        });
+        setActionAlertShow(true);
         getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
       })
       .finally(setIsLoading(false));
   };
@@ -88,7 +107,19 @@ function Category() {
     setIsLoading(true);
     categoryApi
       .update(params)
-      .then(() => getData())
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil memperbaharui kategori barang",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -101,7 +132,19 @@ function Category() {
     setIsLoading(true);
     categoryApi
       .delete(targetId)
-      .then(() => getData())
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menghapus kategori barang",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -115,10 +158,7 @@ function Category() {
 
   return (
     <Container fluid className="p-4">
-      <Header>
-        <span>KATEGORI BARANG</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"kategori barang"} isLoading={isLoading} />
       <ButtonAddRow
         handler={() => setCreateModalShow(true)}
         disabled={isLoading}
@@ -154,6 +194,11 @@ function Category() {
         close={() => setConfirmModalShow(false)}
         handler={deleteData}
         subjectData={subjectData}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

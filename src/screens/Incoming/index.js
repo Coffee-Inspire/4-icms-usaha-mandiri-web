@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
+import IncomingUpdateModal from "./IncomingUpdateModal";
+import ActionPopup from "../../components/ActionPopup";
 
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
-import IncomingUpdateModal from "./IncomingUpdateModal";
+import errorReader from "../../helpers/errorReader";
 
 function Incoming() {
   const navigate = useNavigate();
@@ -24,6 +26,9 @@ function Incoming() {
   const [updateModalShow, setUpdateModalShow] = useState(false);
   const [subjectData, setSubjectData] = useState({});
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
+
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -108,10 +113,7 @@ function Incoming() {
 
   return (
     <Container fluid className="p-4">
-      <Header>
-        <span>BARANG MASUK</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"pembelian"} isLoading={isLoading} />
       <ButtonAddRow handler={() => navigate("create")} disabled={isLoading}>
         Order Barang
       </ButtonAddRow>
@@ -134,6 +136,11 @@ function Incoming() {
         close={handleCloseUpdateModal}
         subjectData={subjectData}
         // handler={}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

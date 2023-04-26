@@ -78,6 +78,11 @@ Extra extra large	xxl	≥1400px
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
+
+  .cst-fixed-right{       
+    left: 0;
+    transform: translate(4%, 0%) !important;
+  }
 }
 
 .cst-login-carousel-caption-margin {
@@ -185,12 +190,24 @@ Extra extra large	xxl	≥1400px
   background-color: $color-plain;
 }
 
+.cst-bg-positive{
+  background-color: $color-positive;
+}
+
 .cst-bg-positive-light {
   background-color: lighten($color-positive, 53%);
 }
 
+.cst-bg-negative{
+  background-color: $color-negative;
+}
+
 .cst-bg-negative-light {
   background-color: lighten($color-negative, 53%);
+}
+
+.cst-bg-warning{
+  background-color: $color-warning;
 }
 
 .cst-bg-warning-light {
@@ -613,4 +630,10 @@ Extra extra large	xxl	≥1400px
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
+}
+
+.cst-fixed-right{  
+  top: 60px;
+  right: 0;  
+  transform: translate(-7%, 0%);
 }

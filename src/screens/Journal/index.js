@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
-import SupplierCreateModal from "./TransactionCreateModal";
+import TransactionCreateModal from "./TransactionCreateModal";
+import ActionPopup from "../../components/ActionPopup";
 
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import convertIDR from "../../helpers/convertIDR";
+import errorReader from "../../helpers/errorReader";
 
 function Journal() {
   const [data, setData] = useState([]);
@@ -22,6 +24,9 @@ function Journal() {
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
+
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -162,10 +167,7 @@ function Journal() {
 
   return (
     <Container fluid className="p-4">
-      <Header>
-        <span>JURNAL TRANSAKSI</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+      <Header headerLabel={"jurnal transaksi"} isLoading={isLoading} />
       <div className="d-flex justify-content-between align-items-center">
         <ButtonAddRow
           handler={() => setCreateModalShow(true)}
@@ -194,10 +196,15 @@ function Journal() {
         setSearch={setSearch}
         setFilter={setFilter}
       />
-      <SupplierCreateModal
+      <TransactionCreateModal
         show={createModalShow}
         close={handleCloseCreateModal}
         handler={createData}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

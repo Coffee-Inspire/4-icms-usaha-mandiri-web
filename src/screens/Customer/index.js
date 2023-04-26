@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
+import CustomerCreateModal from "./CustomerCreateModal";
 import CustomerUpdateModal from "./CustomerUpdateModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
+import ActionPopup from "../../components/ActionPopup";
 
 import customerApi from "../../apis/customer";
 import limitOptions from "../../options/tableLimitOptions.json";
-import CustomerCreateModal from "./CustomerCreateModal";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function Customer() {
   const [data, setData] = useState([]);
@@ -30,6 +32,8 @@ function Customer() {
   const handleCloseUpdateModal = () => setUpdateModalShow(false);
 
   const [confirmModalShow, setConfirmModalShow] = useState(false);
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
@@ -66,13 +70,17 @@ function Customer() {
       filter,
       search,
     };
-    // * Call API
     customerApi
       .getAll(params)
       .then((res) => {
+        if (res.status !== 200) throw res;
         const dataLength = res.data.data.count;
         setData(res.data.data.rows);
         setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
   };
@@ -81,8 +89,18 @@ function Customer() {
     setIsLoading(true);
     customerApi
       .create(params)
-      .then(() => {
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menambahkan pelanggan",
+        });
+        setActionAlertShow(true);
         getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
   };
@@ -96,7 +114,19 @@ function Customer() {
     setIsLoading(true);
     customerApi
       .update(params)
-      .then(() => getData())
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil memperbaharui pelanggan",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -109,7 +139,19 @@ function Customer() {
     setIsLoading(true);
     customerApi
       .delete(targetId)
-      .then(() => getData())
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menghapus pelanggan",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
       .finally(setIsLoading(false));
   };
 
@@ -122,11 +164,8 @@ function Customer() {
   }, [limit, search]);
 
   return (
-    <Container fluid className="p-4">
-      <Header>
-        <span>PELANGGAN</span>
-        {isLoading && <Spinner className="mx-3" />}
-      </Header>
+    <Container fluid className="p-4 position-relative">
+      <Header headerLabel={"pelanggan"} isLoading={isLoading} />
       <ButtonAddRow
         handler={() => setCreateModalShow(true)}
         disabled={isLoading}
@@ -162,6 +201,11 @@ function Customer() {
         close={() => setConfirmModalShow(false)}
         handler={deleteData}
         subjectData={subjectData}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );
