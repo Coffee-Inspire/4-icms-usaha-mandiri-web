@@ -1,0 +1,10 @@
+[
+    {
+        "label": "Uang Masuk",
+        "value": "cr"
+    },
+    {
+        "label": "Uang Keluar",
+        "value": "db"
+    }
+]
