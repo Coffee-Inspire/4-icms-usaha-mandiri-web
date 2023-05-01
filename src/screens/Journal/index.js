@@ -7,6 +7,7 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import TransactionCreateModal from "./TransactionCreateModal";
 import ActionPopup from "../../components/ActionPopup";
 
+import journalApi from "../../apis/journal";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import convertIDR from "../../helpers/convertIDR";
@@ -31,11 +32,11 @@ function Journal() {
   const columns = [
     {
       label: "tanggal",
-      bind: "transactionDate",
+      bind: "transaction_date",
     },
     {
       label: "lampiran",
-      bind: "reference",
+      bind: "reference_id",
       align: "left",
     },
     {
@@ -59,102 +60,113 @@ function Journal() {
 
   const getData = () => {
     setIsLoading(true);
-    const param = {
+    const params = {
       page,
       limit: limit.value,
       filter,
       search,
     };
-    console.log("JOURNAL GET Parameter:", param);
-    // * Call API
+    journalApi
+      .getAll(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        const dataLength = res.data.data.count;
+        setData(res.data.data.rows);
+        setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
 
-    // ? For Development
-    const dummy = [
-      {
-        id: "1",
-        transactionDate: "27/03/2023",
-        reference: "OUT/23/03/1",
-        note: "Manual/Tambah kas",
-        type: "CR",
-        mutation: "1000000",
-      },
-      {
-        id: "2",
-        transactionDate: "27/03/2023",
-        reference: "INC/23/03/1",
-        note: "Pembelian",
-        type: "DB",
-        mutation: "300000",
-      },
-      {
-        id: "3",
-        transactionDate: "27/03/2023",
-        reference: "INC/23/03/2",
-        note: "Pembelian",
-        type: "DB",
-        mutation: "500000",
-      },
-      {
-        id: "4",
-        transactionDate: "28/03/2023",
-        reference: "OUT/23/03/2",
-        note: "Penjualan",
-        type: "CR",
-        mutation: "120000",
-      },
-      {
-        id: "5",
-        transactionDate: "28/03/2023",
-        reference: "OUT/23/03/3",
-        note: "Penjualan",
-        type: "CR",
-        mutation: "480000",
-      },
-      {
-        id: "6",
-        transactionDate: "28/03/2023",
-        reference: "INC/23/03/3",
-        note: "Pembelian",
-        type: "DB",
-        mutation: "350000",
-      },
-      {
-        id: "7",
-        transactionDate: "29/03/2023",
-        reference: "OUT/23/03/4",
-        note: "Penjualan",
-        type: "CR",
-        mutation: "570000",
-      },
-      {
-        id: "8",
-        transactionDate: "29/03/2023",
-        reference: "OUT/23/03/5",
-        note: "Penjualan",
-        type: "CR",
-        mutation: "80000",
-      },
-      {
-        id: "9",
-        transactionDate: "30/03/2023",
-        reference: "INC/23/03/4",
-        note: "Pembelian",
-        type: "DB",
-        mutation: "500000",
-      },
-      {
-        id: "10",
-        transactionDate: "30/03/2023",
-        reference: "OUT/23/03/6",
-        note: "Penjualan",
-        type: "CR",
-        mutation: "750000",
-      },
-    ];
-    setData(dummy);
-    setBalance("1234567890");
-    setTotalPage(5);
-    setIsLoading(false);
+    // // ? For Development
+    // const dummy = [
+    //   {
+    //     id: "1",
+    //     transactionDate: "27/03/2023",
+    //     reference: "OUT/23/03/1",
+    //     note: "Manual/Tambah kas",
+    //     type: "CR",
+    //     mutation: "1000000",
+    //   },
+    //   {
+    //     id: "2",
+    //     transactionDate: "27/03/2023",
+    //     reference: "INC/23/03/1",
+    //     note: "Pembelian",
+    //     type: "DB",
+    //     mutation: "300000",
+    //   },
+    //   {
+    //     id: "3",
+    //     transactionDate: "27/03/2023",
+    //     reference: "INC/23/03/2",
+    //     note: "Pembelian",
+    //     type: "DB",
+    //     mutation: "500000",
+    //   },
+    //   {
+    //     id: "4",
+    //     transactionDate: "28/03/2023",
+    //     reference: "OUT/23/03/2",
+    //     note: "Penjualan",
+    //     type: "CR",
+    //     mutation: "120000",
+    //   },
+    //   {
+    //     id: "5",
+    //     transactionDate: "28/03/2023",
+    //     reference: "OUT/23/03/3",
+    //     note: "Penjualan",
+    //     type: "CR",
+    //     mutation: "480000",
+    //   },
+    //   {
+    //     id: "6",
+    //     transactionDate: "28/03/2023",
+    //     reference: "INC/23/03/3",
+    //     note: "Pembelian",
+    //     type: "DB",
+    //     mutation: "350000",
+    //   },
+    //   {
+    //     id: "7",
+    //     transactionDate: "29/03/2023",
+    //     reference: "OUT/23/03/4",
+    //     note: "Penjualan",
+    //     type: "CR",
+    //     mutation: "570000",
+    //   },
+    //   {
+    //     id: "8",
+    //     transactionDate: "29/03/2023",
+    //     reference: "OUT/23/03/5",
+    //     note: "Penjualan",
+    //     type: "CR",
+    //     mutation: "80000",
+    //   },
+    //   {
+    //     id: "9",
+    //     transactionDate: "30/03/2023",
+    //     reference: "INC/23/03/4",
+    //     note: "Pembelian",
+    //     type: "DB",
+    //     mutation: "500000",
+    //   },
+    //   {
+    //     id: "10",
+    //     transactionDate: "30/03/2023",
+    //     reference: "OUT/23/03/6",
+    //     note: "Penjualan",
+    //     type: "CR",
+    //     mutation: "750000",
+    //   },
+    // ];
+    // setData(dummy);
+    // setBalance("1234567890");
+    // setTotalPage(5);
+    // setIsLoading(false);
   };
 
   const createData = (param) => {
