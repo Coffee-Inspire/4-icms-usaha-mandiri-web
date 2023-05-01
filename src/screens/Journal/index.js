@@ -33,6 +33,7 @@ function Journal() {
     {
       label: "tanggal",
       bind: "transaction_date",
+      type: "date",
     },
     {
       label: "lampiran",
