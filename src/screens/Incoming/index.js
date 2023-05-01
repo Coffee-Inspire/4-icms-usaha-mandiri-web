@@ -8,6 +8,7 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import IncomingUpdateModal from "./IncomingUpdateModal";
 import ActionPopup from "../../components/ActionPopup";
 
+import incomingApi from "../../apis/incoming.js";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
@@ -33,16 +34,16 @@ function Incoming() {
   const columns = [
     {
       label: "order no",
-      bind: "incomingNumber",
+      bind: "incoming_no",
       align: "left",
     },
     {
       label: "tgl order",
-      bind: "purchaseDate",
+      bind: "purchase_date",
     },
     {
       label: "harga order",
-      bind: "totalPurchase",
+      bind: "total_purchase",
       type: "currency",
       align: "right",
     },
@@ -60,42 +61,53 @@ function Incoming() {
 
   const getData = () => {
     setIsLoading(true);
-    const param = {
+    const params = {
       page,
       limit: limit.value,
       filter,
       search,
     };
-    console.log("INCOMING GET Parameter:", param);
-    // * Call API
+    incomingApi
+      .getAll(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        const dataLength = res.data.data.count;
+        setData(res.data.data.rows);
+        setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
 
-    // ? For Development
-    const dummy = [
-      {
-        id: "1",
-        incomingNumber: "INC/0323/1",
-        purchaseDate: "22/03/2023",
-        totalPurchase: "300000",
-        note: "Lorem Ipsum",
-      },
-      {
-        id: "2",
-        incomingNumber: "INC/0323/2",
-        purchaseDate: "23/03/2023",
-        totalPurchase: "500000",
-        note: "Lorem Ipsum",
-      },
-      {
-        id: "3",
-        incomingNumber: "INC/0323/3",
-        purchaseDate: "25/03/2023",
-        totalPurchase: "1600000",
-        note: "Lorem Ipsum",
-      },
-    ];
-    setData(dummy);
-    setTotalPage(5);
-    setIsLoading(false);
+    // // ? For Development
+    // const dummy = [
+    //   {
+    //     id: "1",
+    //     incomingNumber: "INC/0323/1",
+    //     purchaseDate: "22/03/2023",
+    //     totalPurchase: "300000",
+    //     note: "Lorem Ipsum",
+    //   },
+    //   {
+    //     id: "2",
+    //     incomingNumber: "INC/0323/2",
+    //     purchaseDate: "23/03/2023",
+    //     totalPurchase: "500000",
+    //     note: "Lorem Ipsum",
+    //   },
+    //   {
+    //     id: "3",
+    //     incomingNumber: "INC/0323/3",
+    //     purchaseDate: "25/03/2023",
+    //     totalPurchase: "1600000",
+    //     note: "Lorem Ipsum",
+    //   },
+    // ];
+    // setData(dummy);
+    // setTotalPage(5);
+    // setIsLoading(false);
   };
 
   const triggerDetail = (dataId) => {

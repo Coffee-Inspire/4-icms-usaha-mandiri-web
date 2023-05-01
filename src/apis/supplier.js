@@ -12,6 +12,15 @@ const supplier = {
     return fetchDepart(url, options);
   },
 
+  getDataSource: () => {
+    const options = {
+      method: "GET",
+    };
+
+    let url = `${base}/datasource`;
+    return fetchDepart(url, options);
+  },
+
   create: (params) => {
     const options = {
       method: "POST",

@@ -12,6 +12,10 @@ import Subheader from "../../components/Subheader";
 import IsExistAlert from "./Alerts/IsExistAlert";
 import ActionPopup from "../../components/ActionPopup";
 
+import incomingApi from "../../apis/incoming";
+import stockApi from "../../apis/stock";
+import categoryApi from "../../apis/category";
+import supplierApi from "../../apis/supplier";
 import convertIDR from "../../helpers/convertIDR";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
@@ -20,6 +24,9 @@ function IncomingCreate() {
   const navigate = useNavigate();
 
   const [dataList, setDataList] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [supplierOptions, setSupplierOptions] = useState([]);
+  const [stockOptions, setStockOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [note, setNote] = useState("");
@@ -31,7 +38,7 @@ function IncomingCreate() {
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const schema = Joi.object({
-    itemName: Joi.object().required().messages({
+    item_name: Joi.object().required().messages({
       "string.empty": `Nama barang tidak boleh kosong`,
       "any.required": `Nama barang tidak boleh kosong`,
     }),
@@ -82,6 +89,49 @@ function IncomingCreate() {
     reset,
   } = useForm({ resolver: joiResolver(schema) });
 
+  const getCategorySource = () => {
+    setIsLoading(true);
+    categoryApi
+      .getDataSource()
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setCategoryOptions(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+  const getSupplierSource = () => {
+    setIsLoading(true);
+    supplierApi
+      .getDataSource()
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setSupplierOptions(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+  const getStockSource = () => {
+    setIsLoading(true);
+    stockApi
+      .getDataSource()
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setStockOptions(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
   const onSubmit = (data) => {
     // TODO Checking whitespace
     // handler(data);
@@ -89,10 +139,10 @@ function IncomingCreate() {
     data.total_amount = data.purchase_price * data.purchase_qty;
     // TODO Checking if item name already exist in dataList
     const isExist = dataList.find(
-      (i) => i.itemName.value === data.itemName.value
+      (i) => i.item_name.value === data.item_name.value
     );
     if (isExist) {
-      setRejected(data.itemName.label);
+      setRejected(data.item_name.label);
       setIsExistAlertShow(true);
       return;
     }
@@ -101,84 +151,50 @@ function IncomingCreate() {
   };
 
   const createData = () => {
+    setIsLoading(true);
     const newDataList = dataList.map(
       (i) =>
         (i = {
           ...i,
-          itemName: i.itemName.value,
+          item_name: i.item_name.value,
           supplier_id: i.supplier_id.value,
           category_id: i.category_id.value,
         })
     );
     const params = {
-      total_purchase: totalPrice,
-      note: note,
-      data: newDataList,
+      incoming: {
+        total_purchase: totalPrice,
+        note: note,
+      },
+      details: newDataList,
     };
-    console.log("Full Params => ", params);
+    incomingApi
+      .create(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil membuat pesanan",
+        });
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
   };
-
-  // ? For Development
-  const dummySupplyOptions = [
-    {
-      label: "supply-1",
-      value: "supply-1",
-    },
-    {
-      label: "supply-2",
-      value: "supply-2",
-    },
-    {
-      label: "supply-3",
-      value: "supply-3",
-    },
-    {
-      label: "supply-4",
-      value: "supply-4",
-    },
-    {
-      label: "supply-5",
-      value: "supply-5",
-    },
-  ];
-  const dummyItemOptions = [
-    {
-      label: "item-1",
-      value: "1",
-    },
-    {
-      label: "item-2",
-      value: "2",
-    },
-    {
-      label: "item-3",
-      value: "3",
-    },
-  ];
-  const dummyCategoryOptions = [
-    {
-      label: "category-1",
-      value: "1",
-    },
-    {
-      label: "category-2",
-      value: "2",
-    },
-    {
-      label: "category-3",
-      value: "3",
-    },
-    {
-      label: "category-4",
-      value: "4",
-    },
-  ];
 
   useEffect(() => {
     // * Computed total price
     const s = dataList.reduce((a, b) => a + b.total_amount, 0);
     setTotalPrice(s);
   }, [dataList]);
+
+  useEffect(() => {
+    getStockSource();
+    getCategorySource();
+    getSupplierSource();
+  }, []);
 
   return (
     <Container fluid className="p-4">
@@ -200,19 +216,19 @@ function IncomingCreate() {
                     Nama Barang<span className="cst-text-negative">*</span>
                   </Form.Label>
                   <Controller
-                    name="itemName"
+                    name="item_name"
                     control={control}
                     render={({ field }) => (
                       <CreatableSelect
                         {...field}
-                        options={dummyItemOptions}
+                        options={stockOptions}
                         isDisabled={isLoading}
                         placeholder="Pilih atau buat barang"
                       />
                     )}
                   />
                   <small className="cst-text-negative">
-                    {errors.itemName?.message}
+                    {errors.item_name?.message}
                   </small>
                 </Form.Group>
               </Col>
@@ -227,7 +243,7 @@ function IncomingCreate() {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={dummyCategoryOptions}
+                        options={categoryOptions}
                         placeholder="Kategori"
                         isDisabled={isLoading}
                       />
@@ -249,7 +265,7 @@ function IncomingCreate() {
                     render={({ field }) => (
                       <Select
                         {...field}
-                        options={dummySupplyOptions}
+                        options={supplierOptions}
                         placeholder="Pilih supplier"
                         isDisabled={isLoading}
                       />
@@ -426,8 +442,8 @@ function IncomingCreate() {
                     </thead>
                     <tbody>
                       {dataList.map((cell) => (
-                        <tr key={cell.itemName.value}>
-                          <td>{cell.itemName.label}</td>
+                        <tr key={cell.item_name.value}>
+                          <td>{cell.item_name.label}</td>
                           <td>{cell.supplier_id.label}</td>
                           <td>
                             {cell.purchase_qty} {cell.unit}
@@ -456,7 +472,7 @@ function IncomingCreate() {
                               setDataList(
                                 dataList.filter(
                                   (list) =>
-                                    list.itemName.value != cell.itemName.value
+                                    list.item_name.value != cell.item_name.value
                                 )
                               );
                             }}
