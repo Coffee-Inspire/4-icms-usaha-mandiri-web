@@ -198,7 +198,7 @@ function IncomingCreate() {
 
   return (
     <Container fluid className="p-4">
-      <Header headerLabel={"pemesanan barang"} isLoading={isLoading} />
+      <Header useBack headerLabel={"pemesanan barang"} isLoading={isLoading} />
       <Row className="mx-0">
         <Col xs={12} md={5} className="cst-border-right py-3">
           <Subheader>Input Data Barang</Subheader>
