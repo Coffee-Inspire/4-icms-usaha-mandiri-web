@@ -1,160 +1,106 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table, Row, Col, Form, Button } from "react-bootstrap";
+import { Modal, Table, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 
 import InvalidReceiveAlert from "./Alerts/InvalidReceiveAlert";
+import ActionPopup from "../../components/ActionPopup";
 
+import incomingApi from "../../apis/incoming.js";
 import convertIDR from "../../helpers/convertIDR";
+import errorReader from "../../helpers/errorReader";
+import moment from "moment";
 
 function IncomingUpdateModal({ show, close, subjectData }) {
   const [data, setData] = useState({});
   const [invalidReceiveAlertShow, setInvalidReceiveAlertShow] = useState(false);
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const getData = () => {
-    // ? For Development
-    const dummy = {
-      id: "1",
-      incomingNumber: "UM/P/23/03/30",
-      createdAt: "30/03/2023",
-      totalPurchase: "10630000",
-      note: "Lorem Ipsum",
-      status: false,
-      IncomingDetails: [
-        {
-          id: "31",
-          stock: {
-            stockId: "99",
-            itemName: "SEMEN HITAM SAK",
-          },
-          supplier: {
-            supplierId: "90",
-            supplierName: "supply-1",
-          },
-          purchaseQty: "120",
-          unit: "pcs",
-          arrivedDate: null,
-          receivedQty: "0",
-          cost: "35000",
-          totalAmount: "4200000",
-        },
-        {
-          id: "32",
-          stock: {
-            stockId: "99",
-            itemName: "KERAN 3M PUTIH",
-          },
-          supplier: {
-            supplierId: "80",
-            supplierName: "supply-2",
-          },
-          purchaseQty: "20",
-          unit: "pcs",
-          arrivedDate: null,
-          receivedQty: "0",
-          cost: "22000",
-          totalAmount: "440000",
-        },
-        {
-          id: "33",
-          stock: {
-            stockId: "99",
-            itemName: 'PIPA RUBEKA 2.5"',
-          },
-          supplier: {
-            supplierId: "80",
-            supplierName: "supply-2",
-          },
-          purchaseQty: "60",
-          unit: "pcs",
-          arrivedDate: null,
-          receivedQty: "0",
-          cost: "5000",
-          totalAmount: "300000",
-        },
-        {
-          id: "34",
-          stock: {
-            stockId: "96",
-            itemName: 'PIPA RUBEKA 3"',
-          },
-          supplier: {
-            supplierId: "80",
-            supplierName: "supply-2",
-          },
-          purchaseQty: "50",
-          unit: "pcs",
-          arrivedDate: null,
-          receivedQty: "0",
-          cost: "5000",
-          totalAmount: "25000",
-        },
-        {
-          id: "35",
-          stock: {
-            stockId: "63",
-            itemName: "KAWAT LAS GULUNG",
-          },
-          supplier: {
-            supplierId: "70",
-            supplierName: "supply-1",
-          },
-          purchaseQty: "16",
-          unit: "box",
-          arrivedDate: null,
-          receivedQty: "0",
-          cost: "240000",
-          totalAmount: "3840000",
-        },
-        {
-          id: "36",
-          stock: {
-            stockId: "69",
-            itemName: "BATA MERAH BLOK KAMPUNG",
-          },
-          supplier: {
-            supplierId: "70",
-            supplierName: "supply-1",
-          },
-          purchaseQty: "800",
-          unit: "pcs",
-          arrivedDate: null,
-          receivedQty: "0",
-          cost: "1000",
-          totalAmount: "800000",
-        },
-      ],
+    setIsLoading(true);
+    const params = {
+      id: subjectData.id,
     };
-    // TODO add maxToReceive property for each icdData (purchaseQty-receivedQty)
-    setData(dummy);
+    incomingApi
+      .getById(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
   };
 
-  const editData = (e, IncomingDetailsId) => {
+  const editStatus = (incomingData) => {
+    setIsLoading(true);
+    const params = {
+      id: incomingData.id,
+      status: true,
+    };
+    incomingApi
+      .updateStatus(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setInvalidReceiveAlertShow(false);
+
+        setActionRes({
+          status: res.status,
+          message: "Berhasil memperbaharui status",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const editData = (e, incomingDetail) => {
     e.preventDefault();
-    const receivingValue = document.getElementById(
-      `input-${IncomingDetailsId}`
-    ).value;
-    const icdData = data.IncomingDetails.find(
-      (i) => i.id === IncomingDetailsId
-    );
+    const receive = document.getElementById(`input-${incomingDetail.id}`).value;
 
-    // ? For Development
-    const maxToReceive = icdData.purchaseQty - icdData.receivedQty;
+    // TODO Have to validate alphabetical value for mobile usage
 
-    // TODO Check alphabetical value for mobile usage
-    if (receivingValue < 1) {
+    // ? Custom validation
+    if (receive < 1) {
       console.warn("value-is-minus validation");
       setInvalidReceiveAlertShow(true);
       return false;
     }
-    if (receivingValue > maxToReceive) {
+    if (receive > incomingDetail.receive_remain) {
       console.error("maxToReceive validation");
       setInvalidReceiveAlertShow(true);
       return false;
     }
 
-    setInvalidReceiveAlertShow(false);
-    console.log("IncomingDetailsId value-", IncomingDetailsId);
-    console.log("receiving quantity value-", receivingValue);
-    // * Hit API
+    const params = {
+      id: incomingDetail.id,
+      received_qty: parseInt(receive),
+    };
+    setIsLoading(true);
+    incomingApi
+      .receive(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setInvalidReceiveAlertShow(false);
+
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menerima barang",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleClose = () => {
@@ -162,8 +108,8 @@ function IncomingUpdateModal({ show, close, subjectData }) {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (subjectData.id) getData();
+  }, [subjectData]);
 
   return (
     <Modal centered size="xl" show={show} onHide={handleClose}>
@@ -177,9 +123,10 @@ function IncomingUpdateModal({ show, close, subjectData }) {
       <Modal.Body>
         <Row className="mx-0 mb-3">
           <Col xs={12} md={6} className="mb-4">
-            <h4 className="cst-text-primary cst-letter-spacing-sm m-0">
-              Penerimaan Barang
-            </h4>
+            <div className="cst-text-primary  d-flex flex-row align-items-center">
+              <h4 className=" cst-letter-spacing-sm m-0">Penerimaan Barang</h4>
+              {isLoading && <Spinner className="mx-2" />}
+            </div>
             {data.status ? (
               <small className="cst-text-positive">
                 <strong>Transaksi sudah selesai</strong>
@@ -190,8 +137,11 @@ function IncomingUpdateModal({ show, close, subjectData }) {
                   <strong>Transaksi ini belum selesai</strong>
                 </small>
                 <div className="mt-2">
-                  <small className="cst-clickable cst-text-primary cst-hover-color-respond">
-                    Ubah status menjadi selesai
+                  <small
+                    onClick={() => editStatus(data)}
+                    className="cst-clickable cst-text-primary cst-hover-color-respond fw-bold"
+                  >
+                    <u>Ubah status menjadi selesai</u>
                   </small>
                 </div>
               </>
@@ -201,24 +151,32 @@ function IncomingUpdateModal({ show, close, subjectData }) {
             <Row className="m-0 d-flex justify-content-end">
               <Col xs={6} md={3} className="px-0">
                 <small>
-                  <strong className="cst-text-secondary">No. Order</strong>
+                  <strong className="cst-text-secondary">
+                    Nomor Pemesanan
+                  </strong>
                 </small>
               </Col>
               <Col xs={6} md={4} className="text-end px-0">
                 <small>
-                  <strong>{data && data.incomingNumber}</strong>
+                  <strong>{subjectData ? subjectData.incoming_no : "-"}</strong>
                 </small>
               </Col>
             </Row>
             <Row className="m-0 d-flex justify-content-end">
               <Col xs={6} md={3} className="px-0">
                 <small>
-                  <strong className="cst-text-secondary">Tanggal Order</strong>
+                  <strong className="cst-text-secondary">
+                    Tanggal Pemesanan
+                  </strong>
                 </small>
               </Col>
               <Col xs={6} md={4} className="text-end px-0">
                 <small>
-                  <strong>{data && data.createdAt}</strong>
+                  <strong>
+                    {subjectData
+                      ? moment(subjectData.purchase_date).format("DD-MM-YYYY")
+                      : "-"}
+                  </strong>
                 </small>
               </Col>
             </Row>
@@ -232,8 +190,8 @@ function IncomingUpdateModal({ show, close, subjectData }) {
                 <small>
                   <strong>
                     {data &&
-                      data.IncomingDetails &&
-                      `${data.IncomingDetails.length} item`}
+                      data.incoming_details &&
+                      `${data.incoming_details.length} item`}
                   </strong>
                 </small>
               </Col>
@@ -247,7 +205,8 @@ function IncomingUpdateModal({ show, close, subjectData }) {
               <Col xs={6} md={4} className="text-end px-0">
                 <small>
                   <strong>
-                    {data && `IDR ${convertIDR(data.totalPurchase)}`}
+                    {subjectData &&
+                      `IDR ${convertIDR(subjectData.total_purchase)}`}
                   </strong>
                 </small>
               </Col>
@@ -279,64 +238,72 @@ function IncomingUpdateModal({ show, close, subjectData }) {
               </thead>
               <tbody>
                 {data &&
-                  data.IncomingDetails &&
-                  data.IncomingDetails.map((i) => (
+                  data.incoming_details &&
+                  data.incoming_details.map((i) => (
                     <tr key={i.id}>
-                      <td>{i.stock && i.stock.itemName}</td>
-                      <td>{i.supplier && i.supplier.supplierName}</td>
+                      <td>{i.stock && i.stock.item_name}</td>
+                      <td>{i.supplier && i.supplier.supplier_name}</td>
                       <td className="text-end">
                         <div className="d-flex flex-column">
-                          {convertIDR(i.totalAmount)}
+                          {convertIDR(i.total_amount)}
                           <span className="text-secondary">IDR</span>
                         </div>
                       </td>
                       <td className="text-end">
                         {" "}
                         <div className="d-flex flex-column">
-                          {convertIDR(i.cost)}
+                          {convertIDR(i.purchase_price)}
                           <span className="text-secondary">IDR</span>
                         </div>
                       </td>
                       <td className="text-end">
-                        {i.purchaseQty} {i.unit}
+                        {i.purchase_qty} {i.unit}
                       </td>
                       <td className="text-end">
-                        {i.receivedQty} {i.unit}
+                        {i.received_qty} {i.unit}
                       </td>
                       <td className="text-center">
-                        {i.arrivedDate ? i.arrivedDate : "-"}
+                        {i.arrive_date
+                          ? moment(i.arrive_date).format("DD-MM-YYYY")
+                          : "-"}
                       </td>
                       <td>
-                        <Form onSubmit={(e) => editData(e, i.id)}>
-                          <Row className="mx-0 d-flex justify-content-center align-items-center">
-                            <Col
-                              lg={12}
-                              xl={5}
-                              className="d-flex  align-items-center"
-                            >
-                              <Form.Control
-                                type="number"
-                                className="cst-form-counter me-1"
-                                // TODO defaultValue should be equals maxToReceive value
-                                // defaultValue={"0"}
-                                placeholder="Input"
-                                id={`input-${i.id}`}
-                              />
-                              <span>{i.unit}</span>
-                            </Col>
-                            <Col lg={12} xl={5} className="pt-2 pt-xl-0">
-                              <Button
-                                type="submit"
-                                variant="none"
-                                className="cst-btn-primary w-100 py-0"
-                                // TODO button should be disabled if maxToReceive value is 0 or on loading
-                                disabled={false}
+                        {i.receive_remain === 0 ? (
+                          <span className="cst-text-positive">
+                            Penerimaan Selesai
+                          </span>
+                        ) : (
+                          <Form onSubmit={(e) => editData(e, i)}>
+                            <Row className="mx-0 d-flex justify-content-center align-items-center">
+                              <Col
+                                lg={12}
+                                xl={5}
+                                className="d-flex  align-items-center"
                               >
-                                Simpan
-                              </Button>
-                            </Col>
-                          </Row>
-                        </Form>
+                                <Form.Control
+                                  type="number"
+                                  className="cst-form-counter me-1"
+                                  // TODO defaultValue should be equals maxToReceive value
+                                  defaultValue={i.receive_remain}
+                                  placeholder="Input"
+                                  id={`input-${i.id}`}
+                                />
+                                <span>{i.unit}</span>
+                              </Col>
+                              <Col lg={12} xl={5} className="pt-2 pt-xl-0">
+                                <Button
+                                  type="submit"
+                                  variant="none"
+                                  className="cst-btn-primary w-100 py-0"
+                                  // TODO button should be disabled if maxToReceive value is 0 or on loading
+                                  disabled={isLoading || i.receive_remain === 0}
+                                >
+                                  Simpan
+                                </Button>
+                              </Col>
+                            </Row>
+                          </Form>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -345,6 +312,11 @@ function IncomingUpdateModal({ show, close, subjectData }) {
           </div>
         </Row>
       </Modal.Body>
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
+      />
     </Modal>
   );
 }

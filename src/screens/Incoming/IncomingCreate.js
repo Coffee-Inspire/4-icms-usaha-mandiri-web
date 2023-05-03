@@ -412,7 +412,7 @@ function IncomingCreate() {
         </Col>
         <Col xs={12} md={7} className="py-3">
           <Container>
-            <Subheader>Order List</Subheader>
+            <Subheader>Daftar Pemesanan</Subheader>
             {dataList.length > 0 && (
               <>
                 <Row className="mx-0 mb-3 border-bottom border-1 d-flex justify-content-between justify-content-md-end">

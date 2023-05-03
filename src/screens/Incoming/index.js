@@ -33,16 +33,17 @@ function Incoming() {
 
   const columns = [
     {
-      label: "order no",
+      label: "nomor pemesanan",
       bind: "incoming_no",
       align: "left",
     },
     {
-      label: "tgl order",
+      label: "tgl pemesanan",
       bind: "purchase_date",
+      type: "date",
     },
     {
-      label: "harga order",
+      label: "total harga pemesanan",
       bind: "total_purchase",
       type: "currency",
       align: "right",
@@ -115,7 +116,7 @@ function Incoming() {
   };
 
   const triggerEdit = (targetData) => {
-    setSubjectData(targetData.id);
+    setSubjectData(targetData);
     setUpdateModalShow(true);
   };
 
@@ -127,7 +128,7 @@ function Incoming() {
     <Container fluid className="p-4">
       <Header headerLabel={"pembelian"} isLoading={isLoading} />
       <ButtonAddRow handler={() => navigate("create")} disabled={isLoading}>
-        Order Barang
+        Pesan Barang
       </ButtonAddRow>
       <Shows
         columns={columns}
