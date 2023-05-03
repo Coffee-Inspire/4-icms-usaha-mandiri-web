@@ -81,34 +81,6 @@ function Incoming() {
         setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
-
-    // // ? For Development
-    // const dummy = [
-    //   {
-    //     id: "1",
-    //     incomingNumber: "INC/0323/1",
-    //     purchaseDate: "22/03/2023",
-    //     totalPurchase: "300000",
-    //     note: "Lorem Ipsum",
-    //   },
-    //   {
-    //     id: "2",
-    //     incomingNumber: "INC/0323/2",
-    //     purchaseDate: "23/03/2023",
-    //     totalPurchase: "500000",
-    //     note: "Lorem Ipsum",
-    //   },
-    //   {
-    //     id: "3",
-    //     incomingNumber: "INC/0323/3",
-    //     purchaseDate: "25/03/2023",
-    //     totalPurchase: "1600000",
-    //     note: "Lorem Ipsum",
-    //   },
-    // ];
-    // setData(dummy);
-    // setTotalPage(5);
-    // setIsLoading(false);
   };
 
   const triggerDetail = (dataId) => {

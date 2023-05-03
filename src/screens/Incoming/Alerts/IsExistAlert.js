@@ -14,8 +14,8 @@ function IsExistAlert({ show, setShow, rejected }) {
       <Alert.Heading>Oops, kamu gagal menambahkan barang</Alert.Heading>
       <p>
         {rejected} sudah ada di dalam{" "}
-        <strong className="cst-text-primary">Order List</strong>, mohon untuk
-        memilih barang yang lain ya {takeIcon("smile")}
+        <strong className="cst-text-primary">Daftar Pemesanan</strong>, mohon
+        untuk memilih barang yang lain ya {takeIcon("smile")}
       </p>
     </Alert>
   );
