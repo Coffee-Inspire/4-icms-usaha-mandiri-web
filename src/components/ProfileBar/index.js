@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -10,15 +10,23 @@ import {
   OverlayTrigger,
 } from "react-bootstrap";
 
+import ChangePasswordModal from "./ChangePasswordModal";
+
 import { takeIcon } from "../../helpers/iconMapper";
 
 function ProfileBar({ expanded, setExpanded }) {
   const navigate = useNavigate();
 
+  const [changePasswordModalShow, setChangePasswordModalShow] = useState(true);
+
   const { profileData } = useSelector((state) => state.profileReducer);
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     navigate("/login");
+  };
+
+  const handleChangePassword = (params) => {
+    console.log(profileData);
   };
   const popover = (
     <Popover id="popover-basic" className="cst-m-xs py-1 px-2">
@@ -46,14 +54,24 @@ function ProfileBar({ expanded, setExpanded }) {
           <p className="cst-text-primary text-center my-auto text-capitalize">
             <strong>{profileData.fullname}</strong>
           </p>
-          <span className="text-end">
-            <small
-              className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
-              onClick={() => handleLogout()}
-            >
-              <strong>Logout</strong>
-            </small>
-          </span>
+          <div>
+            <span className="text-end">
+              <small
+                className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
+                onClick={() => setChangePasswordModalShow(true)}
+              >
+                <strong>Ganti Pasword</strong>
+              </small>
+            </span>
+            <span className="text-end">
+              <small
+                className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
+                onClick={() => handleLogout()}
+              >
+                <strong>Logout</strong>
+              </small>
+            </span>
+          </div>
         </Col>
       </Row>
     </Popover>
@@ -95,6 +113,11 @@ function ProfileBar({ expanded, setExpanded }) {
           </span>
         </OverlayTrigger>
       </div>
+      <ChangePasswordModal
+        show={changePasswordModalShow}
+        close={() => setChangePasswordModalShow(false)}
+        handler={handleChangePassword}
+      />
     </Container>
   );
 }
