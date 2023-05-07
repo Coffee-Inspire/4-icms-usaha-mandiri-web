@@ -11,27 +11,52 @@ import {
 } from "react-bootstrap";
 
 import ChangePasswordModal from "./ChangePasswordModal";
+import ActionPopup from "../ActionPopup";
 
+import userApi from "../../apis/user";
 import { takeIcon } from "../../helpers/iconMapper";
+import errorReader from "../../helpers/errorReader";
 
 function ProfileBar({ expanded, setExpanded }) {
   const navigate = useNavigate();
 
-  const [changePasswordModalShow, setChangePasswordModalShow] = useState(true);
+  const [changePasswordModalShow, setChangePasswordModalShow] = useState(false);
+  const [actionAlertShow, setActionAlertShow] = useState(false);
+  const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const { profileData } = useSelector((state) => state.profileReducer);
+
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     navigate("/login");
   };
 
-  const handleChangePassword = (params) => {
-    console.log(profileData);
+  const handleChangePassword = (data) => {
+    const params = {
+      id: profileData.id,
+      password_current: data.password_current,
+      password_new: data.password_new,
+    };
+    userApi
+      .update(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil mengganti kata sandi",
+        });
+        setActionAlertShow(true);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      });
   };
+  console.log(profileData);
   const popover = (
     <Popover id="popover-basic" className="cst-m-xs py-1 px-2">
       <Row className="mx-0 ">
-        <Col xs={5} className="text-center py-2 px-1">
+        <Col xs={6} className="cst-border-light-right text-center py-2 px-1">
           <span
             style={{ width: "50px", height: "50px", padding: "5px" }}
             className="cst-text-plain cst-bg-secondary d-flex justify-content-center align-items-center rounded-circle mx-auto mb-1"
@@ -48,30 +73,29 @@ function ProfileBar({ expanded, setExpanded }) {
           </small>
         </Col>
         <Col
-          xs={7}
-          className="d-flex flex-column justify-content-between py-2 px-1"
+          xs={6}
+          className="d-flex flex-column justify-content-end py-2 px-1"
         >
-          <p className="cst-text-primary text-center my-auto text-capitalize">
-            <strong>{profileData.fullname}</strong>
-          </p>
-          <div>
-            <span className="text-end">
-              <small
-                className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
-                onClick={() => setChangePasswordModalShow(true)}
-              >
-                <strong>Ganti Pasword</strong>
-              </small>
-            </span>
-            <span className="text-end">
-              <small
-                className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
-                onClick={() => handleLogout()}
-              >
-                <strong>Logout</strong>
-              </small>
-            </span>
-          </div>
+          <span className="my-1 text-end">
+            <small
+              className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
+              onClick={() => setChangePasswordModalShow(true)}
+            >
+              <strong>
+                <u>Ganti Kata Sandi</u>
+              </strong>
+            </small>
+          </span>
+          <span className="my-1 text-end">
+            <small
+              className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
+              onClick={() => handleLogout()}
+            >
+              <strong>
+                <u>Keluar</u>
+              </strong>
+            </small>
+          </span>
         </Col>
       </Row>
     </Popover>
@@ -91,13 +115,12 @@ function ProfileBar({ expanded, setExpanded }) {
           setExpanded(!expanded);
         }}
       >
-        {/* {expanded ? takeIcon("chevronRight") : takeIcon("chevronLeft")} */}
         {takeIcon("burger")}
       </Button>
       <div className="d-flex align-items-center me-md-3">
         Hi,{" "}
         <strong className="ms-1 me-2 text-capitalize">
-          {profileData.username}
+          {profileData.fullname}
         </strong>
         <OverlayTrigger
           rootClose
@@ -117,6 +140,11 @@ function ProfileBar({ expanded, setExpanded }) {
         show={changePasswordModalShow}
         close={() => setChangePasswordModalShow(false)}
         handler={handleChangePassword}
+      />
+      <ActionPopup
+        show={actionAlertShow}
+        setShow={setActionAlertShow}
+        actionRes={actionRes}
       />
     </Container>
   );

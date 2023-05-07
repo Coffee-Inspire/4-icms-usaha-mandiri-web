@@ -3,9 +3,8 @@ import { Modal, Row, Col, Form, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-// import ValidationAlert from "./Alerts/ValidationAlert";
+
 import PasswordConfirmUnmatched from "./Alerts/PasswordConfirmUnmatched";
-import validator from "../../helpers/validator";
 
 function ChangePasswordModal({ show, close, handler }) {
   const schema = Joi.object({
@@ -29,7 +28,6 @@ function ChangePasswordModal({ show, close, handler }) {
     reset,
   } = useForm({ resolver: joiResolver(schema) });
 
-  // const [validationAlertShow, setValidationAlertShow] = useState(false);
   const [passUnmatched, setPassUnmatched] = useState(false);
 
   const onSubmit = (data) => {
@@ -40,14 +38,8 @@ function ChangePasswordModal({ show, close, handler }) {
       return false;
     }
     setPassUnmatched(false);
-    // const isValid = validator(data);
-    // if (!isValid) {
-    //   setValidationAlertShow(true);
-    //   return false;
-    // }
-    // setValidationAlertShow(false);
-    console.log("UPDATE PARAM => ", data);
-    handler();
+    handler(data);
+    close();
   };
 
   const handleClose = () => {
@@ -62,15 +54,11 @@ function ChangePasswordModal({ show, close, handler }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Perbaharui Password</Modal.Title>
+        <Modal.Title>Perbaharui Kata Sandi</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row>
           <Col className="px-3">
-            {/* <ValidationAlert
-              show={validationAlertShow}
-              setShow={setValidationAlertShow}
-            /> */}
             <PasswordConfirmUnmatched
               show={passUnmatched}
               setShow={setPassUnmatched}
@@ -80,7 +68,7 @@ function ChangePasswordModal({ show, close, handler }) {
         <Form onSubmit={handleSubmit(onSubmit)} className="p-2">
           <Form.Group className="my-3">
             <Form.Label>
-              Password Lama<span className="cst-text-negative">*</span>
+              Kata Sandi Lama<span className="cst-text-negative">*</span>
             </Form.Label>
             <Form.Control
               type="password"
@@ -88,7 +76,7 @@ function ChangePasswordModal({ show, close, handler }) {
               className={`cst-form-control ${
                 errors.password_current && "cst-form-invalid"
               }`}
-              placeholder="Password lama"
+              placeholder="Kata sandi lama"
             />
             <small className="cst-text-negative ">
               {errors.password_current?.message}
@@ -96,7 +84,7 @@ function ChangePasswordModal({ show, close, handler }) {
           </Form.Group>
           <Form.Group className="my-3">
             <Form.Label>
-              Password Baru<span className="cst-text-negative">*</span>
+              Kata Sandi Baru<span className="cst-text-negative">*</span>
             </Form.Label>
             <Form.Control
               type="password"
@@ -104,7 +92,7 @@ function ChangePasswordModal({ show, close, handler }) {
               className={`cst-form-control ${
                 errors.password_new && "cst-form-invalid"
               }`}
-              placeholder="Password baru"
+              placeholder="Kata sandi baru"
             />
             <small className="cst-text-negative ">
               {errors.password_new?.message}
@@ -112,7 +100,7 @@ function ChangePasswordModal({ show, close, handler }) {
           </Form.Group>
           <Form.Group className="my-3">
             <Form.Label>
-              Konfirmasi Password Baru
+              Ulangi Kata Sandi Baru
               <span className="cst-text-negative">*</span>
             </Form.Label>
             <Form.Control
@@ -121,7 +109,7 @@ function ChangePasswordModal({ show, close, handler }) {
               className={`cst-form-control ${
                 errors.password_new_confirm && "cst-form-invalid"
               }`}
-              placeholder="Konfirmasi password baru"
+              placeholder="Ulangi kata sandi baru"
             />
             <small className="cst-text-negative ">
               {errors.password_new_confirm?.message}

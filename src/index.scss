@@ -8,7 +8,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-
 // * Reduce flickering issue when first rendered, need further research
 // .popover {
 //   margin-left: -30px;
@@ -80,7 +79,7 @@ Extra extra large	xxl	≥1400px
     border-bottom-right-radius: 10px;
   }
 
-  .cst-fixed-right{       
+  .cst-fixed-right {
     left: 0;
     transform: translate(4%, 0%) !important;
   }
@@ -191,7 +190,7 @@ Extra extra large	xxl	≥1400px
   background-color: $color-plain;
 }
 
-.cst-bg-positive{
+.cst-bg-positive {
   background-color: $color-positive;
 }
 
@@ -199,7 +198,7 @@ Extra extra large	xxl	≥1400px
   background-color: lighten($color-positive, 53%);
 }
 
-.cst-bg-negative{
+.cst-bg-negative {
   background-color: $color-negative;
 }
 
@@ -207,7 +206,7 @@ Extra extra large	xxl	≥1400px
   background-color: lighten($color-negative, 53%);
 }
 
-.cst-bg-warning{
+.cst-bg-warning {
   background-color: $color-warning;
 }
 
@@ -408,6 +407,10 @@ Extra extra large	xxl	≥1400px
 
 .cst-border-right {
   border-right: 2px solid rgba($color-primary, 0.4);
+}
+
+.cst-border-light-right {
+  border-right: 1px solid rgba($color-primary, 0.3);
 }
 
 .cst-btn-primary {
@@ -633,8 +636,8 @@ Extra extra large	xxl	≥1400px
   }
 }
 
-.cst-fixed-right{  
+.cst-fixed-right {
   top: 60px;
-  right: 0;  
+  right: 0;
   transform: translate(-7%, 0%);
 }
