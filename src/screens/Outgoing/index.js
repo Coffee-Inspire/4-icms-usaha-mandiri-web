@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import moment from "moment";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
 import ButtonAddRow from "../../components/ButtonAddRow";
 import ActionPopup from "../../components/ActionPopup";
 
+import outgoingApi from "../../apis/outgoing";
 import limitOptions from "../../options/tableLimitOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
@@ -27,26 +29,27 @@ function Outgoing() {
 
   const columns = [
     {
-      label: "Nota",
-      bind: "receiptNumber",
+      label: "nomor nota",
+      bind: "receipt_no",
       align: "left",
     },
     {
       label: "tgl nota",
-      bind: "soldDate",
+      bind: "sold_date",
+      type: "date",
     },
     {
       label: "harga nota",
-      bind: "totalSold",
+      bind: "total_sold",
       type: "currency",
       align: "right",
     },
     {
-      label: "customer",
-      bind: "guestName",
+      label: "nama pelanggan",
+      bind: "guest_name",
     },
     {
-      label: "catatan",
+      label: "keterangan",
       bind: "note",
     },
     {
@@ -59,53 +62,32 @@ function Outgoing() {
 
   const getData = () => {
     setIsLoading(true);
-    const param = {
+    const params = {
       page,
       limit: limit.value,
       filter,
       search,
     };
-    console.log("OUTGOING GET Parameter:", param);
-    // * Call API
-
-    // ? For Development
-    const dummy = [
-      {
-        id: "1",
-        receiptNumber: "OUT/0323/1",
-        soldDate: "24/03/2023",
-        totalSold: "70000",
-        guestName: "customer 1",
-        note: "Lorem Ipsum",
-      },
-      {
-        id: "2",
-        receiptNumber: "OUT/0323/2",
-        soldDate: "24/03/2023",
-        totalSold: "120000",
-        guestName: "cusomer 1",
-        note: "Lorem Ipsum",
-      },
-      {
-        id: "3",
-        receiptNumber: "OUT/0323/3",
-        soldDate: "24/03/2023",
-        totalSold: "160000",
-        guestName: "cusomer 2",
-        note: "Lorem Ipsum",
-      },
-      {
-        id: "4",
-        receiptNumber: "OUT/0323/4",
-        soldDate: "24/03/2023",
-        totalSold: "55000",
-        guestName: "cusomer 3",
-        note: "Lorem Ipsum",
-      },
-    ];
-    setData(dummy);
-    setTotalPage(5);
-    setIsLoading(false);
+    outgoingApi
+      .getAll(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        const dataLength = res.data.data.count;
+        const normalized = res.data.data.rows.map(
+          (i) =>
+            (i = {
+              ...i,
+              guest_name: i.guest.guest_name,
+            })
+        );
+        setData(normalized);
+        setTotalPage(Math.ceil(dataLength / params.limit));
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const triggerDetail = (dataId) => {

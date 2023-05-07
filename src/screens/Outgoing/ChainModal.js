@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Row, Col, Button } from "react-bootstrap";
 import { takeIcon } from "../../helpers/iconMapper";
 
-function ChainModal({ show, close, handlePrint }) {
+function ChainModal({ show, close, handlePrint, subjectId }) {
   return (
     <Modal centered show={show} onHide={close}>
       <Modal.Body>

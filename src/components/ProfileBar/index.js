@@ -52,7 +52,7 @@ function ProfileBar({ expanded, setExpanded }) {
         setActionAlertShow(true);
       });
   };
-  console.log(profileData);
+
   const popover = (
     <Popover id="popover-basic" className="cst-m-xs py-1 px-2">
       <Row className="mx-0 ">

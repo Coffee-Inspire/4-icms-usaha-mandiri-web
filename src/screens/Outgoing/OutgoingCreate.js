@@ -20,6 +20,8 @@ import ChainModal from "./ChainModal";
 import ActionPopup from "../../components/ActionPopup";
 
 import customerApi from "../../apis/customer";
+import stockApi from "../../apis/stock";
+import outgoingApi from "../../apis/outgoing";
 import convertIDR from "../../helpers/convertIDR";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
@@ -67,14 +69,18 @@ function OutgoingCreate() {
   ];
 
   const { profileData } = useSelector((state) => state.profileReducer);
+  const [quickData, setQuickData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [customerOptions, setCustomerOptions] = useState([]);
+  const [stockOptions, setStockOptions] = useState([]);
   const [invoiceInfo, setInvoiceInfo] = useState({
     date: "",
     user: "",
   });
   const [customer, setCustomer] = useState(null);
   const [customerInfo, setCustomerInfo] = useState(null);
+  const [stock, setStock] = useState(null);
+  const [stockInfo, setStockInfo] = useState(null);
 
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState("0");
@@ -83,13 +89,21 @@ function OutgoingCreate() {
     change: "0",
   });
   const initialCartRow = {
-    itemId: "",
-    itemName: "",
+    stock_id: null,
+    stock_name: "",
+    sold_price: "",
     price: 0,
     qty: 0,
-    soldQty: "1",
+    sold_qty: "1",
+    total_amount: 0,
     unit: "-",
-    amount: 0,
+    // itemId: "",
+    // itemName: "",
+    // price: 0,
+    // qty: 0,
+    // soldQty: "1",
+    // unit: "-",
+    // amount: 0,
   };
 
   const [chainModalShow, setChainModalShow] = useState(false);
@@ -130,67 +144,142 @@ function OutgoingCreate() {
       .finally(() => setIsLoading(false));
   };
 
+  const getStockSource = () => {
+    setIsLoading(true);
+    stockApi
+      .getDataSource()
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setStockOptions(res.data.data);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  // const getStockInfo = (stockId) => {
+  //   setIsLoading(true);
+  //   const params = {
+  //     id: stockId,
+  //   };
+  //   stockApi
+  //     .getById(params)
+  //     .then((res) => {
+  //       if (res.status !== 200) throw res;
+  //       setStockInfo(res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       setActionRes(errorReader(err));
+  //       setActionAlertShow(true);
+  //     })
+  //     .finally(() => setIsLoading(false));
+  // };
+
   const handleAddRow = () => {
     setCart((cart) => [...cart, initialCartRow]);
   };
 
-  const handleAssignStockToCart = (targetIndex, item) => {
+  const handleAssignStockToCart = async (targetIndex, item) => {
     // * Hit GetItemById API ,requesting for stock price
-    // ? For Development
-    const dummyItemPrice = [
-      {
-        id: "1",
-        itemName: "Semen",
-        price: "50000",
-        qty: "50",
-        unit: "pcs",
-      },
-      {
-        id: "2",
-        itemName: "Kayu",
-        price: "30000",
-        qty: "60",
-        unit: "box",
-      },
-      {
-        id: "3",
-        itemName: "Besi",
-        price: "80000",
-        qty: "30",
-        unit: "pcs",
-      },
-    ];
-    const itemData = dummyItemPrice.find((i) => i.id === item.value);
+    // // ? For Development
+    // const dummyItemPrice = [
+    //   {
+    //     id: "1",
+    //     itemName: "Semen",
+    //     price: "50000",
+    //     qty: "50",
+    //     unit: "pcs",
+    //   },
+    //   {
+    //     id: "2",
+    //     itemName: "Kayu",
+    //     price: "30000",
+    //     qty: "60",
+    //     unit: "box",
+    //   },
+    //   {
+    //     id: "3",
+    //     itemName: "Besi",
+    //     price: "80000",
+    //     qty: "30",
+    //     unit: "pcs",
+    //   },
+    // ];
+    // const itemData = dummyItemPrice.find((i) => i.id === item.value);
 
-    setCart(
-      cart.map((c, idx) => {
-        if (idx === targetIndex) {
-          return {
-            ...c,
-            itemId: item.value,
-            itemName: itemData.itemName,
-            price: itemData.price,
-            qty: itemData.qty,
-            unit: itemData.unit,
-            amount: itemData.price * c.soldQty,
-          };
-        } else {
-          return c;
-        }
+    setIsLoading(true);
+    const params = {
+      id: item.value,
+    };
+    stockApi
+      .getById(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        const stock = res.data.data;
+        setCart(
+          cart.map((c, idx) => {
+            if (idx === targetIndex) {
+              return {
+                ...c,
+                stock_id: item.value,
+                stock_name: item.label,
+                sold_price: stock.price,
+                price: stock.price,
+                qty: stock.qty,
+                // sold_qty: "1",
+                total_amount: stock.price * c.sold_qty,
+                unit: stock.unit,
+              };
+            } else return c;
+          })
+        );
       })
-    );
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+
+    // setCart(
+    //   cart.map((c, idx) => {
+    //     if (idx === targetIndex) {
+    //       return {
+    //         ...c,
+    //         itemId: item.value,
+    //         itemName: itemData.itemName,
+    //         price: itemData.price,
+    //         qty: itemData.qty,
+    //         unit: itemData.unit,
+    //         amount: itemData.price * c.soldQty,
+    //       };
+    //     } else {
+    //       return c;
+    //     }
+    //   })
+    // );
   };
 
   const handleAssignQtyToCart = (targetIndex, value) => {
     setCart(
       cart.map((c, idx) => {
         if (idx === targetIndex) {
-          return { ...c, soldQty: value, amount: value * c.price };
+          return { ...c, sold_qty: value, total_amount: value * c.price };
         } else {
           return c;
         }
       })
     );
+    // setCart(
+    //   cart.map((c, idx) => {
+    //     if (idx === targetIndex) {
+    //       return { ...c, soldQty: value, amount: value * c.price };
+    //     } else {
+    //       return c;
+    //     }
+    //   })
+    // );
   };
 
   const handleRemoveFromCart = (targetIndex) => {
@@ -204,23 +293,52 @@ function OutgoingCreate() {
   });
   const handleSubmit = () => {
     const params = {
-      customer: customer,
+      outgoing: {
+        sold_date: moment(),
+        guest_id: customer ? customer.value : null,
+        total_sold: totalPrice,
+        note: "",
+      },
       cart: cart,
-      totalPrice: totalPrice,
-      date: moment(),
-      user: profileData.id,
+      // customer: customer,
+      // totalPrice: totalPrice,
+      // date: moment(),
+      // user: profileData.id,
     };
-    console.log("Full Params =>", params);
 
-    // ? For Development
-    const d = {
-      ...params,
-      customer: customer ? customer.label : "",
-      date: moment().format("D-MM-YYYY"),
-    };
-    setDummyApiResultReturn({ ...dummyApiResultReturn, ...d });
+    setIsLoading(true);
+    outgoingApi
+      .create(params)
+      .then((res) => {
+        console.log("Outgoing POST Callback => ", res);
+        if (res.status !== 200) throw res;
+        // TODO Set quick data from response for fast receipt and details redirect
+        setQuickData("");
+        // TODO Shows chain popup if status res is 200
+        setChainModalShow(true);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
 
-    setChainModalShow(true);
+    // // ? For Development
+    // const d = {
+    //   ...params,
+    //   customer: customer ? customer.label : "",
+    //   date: moment().format("D-MM-YYYY"),
+    // };
+    // setDummyApiResultReturn({ ...dummyApiResultReturn, ...d });
+
+    // setChainModalShow(true);
+  };
+
+  const stopCheckout = (cart) => {
+    let flag = false;
+    if (cart.length < 1) flag = true;
+    if (cart.length > 0 && cart[0].stock_id === null) flag = true;
+    return flag;
   };
 
   useEffect(() => {
@@ -231,6 +349,7 @@ function OutgoingCreate() {
     });
     getCustomerSource();
     setCart([initialCartRow]);
+    getStockSource();
   }, []);
 
   useEffect(() => {
@@ -267,9 +386,16 @@ function OutgoingCreate() {
     } else setCustomerInfo(null);
   }, [customer]);
 
+  // useEffect(() => {
+  //   if (stock !== null) {
+  //     // * Request for stock data
+  //     getStockInfo(stock.value);
+  //   } else setStockIn(null);
+  // }, [stock]);
+
   useEffect(() => {
     if (cart.length > 0) {
-      const s = cart.reduce((a, b) => a + b.amount, 0);
+      const s = cart.reduce((a, b) => a + b.total_amount, 0);
       setTotalPrice(s);
     } else setTotalPrice("0");
   }, [cart]);
@@ -388,7 +514,8 @@ function OutgoingCreate() {
                       <td>
                         <Select
                           menuPortalTarget={document.body}
-                          options={dummyItemOptions}
+                          // options={dummyItemOptions}
+                          options={stockOptions}
                           onChange={(e) => {
                             handleAssignStockToCart(index, e);
                           }}
@@ -409,14 +536,14 @@ function OutgoingCreate() {
                           onChange={(e) =>
                             handleAssignQtyToCart(index, e.target.value)
                           }
-                          value={cart[index].soldQty}
+                          value={cart[index].sold_qty}
                         />
                       </td>
                       <td>{cart[index].unit}</td>
                       <td>
                         <Form.Control
                           className="cst-form-control"
-                          value={`IDR ${convertIDR(cart[index].amount)}`}
+                          value={`IDR ${convertIDR(cart[index].total_amount)}`}
                           disabled
                         />
                       </td>
@@ -457,7 +584,7 @@ function OutgoingCreate() {
             <Col xs={12} md={6} className="mb-4">
               <Form.Control
                 as="textarea"
-                placeholder="Catatan (opsional)"
+                placeholder="Keterangan (opsional)"
                 className="cst-form-control"
               />
             </Col>
@@ -504,9 +631,10 @@ function OutgoingCreate() {
                     variant="none"
                     className="cst-btn-primary w-100 d-flex justify-content-center align-items-center"
                     onClick={() => handleSubmit()}
+                    disabled={isLoading || stopCheckout(cart)}
                   >
                     <span>{takeIcon("save")}</span>
-                    <span className="mx-2">Simpan</span>
+                    <span className="mx-2">Checkout</span>
                   </Button>
                 </Col>
               </Row>
@@ -519,6 +647,7 @@ function OutgoingCreate() {
         show={chainModalShow}
         close={() => setChainModalShow(false)}
         handlePrint={handlePrint}
+        subjectId={quickData}
       />
       <Receipt innerRef={printRef} data={dummyApiResultReturn} />
       <ActionPopup

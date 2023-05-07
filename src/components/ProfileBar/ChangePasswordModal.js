@@ -9,16 +9,16 @@ import PasswordConfirmUnmatched from "./Alerts/PasswordConfirmUnmatched";
 function ChangePasswordModal({ show, close, handler }) {
   const schema = Joi.object({
     password_current: Joi.string().required().messages({
-      "string.empty": `Password lama tidak boleh kosong`,
-      "any.required": `Password lama tidak boleh kosong`,
+      "string.empty": `Kata sandi lama tidak boleh kosong`,
+      "any.required": `Kata sandi lama tidak boleh kosong`,
     }),
     password_new: Joi.string().required().messages({
-      "string.empty": `Password baru tidak boleh kosong`,
-      "any.required": `Password baru tidak boleh kosong`,
+      "string.empty": `Kata sandi baru tidak boleh kosong`,
+      "any.required": `Kata sandi baru tidak boleh kosong`,
     }),
     password_new_confirm: Joi.string().required().messages({
-      "string.empty": `Mohon masukkan password baru sekali lagi dengan benar ya`,
-      "any.required": `Mohon masukkan password baru sekali lagi dengan benar ya`,
+      "string.empty": `Mohon ulangi kata sandi dengan benar ya`,
+      "any.required": `Mohon ulangi kata sandi dengan benar ya`,
     }),
   });
   const {
