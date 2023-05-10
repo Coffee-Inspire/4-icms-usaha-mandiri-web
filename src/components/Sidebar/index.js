@@ -25,7 +25,12 @@ function Sidebar({ prefix, expanded }) {
     >
       <Navbar.Brand>
         <div className="text-center">
-          <img src={logo} alt="" className="my-5" />
+          <img
+            src={logo}
+            alt=""
+            className="my-5"
+            style={{ width: "160px", height: "40px" }}
+          />
         </div>
       </Navbar.Brand>
       {navs.length > 0 &&

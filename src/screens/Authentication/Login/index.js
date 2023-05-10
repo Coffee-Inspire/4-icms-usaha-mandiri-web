@@ -87,7 +87,11 @@ function Login() {
         >
           <div className="text-center">
             <div>
-              <img alt="" src={Logo} />
+              <img
+                alt=""
+                src={Logo}
+                style={{ width: "175px", height: "45px" }}
+              />
             </div>
             <small
               className="cst-letter-spacing-sm cst-text-secondary"
