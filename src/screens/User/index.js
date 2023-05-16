@@ -13,6 +13,8 @@ import userApi from "../../apis/user";
 import roleApi from "../../apis/role";
 import selections from "../../helpers/selections";
 import limitOptions from "../../options/tableLimitOptions.json";
+import sortOptions from "./Options/sortOptions.json";
+import filterOptions from "./Options/filterOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
@@ -24,7 +26,8 @@ function User() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(filterOptions[1].value);
+  const [sort, setSort] = useState(sortOptions[0].value);
   const [search, setSearch] = useState("");
 
   const [createModalShow, setCreateModalShow] = useState(false);
@@ -101,6 +104,7 @@ function User() {
     const params = {
       page,
       limit: limit.value,
+      sort,
       filter,
       search,
     };
@@ -199,7 +203,7 @@ function User() {
   useEffect(() => {
     getData();
     getRoleSource();
-  }, [limit, page, filter, search]);
+  }, [limit, page, sort, filter, search]);
 
   useEffect(() => {
     setPage(1);
@@ -224,6 +228,11 @@ function User() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        setSort={setSort}
+        filter={filter}
+        sort={sort}
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
         actionForEdit={triggerEdit}
         actionForDelete={triggerDelete}
       />

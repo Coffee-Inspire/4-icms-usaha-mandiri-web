@@ -24,7 +24,12 @@ function Shows({
   setPage,
   totalPage,
   setSearch,
+  setSort,
   setFilter,
+  filterOptions,
+  sortOptions,
+  sort,
+  filter,
   actionForEdit,
   actionForDetail,
   actionForDelete,
@@ -34,45 +39,75 @@ function Shows({
     ? (actionMethods = actionMethods.methods)
     : (actionMethods = []);
 
+  const sortPopover = (
+    <Popover id="popover-basic">
+      <Popover.Body>
+        <Form>
+          <Row>
+            {sortOptions &&
+              sortOptions.map((s) => (
+                <Col
+                  key={s.value}
+                  xs={12}
+                  className="cst-clickable cst-hover-bg-respond py-1 my-1 d-flex justify-content-between align-items-center"
+                  onClick={() => {
+                    const me = document.getElementById(`sort-${s.value}`);
+                    me.click();
+                    document.body.click();
+                  }}
+                >
+                  <label htmlFor={`sort-${s.value}`} className="cst-clickable">
+                    {s.label}
+                  </label>
+                  <Form.Check
+                    type={"radio"}
+                    name="sort"
+                    id={`sort-${s.value}`}
+                    onChange={() => setSort(s.value)}
+                    className="cst-clickable"
+                    defaultChecked={sort === s.value}
+                  />
+                </Col>
+              ))}
+          </Row>
+        </Form>
+      </Popover.Body>
+    </Popover>
+  );
+
   const filterPopover = (
     <Popover id="popover-basic">
       <Popover.Body>
         <Form>
           <Row>
-            <Col xs={12}>
-              <p className="cst-text-secondary">SORT BY:</p>
-            </Col>
-            <Col
-              xs={12}
-              className="cst-clickable cst-hover-bg-respond my-1 d-flex justify-content-between align-items-center"
-            >
-              <label htmlFor="sortDefault" className="cst-clickable">
-                Default
-              </label>
-              <Form.Check
-                type={"radio"}
-                name="filter"
-                id="sortDefault"
-                onChange={() => setFilter("")}
-                className="cst-clickable"
-                defaultChecked
-              />
-            </Col>
-            <Col
-              xs={12}
-              className="cst-clickable cst-hover-bg-respond my-1 d-flex justify-content-between align-items-center"
-            >
-              <label htmlFor="sortUpdatedAt" className="cst-clickable">
-                Date modified
-              </label>
-              <Form.Check
-                type={"radio"}
-                name="filter"
-                id="sortUpdatedAt"
-                onChange={() => setFilter("updatedAt")}
-                className="cst-clickable"
-              />
-            </Col>
+            {filterOptions &&
+              filterOptions.map((f) => (
+                <Col
+                  key={f.value}
+                  xs={12}
+                  className="cst-clickable cst-hover-bg-respond py-1 my-1 d-flex justify-content-between align-items-center"
+                  onClick={() => {
+                    const me = document.getElementById(`filter-${f.value}`);
+                    me.click();
+                    document.body.click();
+                  }}
+                >
+                  <label
+                    htmlFor={`filter-${f.value}`}
+                    className="cst-clickable"
+                  >
+                    {f.label}
+                  </label>
+                  <Form.Check
+                    type={"radio"}
+                    name="filter"
+                    id={`filter-${f.value}`}
+                    onChange={() => setFilter(f.value)}
+                    className="cst-clickable"
+                    defaultChecked={filter === f.value}
+                  />
+                </Col>
+              ))}
           </Row>
         </Form>
       </Popover.Body>
@@ -366,7 +401,23 @@ function Shows({
   return (
     <div className="cst-section-shadow rounded-3  my-4">
       <Row className="mx-0 py-3">
-        <Col xs={5} md={2} className="px-0  d-flex justify-content-center">
+        <Col xs={5} md={1} className="px-1 d-flex justify-content-center">
+          <OverlayTrigger
+            rootClose
+            trigger="click"
+            placement="bottom-start"
+            overlay={sortPopover}
+          >
+            <Button
+              variant="none"
+              className="cst-btn-secondary d-flex justify-content-center align-items-center w-100"
+            >
+              <span>{takeIcon("sort")}</span>
+              <span className="ms-1"> Urutkan</span>
+            </Button>
+          </OverlayTrigger>
+        </Col>
+        <Col xs={5} md={1} className="px-1 d-flex justify-content-center">
           <OverlayTrigger
             rootClose
             trigger="click"
@@ -375,17 +426,17 @@ function Shows({
           >
             <Button
               variant="none"
-              className="cst-btn-secondary d-flex justify-content-center align-items-center w-75"
+              className="cst-btn-secondary d-flex justify-content-center align-items-center w-100"
             >
               <span>{takeIcon("filter")}</span>
               <span className="ms-1"> Filter</span>
             </Button>
           </OverlayTrigger>
         </Col>
-        <Col xs={7} md={4} className="px-0">
+        <Col xs={12} md={4} className="px-1 mt-3 mt-md-0">
           <Form.Group className=" position-relative">
             <Form.Control
-              placeholder="Search"
+              placeholder="Cari"
               onChange={(e) => setSearch(e.target.value)}
               className="cst-form-control cst-form-control-inner-padding"
             />

@@ -6,7 +6,6 @@ import Logo from "../../assets/logo.png";
 import convertIDR from "../../helpers/convertIDR";
 
 function Receipt({ innerRef, data }) {
-  console.log("RECEIPT => ", data);
   const headingCellStyle = {
     border: "1px solid rgba(0,0,0,1)",
     padding: "2px 10px 2px 10px",
@@ -25,7 +24,7 @@ function Receipt({ innerRef, data }) {
       <div className="d-flex mb-4">
         <div className="w-50">
           <img
-            style={{ width: "250px", height: "30px" }}
+            style={{ width: "230px", height: "55px" }}
             className="mb-2"
             alt=""
             src={Logo}

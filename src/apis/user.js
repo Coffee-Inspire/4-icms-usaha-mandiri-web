@@ -8,7 +8,7 @@ const user = {
       method: "GET",
     };
 
-    let url = `${base}/?page=${page}&limit=${limit}&search=${search}`;
+    let url = `${base}/?page=${page}&limit=${limit}&search=${search}&sort=${sort}`;
     return fetchDepart(url, options);
   },
 

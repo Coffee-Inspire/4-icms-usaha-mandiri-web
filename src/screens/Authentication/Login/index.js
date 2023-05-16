@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 
 import InvalidAlert from "../Alerts/InvalidAlert";
-import Logo from "../../../assets/logo.png";
+import Logo from "../../../assets/logo_vertical.png";
 import CarouselImg1 from "../../../assets/Good team-pana.svg";
 import CarouselImg2 from "../../../assets/Visual data-pana.svg";
 import CarouselImg3 from "../../../assets/Creative team-pana.svg";
@@ -90,7 +90,7 @@ function Login() {
               <img
                 alt=""
                 src={Logo}
-                style={{ width: "175px", height: "45px" }}
+                style={{ width: "100px", height: "68px" }}
               />
             </div>
             <small

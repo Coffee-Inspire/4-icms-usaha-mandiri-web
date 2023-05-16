@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Semua",
+    "value": ""    
+  },
+  {
+    "label": "Aktif",
+    "value": "active"
+  },
+  {
+    "label": "Nonaktif",
+    "value": "inactive"
+  }
+]
