@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -8,41 +8,50 @@ import ValidationAlert from "./Alerts/ValidationAlert";
 
 import validator from "../../helpers/validator";
 
-function CategoryCreateModa({ show, close, handler }) {
+function StockUpdateModal({ show, close, handler, subject = {} }) {
   const schema = Joi.object({
-    category_name: Joi.string().required().messages({
-      "string.empty": `Nama kategori tidak boleh kosong`,
-      "any.required": `Nama kategori tidak boleh kosong`,
-    }),
-    note: Joi.string().allow(""),
+    price: Joi.string()
+      .pattern(/^[0-9]+$/)
+      .required()
+      .messages({
+        "string.empty": `Harga jual tidak boleh kosong`,
+        "any.required": `Harga jual tidak boleh kosong`,
+        "string.pattern.base": `Harga jual tidak valid`,
+      }),
   });
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
+    register,
     reset,
   } = useForm({ resolver: joiResolver(schema) });
 
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
   const onSubmit = (data) => {
-    const isValid = validator(data, ["note"]);
+    const isValid = validator(data);
     if (!isValid) {
       setValidationAlertShow(true);
       return false;
     }
     setValidationAlertShow(false);
-
-    handler(data);
-    handleClose();
+    const params = {
+      id: subject.id,
+      ...data,
+    };
+    handler(params);
+    close();
   };
 
   const handleClose = () => {
-    setValidationAlertShow(false);
     reset();
     close();
   };
+
+  useEffect(() => {
+    reset();
+  }, [subject]);
 
   return (
     <Modal size="lg" centered show={show} onHide={handleClose}>
@@ -51,7 +60,7 @@ function CategoryCreateModa({ show, close, handler }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Tambah Kategori</Modal.Title>
+        <Modal.Title>Perbaharui Stok</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row className="mx-0">
@@ -64,50 +73,35 @@ function CategoryCreateModa({ show, close, handler }) {
         </Row>
         <Form onSubmit={handleSubmit(onSubmit)} className="m-2">
           <Row className="mx-0">
-            <Col md={12} lg={12} className="py-2">
+            <Col xs={12} md={12} className="py-2">
               <Form.Group>
                 <Form.Label>
-                  Nama Kategori<span className="cst-text-negative">*</span>
+                  Harga Jual <span className="cst-text-negative">*</span>
                 </Form.Label>
                 <Form.Control
-                  {...register("category_name")}
+                  type="name"
+                  {...register("price")}
                   className={`cst-form-control ${
-                    errors.category_name && "cst-form-invalid"
+                    errors.price && "cst-form-invalid"
                   }`}
-                  placeholder=" Nama Kategori"
+                  placeholder="Harga Jual"
+                  defaultValue={subject && subject.price}
                 />
                 <small className="cst-text-negative ">
-                  {errors.category_name?.message}
+                  {errors.price?.message}
                 </small>
               </Form.Group>
             </Col>
-            <Col md={12} lg={12} className="py-2">
-              <Form.Group>
-                <Form.Label>Deskripsi</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  {...register("note")}
-                  className={`cst-form-control ${
-                    errors.note && "cst-form-invalid"
-                  }`}
-                  placeholder="Deskripsi"
-                />
-                <small className="cst-text-negative ">
-                  {errors.note?.message}
-                </small>
-              </Form.Group>
-            </Col>
-
-            <Col md={12} lg={12} className="my-2 text-end">
+            <Col xs={12} md={12} className="my-2 text-end">
               <small>
                 <span className="cst-text-negative">*</span> Wajib diisi
               </small>
             </Col>
             <Col
-              md={12}
-              className="mx-0 mt-5 d-flex justify-content-between justify-content-lg-end"
+              xs={12}
+              className="mx-0 mt-5 d-flex justify-content-between justify-content-md-end"
             >
-              <Col md={5} lg={3} className="mx-lg-3">
+              <Col xs={5} md={3} className="mx-md-3">
                 <Button
                   onClick={() => handleClose()}
                   variant="none"
@@ -116,13 +110,13 @@ function CategoryCreateModa({ show, close, handler }) {
                   Batal
                 </Button>
               </Col>
-              <Col md={5} lg={3} className="">
+              <Col xs={5} md={3} className="">
                 <Button
                   type="submit"
                   variant="none"
                   className="cst-btn-secondary w-100"
                 >
-                  Tambah Kategori
+                  Tambah
                 </Button>
               </Col>
             </Col>
@@ -133,4 +127,4 @@ function CategoryCreateModa({ show, close, handler }) {
   );
 }
 
-export default CategoryCreateModa;
+export default StockUpdateModal;

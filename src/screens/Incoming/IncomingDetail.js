@@ -28,15 +28,16 @@ function IncomingDetail() {
     incomingApi
       .getById(params)
       .then((res) => {
-        if (Array.isArray(res.data.data)) {
-          // ? Custom exeption due to unconsistent respond
-          res.response = {
-            status: 404,
-            data: { error: { message: "Data tidak ditemukan" } },
-          };
-          throw res;
-        }
+        console.log(res);
         if (res.status !== 200) throw res;
+        // if (Array.isArray(res.data.data)) {
+        //   // ? Custom exeption due to unconsistent respond
+        //   res.response = {
+        //     status: 404,
+        //     data: { error: { message: "Data tidak ditemukan" } },
+        //   };
+        //   throw res;
+        // }
         setData(res.data.data);
       })
       .catch((err) => {

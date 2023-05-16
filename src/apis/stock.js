@@ -30,6 +30,16 @@ const stock = {
     let url = `${base}/id/?id=${id}`;
     return fetchDepart(url, options);
   },
+
+  update: (params) => {
+    const options = {
+      method: "PUT",
+      body: params,
+    };
+
+    let url = `${base}/update`;
+    return fetchDepart(url, options);
+  },
 };
 
 export default stock;

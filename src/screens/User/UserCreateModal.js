@@ -296,7 +296,7 @@ function UserCreateModal({ show, close, roleOptions, handler }) {
                   variant="none"
                   className="cst-btn-secondary w-100"
                 >
-                  Buat User
+                  Tambah Pengguna
                 </Button>
               </Col>
             </Col>

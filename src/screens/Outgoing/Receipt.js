@@ -1,8 +1,12 @@
 import React from "react";
+import moment from "moment";
+
 import Logo from "../../assets/logo.png";
+
 import convertIDR from "../../helpers/convertIDR";
 
 function Receipt({ innerRef, data }) {
+  console.log("RECEIPT => ", data);
   const headingCellStyle = {
     border: "1px solid rgba(0,0,0,1)",
     padding: "2px 10px 2px 10px",
@@ -32,17 +36,23 @@ function Receipt({ innerRef, data }) {
           </div>
         </div>
         <div className="w-50 text-end">
-          <h5 className="cst-text-negative fw-bold mb-4">{data.incomingNo}</h5>
+          <h5 className="cst-text-negative fw-bold mb-4">
+            {data && data.incoming_no}
+          </h5>
           <div className="d-flex justify-content-end">
             <table>
               <thead>
                 <tr>
                   <td style={headingCellStyle}>Tanggal</td>
-                  <td style={headingCellStyle}>{data.date}</td>
+                  <td style={headingCellStyle}>
+                    {data && moment(data.sold_date).format("DD-MM-YYYY")}
+                  </td>
                 </tr>
                 <tr>
                   <td style={headingCellStyle}>Kepada Yth</td>
-                  <td style={headingCellStyle}>{data.customer}</td>
+                  <td style={headingCellStyle}>
+                    {data && data.guest && data.guest.guest_name}
+                  </td>
                 </tr>
               </thead>
             </table>
@@ -68,21 +78,23 @@ function Receipt({ innerRef, data }) {
             </tr>
           </thead>
           <tbody>
-            {data.cart &&
-              data.cart.length > 0 &&
-              data.cart.map((i, index) => (
+            {data &&
+              data.outgoing_details &&
+              data.outgoing_details.length > 0 &&
+              data.outgoing_details.map((i, index) => (
                 <tr key={index}>
                   <td className="text-center">{index + 1}</td>
-                  <td>{i.itemName}</td>
-                  <td className="text-center">{i.soldQty}</td>
-                  <td className="text-end">{convertIDR(i.price)}</td>
-                  <td className="text-end">{convertIDR(i.amount)}</td>
+                  <td>{i.stock.item_name}</td>
+                  <td className="text-center">{i.sold_qty}</td>
+                  <td className="text-end">{convertIDR(i.sold_price)}</td>
+                  <td className="text-end">{convertIDR(i.total_amount)}</td>
                 </tr>
               ))}
           </tbody>
         </table>
         <div className="border border-dark text-end py-1 px-2">
-          <span className="fw-bold">TOTAL: </span> {convertIDR(data.totalPrice)}
+          <span className="fw-bold">TOTAL: </span>{" "}
+          {convertIDR(data && data.total_sold)}
         </div>
         <div className="my-3 d-flex justify-content-between">
           <div

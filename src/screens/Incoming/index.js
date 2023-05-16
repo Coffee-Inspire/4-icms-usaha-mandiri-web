@@ -38,7 +38,7 @@ function Incoming() {
       align: "left",
     },
     {
-      label: "tgl pemesanan",
+      label: "tanggal pemesanan",
       bind: "purchase_date",
       type: "date",
     },
@@ -49,7 +49,7 @@ function Incoming() {
       align: "right",
     },
     {
-      label: "catatan",
+      label: "keterangan",
       bind: "note",
     },
     {

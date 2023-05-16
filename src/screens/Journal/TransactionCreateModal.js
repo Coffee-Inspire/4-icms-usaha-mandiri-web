@@ -52,6 +52,7 @@ function TransactionCreateModal({ show, close, handler }) {
   };
 
   const handleClose = () => {
+    setValidationAlertShow(false);
     reset();
     close();
   };

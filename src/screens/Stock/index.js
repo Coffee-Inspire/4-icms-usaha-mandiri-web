@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
+import StockUpdateModal from "./StockUpdateModal";
 import ActionPopup from "../../components/ActionPopup";
 
 import stockApi from "../../apis/stock";
@@ -12,6 +13,7 @@ import errorReader from "../../helpers/errorReader";
 
 function Stock() {
   const [data, setData] = useState([]);
+  const [subjectData, setSubjectData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const [limit, setLimit] = useState(limitOptions[0]);
@@ -20,37 +22,40 @@ function Stock() {
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
 
+  const [updateModalShow, setUpdateModalShow] = useState(false);
+  const handleCloseUpdateModal = () => setUpdateModalShow(false);
+
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
   const columns = [
     {
-      label: "Nama",
+      label: "nama barang",
       bind: "item_name",
       align: "left",
     },
     {
-      label: "Kategori",
+      label: "kategori",
       bind: "category_name",
     },
     {
-      label: "Supplier",
+      label: "supplier",
       bind: "supplier_name",
     },
     {
-      label: "Qty",
+      label: "jumlah stok",
       bind: "qty",
       type: "qty",
       align: "right",
     },
     {
-      label: "Modal",
+      label: "harga modal",
       bind: "purchase_price",
       type: "currency",
       align: "right",
     },
     {
-      label: "HPP",
+      label: "harga jual",
       bind: "price",
       type: "currency",
       align: "right",
@@ -74,9 +79,34 @@ function Stock() {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["edit", "delete", "detail"],
+      methods: ["edit"],
     },
   ];
+
+  const triggerEdit = (targetData) => {
+    setSubjectData(targetData);
+    setUpdateModalShow(true);
+  };
+
+  const editData = (params) => {
+    setIsLoading(true);
+    stockApi
+      .update(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil memperbaharui stok",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(setIsLoading(false));
+  };
 
   const getData = () => {
     setIsLoading(true);
@@ -96,8 +126,8 @@ function Stock() {
           (i) =>
             (i = {
               ...i,
-              category_name: i.item_category.category_name,
-              supplier_name: i.supplier.supplier_name,
+              category_name: i.item_category?.category_name,
+              supplier_name: i.supplier?.supplier_name,
               status: i.qty === 0 ? "OUT" : i.qty <= 80 ? "LIMIT" : "READY",
             })
         );
@@ -128,8 +158,14 @@ function Stock() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
-        actionForEdit={null}
+        actionForEdit={triggerEdit}
         actionForDelete={null}
+      />
+      <StockUpdateModal
+        show={updateModalShow}
+        close={handleCloseUpdateModal}
+        handler={editData}
+        subject={subjectData}
       />
       <ActionPopup
         show={actionAlertShow}

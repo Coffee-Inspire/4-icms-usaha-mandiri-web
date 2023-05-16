@@ -51,6 +51,7 @@ function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
   };
 
   const handleClose = () => {
+    setValidationAlertShow(false);
     reset();
     close();
   };
@@ -177,7 +178,7 @@ function CustomerUpdateModal({ show, close, handler, subjectData = {} }) {
                   variant="none"
                   className="cst-btn-secondary w-100"
                 >
-                  Tambah
+                  Simpan
                 </Button>
               </Col>
             </Col>

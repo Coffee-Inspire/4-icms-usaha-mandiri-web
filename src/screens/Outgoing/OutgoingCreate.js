@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import moment from "moment/moment";
@@ -27,7 +26,6 @@ import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
 function OutgoingCreate() {
-  const navigate = useNavigate();
   const printRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
@@ -79,8 +77,8 @@ function OutgoingCreate() {
   });
   const [customer, setCustomer] = useState(null);
   const [customerInfo, setCustomerInfo] = useState(null);
-  const [stock, setStock] = useState(null);
-  const [stockInfo, setStockInfo] = useState(null);
+  // const [stock, setStock] = useState(null);
+  // const [stockInfo, setStockInfo] = useState(null);
 
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState("0");
@@ -97,13 +95,6 @@ function OutgoingCreate() {
     sold_qty: "1",
     total_amount: 0,
     unit: "-",
-    // itemId: "",
-    // itemName: "",
-    // price: 0,
-    // qty: 0,
-    // soldQty: "1",
-    // unit: "-",
-    // amount: 0,
   };
 
   const [chainModalShow, setChainModalShow] = useState(false);
@@ -291,6 +282,7 @@ function OutgoingCreate() {
   const [dummyApiResultReturn, setDummyApiResultReturn] = useState({
     incomingNo: "UM/RCPT/23/3/0001",
   });
+
   const handleSubmit = () => {
     const params = {
       outgoing: {
@@ -313,7 +305,12 @@ function OutgoingCreate() {
         console.log("Outgoing POST Callback => ", res);
         if (res.status !== 200) throw res;
         // TODO Set quick data from response for fast receipt and details redirect
-        setQuickData("");
+        // res.data.data.setQuickData("");
+        const peekData = {
+          ...res.data.data.outgoingData,
+          outgoing_details: res.data.data.outgoingDetailsFrontend,
+        };
+        setQuickData(peekData);
         // TODO Shows chain popup if status res is 200
         setChainModalShow(true);
       })
@@ -500,8 +497,9 @@ function OutgoingCreate() {
                   <tr>
                     <th>No</th>
                     <th>Nama Barang</th>
+                    <th>Stok</th>
                     <th>Harga</th>
-                    <th>Qty</th>
+                    <th>Banyaknya</th>
                     <th>Unit</th>
                     <th>Amount</th>
                     <th>Hapus</th>
@@ -521,6 +519,14 @@ function OutgoingCreate() {
                           }}
                           placeholder="Pilih Barang"
                         />
+                      </td>
+                      <td>
+                        {/* <Form.Control
+                          value={cart[index].qty}
+                          className="cst-form-control"
+                          disabled
+                        /> */}
+                        {cart[index].qty}
                       </td>
                       <td>
                         <Form.Control
@@ -647,9 +653,9 @@ function OutgoingCreate() {
         show={chainModalShow}
         close={() => setChainModalShow(false)}
         handlePrint={handlePrint}
-        subjectId={quickData}
+        subject={quickData}
       />
-      <Receipt innerRef={printRef} data={dummyApiResultReturn} />
+      <Receipt innerRef={printRef} data={quickData} />
       <ActionPopup
         show={actionAlertShow}
         setShow={setActionAlertShow}

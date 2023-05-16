@@ -12,6 +12,16 @@ const outgoing = {
     return fetchDepart(url, options);
   },
 
+  getById: (params) => {
+    const { id } = params;
+    const options = {
+      method: "GET",
+    };
+
+    let url = `${base}/id/?id=${id}`;
+    return fetchDepart(url, options);
+  },
+
   create: (params) => {
     const options = {
       method: "POST",

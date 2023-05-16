@@ -56,7 +56,7 @@ function User() {
       align: "left",
     },
     {
-      label: "Telp",
+      label: "telepon",
       bind: "contact",
     },
     {
@@ -69,7 +69,7 @@ function User() {
       bind: "email",
     },
     {
-      label: "status",
+      label: "status akun",
       bind: "active_status",
       type: "userStatus",
     },
@@ -212,7 +212,7 @@ function User() {
         handler={() => setCreateModalShow(true)}
         disabled={isLoading}
       >
-        Tambah User
+        Tambah Pengguna
       </ButtonAddRow>
       <Shows
         columns={columns}

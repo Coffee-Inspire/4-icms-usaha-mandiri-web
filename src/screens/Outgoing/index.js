@@ -34,12 +34,12 @@ function Outgoing() {
       align: "left",
     },
     {
-      label: "tgl nota",
+      label: "tanggal nota",
       bind: "sold_date",
       type: "date",
     },
     {
-      label: "harga nota",
+      label: "total harga nota",
       bind: "total_sold",
       type: "currency",
       align: "right",
@@ -77,7 +77,7 @@ function Outgoing() {
           (i) =>
             (i = {
               ...i,
-              guest_name: i.guest.guest_name,
+              guest_name: i.guest ? i.guest.guest_name : "",
             })
         );
         setData(normalized);

@@ -37,13 +37,13 @@ function Category() {
 
   const columns = [
     {
-      label: "Nama",
+      label: "nama kategori",
       bind: "category_name",
       align: "left",
       textTransform: "capitalize",
     },
     {
-      label: "Deskripsi",
+      label: "keterangan",
       bind: "note",
       align: "left",
     },

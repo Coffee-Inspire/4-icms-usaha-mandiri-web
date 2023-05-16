@@ -36,12 +36,12 @@ function Journal() {
       type: "date",
     },
     {
-      label: "lampiran",
+      label: "lampiran transaksi",
       bind: "reference_id",
       align: "left",
     },
     {
-      label: "catatan",
+      label: "keterangan",
       bind: "note",
       align: "left",
     },

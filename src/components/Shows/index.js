@@ -283,15 +283,15 @@ function Shows({
           const current = (key) => {
             return {
               OUT: {
-                label: "Out of Stock",
+                label: "Stok Habis",
                 type: "negative",
               },
               LIMIT: {
-                label: "Limited Stock",
+                label: "Stok Terbatas",
                 type: "warning",
               },
               READY: {
-                label: "Ready Stock",
+                label: "Stok Tersedia",
                 type: "positive",
               },
             }[key];

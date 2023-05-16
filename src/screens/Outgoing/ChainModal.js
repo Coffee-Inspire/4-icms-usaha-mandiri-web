@@ -1,8 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Modal, Row, Col, Button } from "react-bootstrap";
+
 import { takeIcon } from "../../helpers/iconMapper";
 
-function ChainModal({ show, close, handlePrint, subjectId }) {
+function ChainModal({ show, close, handlePrint, subject }) {
+  const navigate = useNavigate();
   return (
     <Modal centered show={show} onHide={close}>
       <Modal.Body>
@@ -30,7 +33,8 @@ function ChainModal({ show, close, handlePrint, subjectId }) {
             <Button
               variant="none"
               className="cst-btn-warning w-100 d-flex justify-content-center align-items-center p-1"
-              onClick={() => {}}
+              // onClick={() => navigate(`/detail/${subject.id}`)}
+              onClick={() => navigate(`../outgoing/detail/${subject.id}`)}
             >
               <span> {takeIcon("search")}</span>
               <small className="mx-2">Lihat Detail</small>

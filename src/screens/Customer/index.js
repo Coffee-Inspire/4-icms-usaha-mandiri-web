@@ -37,17 +37,17 @@ function Customer() {
 
   const columns = [
     {
-      label: "Nama",
+      label: "nama pelanggan",
       bind: "guest_name",
       align: "left",
       textTransform: "capitalize",
     },
     {
-      label: "Telp",
+      label: "nomor telepon",
       bind: "contact",
     },
     {
-      label: "Email",
+      label: "E-mail",
       bind: "email",
     },
     {

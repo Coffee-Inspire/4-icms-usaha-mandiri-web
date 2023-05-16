@@ -37,7 +37,7 @@ function Supplier() {
 
   const columns = [
     {
-      label: "nama",
+      label: "nama supplier",
       bind: "supplier_name",
       align: "left",
     },
@@ -50,7 +50,7 @@ function Supplier() {
       bind: "company_contact",
     },
     {
-      label: "email",
+      label: "e-mail",
       bind: "email",
     },
     {

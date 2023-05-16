@@ -63,6 +63,7 @@ function SupplierCreateModal({ show, close, handler }) {
   };
 
   const handleClose = () => {
+    setValidationAlertShow(false);
     reset();
     close();
   };

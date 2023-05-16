@@ -42,6 +42,7 @@ function CategoryUpdateModal({ show, close, handler, subjectData = {} }) {
   };
 
   const handleClose = () => {
+    setValidationAlertShow(false);
     reset();
     close();
   };
