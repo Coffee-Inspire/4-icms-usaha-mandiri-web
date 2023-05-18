@@ -16,6 +16,7 @@ import ActionPopup from "../ActionPopup";
 import userApi from "../../apis/user";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
+import LogoutConfirmModal from "./LogoutConfirmModal";
 
 function ProfileBar({ expanded, setExpanded }) {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ function ProfileBar({ expanded, setExpanded }) {
   const [changePasswordModalShow, setChangePasswordModalShow] = useState(false);
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
+
+  const [logoutConfirmModalShow, setLogoutConfirmModalShow] = useState(false);
 
   const { profileData } = useSelector((state) => state.profileReducer);
 
@@ -89,7 +92,7 @@ function ProfileBar({ expanded, setExpanded }) {
           <span className="my-1 text-end">
             <small
               className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
-              onClick={() => handleLogout()}
+              onClick={() => setLogoutConfirmModalShow(true)}
             >
               <strong>
                 <u>Keluar</u>
@@ -140,6 +143,11 @@ function ProfileBar({ expanded, setExpanded }) {
         show={changePasswordModalShow}
         close={() => setChangePasswordModalShow(false)}
         handler={handleChangePassword}
+      />
+      <LogoutConfirmModal
+        show={logoutConfirmModalShow}
+        close={() => setLogoutConfirmModalShow(false)}
+        handler={handleLogout}
       />
       <ActionPopup
         show={actionAlertShow}

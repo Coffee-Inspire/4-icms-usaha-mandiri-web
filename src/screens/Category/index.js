@@ -11,6 +11,8 @@ import ActionPopup from "../../components/ActionPopup";
 
 import categoryApi from "../../apis/category";
 import limitOptions from "../../options/tableLimitOptions.json";
+import sortOptions from "./Options/sortOptions.json";
+// import filterOptions from "./Options/filterOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
@@ -22,7 +24,8 @@ function Category() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  // const [filter, setFilter] = useState(filterOptions[0].value);
+  const [sort, setSort] = useState(sortOptions[0].value);
   const [search, setSearch] = useState("");
 
   const [createModalShow, setCreateModalShow] = useState(false);
@@ -60,7 +63,8 @@ function Category() {
     const params = {
       page,
       limit: limit.value,
-      filter,
+      // filter,
+      sort,
       search,
     };
     categoryApi
@@ -150,11 +154,11 @@ function Category() {
 
   useEffect(() => {
     getData();
-  }, [limit, page, filter, search]);
+  }, [limit, page, search, sort]);
 
   useEffect(() => {
     setPage(1);
-  }, [limit, search]);
+  }, [limit, search, sort]);
 
   return (
     <Container fluid className="p-4">
@@ -174,7 +178,11 @@ function Category() {
         setPage={setPage}
         totalPage={totalPage}
         setSearch={setSearch}
-        setFilter={setFilter}
+        setSort={setSort}
+        sort={sort}
+        // filter={filter}
+        // filterOptions={filterOptions}
+        sortOptions={sortOptions}
         actionForEdit={triggerEdit}
         actionForDelete={triggerDelete}
       />

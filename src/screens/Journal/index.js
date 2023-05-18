@@ -9,6 +9,8 @@ import ActionPopup from "../../components/ActionPopup";
 
 import journalApi from "../../apis/journal";
 import limitOptions from "../../options/tableLimitOptions.json";
+import sortOptions from "./Options/sortOptions.json";
+import filterOptions from "./Options/filterOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import convertIDR from "../../helpers/convertIDR";
 import errorReader from "../../helpers/errorReader";
@@ -16,12 +18,14 @@ import errorReader from "../../helpers/errorReader";
 function Journal() {
   const [data, setData] = useState([]);
   const [balance, setBalance] = useState("0");
+  const [isLoading, setIsLoading] = useState(false);
+
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(filterOptions[0].value);
+  const [sort, setSort] = useState(sortOptions[0].value);
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const [createModalShow, setCreateModalShow] = useState(false);
   const handleCloseCreateModal = () => setCreateModalShow(false);
@@ -65,6 +69,7 @@ function Journal() {
       page,
       limit: limit.value,
       filter,
+      sort,
       search,
     };
     journalApi
@@ -108,7 +113,11 @@ function Journal() {
 
   useEffect(() => {
     getData();
-  }, [limit, page, filter, search]);
+  }, [limit, page, sort, filter, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit, search, sort, filter]);
 
   return (
     <Container fluid className="p-4">
@@ -140,6 +149,12 @@ function Journal() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        setFilter={setFilter}
+        setSort={setSort}
+        filter={filter}
+        sort={sort}
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
       />
       <TransactionCreateModal
         show={createModalShow}

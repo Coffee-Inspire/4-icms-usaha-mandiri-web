@@ -8,7 +8,8 @@ const journal = {
       method: "GET",
     };
 
-    let url = `${base}/?page=${page}&limit=${limit}&search=${search}`;
+    // let url = `${base}/?page=${page}&limit=${limit}&search=${search}&sort=${sort}`;
+    let url = `${base}/?page=${page}&limit=${limit}&search=${search}&sort=ASC&filter=created_at`;
     return fetchDepart(url, options);
   },
 

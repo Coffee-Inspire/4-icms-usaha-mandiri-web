@@ -417,22 +417,24 @@ function Shows({
             </Button>
           </OverlayTrigger>
         </Col>
-        <Col xs={5} md={1} className="px-1 d-flex justify-content-center">
-          <OverlayTrigger
-            rootClose
-            trigger="click"
-            placement="bottom-start"
-            overlay={filterPopover}
-          >
-            <Button
-              variant="none"
-              className="cst-btn-secondary d-flex justify-content-center align-items-center w-100"
+        {filterOptions && (
+          <Col xs={5} md={1} className="px-1 d-flex justify-content-center">
+            <OverlayTrigger
+              rootClose
+              trigger="click"
+              placement="bottom-start"
+              overlay={filterPopover}
             >
-              <span>{takeIcon("filter")}</span>
-              <span className="ms-1"> Filter</span>
-            </Button>
-          </OverlayTrigger>
-        </Col>
+              <Button
+                variant="none"
+                className="cst-btn-secondary d-flex justify-content-center align-items-center w-100"
+              >
+                <span>{takeIcon("filter")}</span>
+                <span className="ms-1"> Filter</span>
+              </Button>
+            </OverlayTrigger>
+          </Col>
+        )}
         <Col xs={12} md={4} className="px-1 mt-3 mt-md-0">
           <Form.Group className=" position-relative">
             <Form.Control

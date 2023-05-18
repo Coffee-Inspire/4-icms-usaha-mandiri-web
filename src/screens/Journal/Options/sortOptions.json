@@ -1,0 +1,18 @@
+[
+    {
+      "label": "Terbaru",
+      "value": "new"      
+    },
+    {
+      "label": "Terlama",
+      "value": "old"
+    },
+    {
+        "label": "Nominal Terbesar",
+        "value": "highest"
+      },
+      {
+        "label": "Nominal Terkecil",
+        "value": "lowest"
+      }
+  ]

@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Semua",
+    "value": ""    
+  },
+  {
+    "label": "Uang Keluar (DB)",
+    "value": "active"
+  },
+  {
+    "label": "Uang Masuk (CR)",
+    "value": "inactive"
+  }
+]

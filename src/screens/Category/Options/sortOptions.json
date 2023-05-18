@@ -1,0 +1,18 @@
+[
+    {
+      "label": "Terbaru",
+      "value": "new"      
+    },
+    {
+      "label": "Terlama",
+      "value": "old"
+    },
+    {
+        "label": "Nama (A-Z)",
+        "value": "fullnameASC"
+      },
+      {
+        "label": "Nama (Z-A)",
+        "value": "fullnameDESC"
+      }
+  ]

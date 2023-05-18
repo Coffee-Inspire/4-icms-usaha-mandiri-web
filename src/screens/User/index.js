@@ -26,7 +26,7 @@ function User() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState(filterOptions[1].value);
+  const [filter, setFilter] = useState(filterOptions[0].value);
   const [sort, setSort] = useState(sortOptions[0].value);
   const [search, setSearch] = useState("");
 
@@ -207,7 +207,7 @@ function User() {
 
   useEffect(() => {
     setPage(1);
-  }, [limit, search]);
+  }, [limit, search, sort, filter]);
 
   return (
     <Container fluid className="p-4">
