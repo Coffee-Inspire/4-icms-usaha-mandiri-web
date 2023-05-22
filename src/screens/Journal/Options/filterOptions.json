@@ -1,14 +1,17 @@
 [
   {
     "label": "Semua",
-    "value": ""    
+    "value": "",
+    "field": ""
   },
   {
     "label": "Uang Keluar (DB)",
-    "value": "active"
+    "value": "db",
+    "field": "journalType"
   },
   {
     "label": "Uang Masuk (CR)",
-    "value": "inactive"
+    "value": "cr",
+    "field": "journalType"
   }
 ]

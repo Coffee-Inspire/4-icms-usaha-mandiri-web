@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import moment from "moment";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -10,6 +9,7 @@ import ActionPopup from "../../components/ActionPopup";
 
 import outgoingApi from "../../apis/outgoing";
 import limitOptions from "../../options/tableLimitOptions.json";
+import sortOptions from "./Options/sortOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
@@ -17,12 +17,13 @@ function Outgoing() {
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState(sortOptions[0]);
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
@@ -69,8 +70,8 @@ function Outgoing() {
     setIsLoading(true);
     const params = {
       page,
-      limit: limit.value,
-      filter,
+      limit,
+      sort,
       search,
     };
     outgoingApi
@@ -86,7 +87,7 @@ function Outgoing() {
             })
         );
         setData(normalized);
-        setTotalPage(Math.ceil(dataLength / params.limit));
+        setTotalPage(Math.ceil(dataLength / params.limit.value));
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -101,7 +102,11 @@ function Outgoing() {
 
   useEffect(() => {
     getData();
-  }, [limit, page, filter, search]);
+  }, [limit, page, sort, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit, search, sort]);
 
   return (
     <Container fluid className="p-4">
@@ -118,7 +123,9 @@ function Outgoing() {
         setPage={setPage}
         totalPage={totalPage}
         setSearch={setSearch}
-        setFilter={setFilter}
+        setSort={setSort}
+        sort={sort}
+        sortOptions={sortOptions}
         actionForDetail={triggerDetail}
       />
       <ActionPopup

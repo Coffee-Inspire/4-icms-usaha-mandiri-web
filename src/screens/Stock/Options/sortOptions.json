@@ -1,0 +1,62 @@
+[
+    {
+      "label": "Terbaru",
+      "value": "desc"      ,
+      "field": "created_at"
+    },
+    {
+      "label": "Terlama",
+      "value": "asc",
+      "field": "created_at"
+    },
+    {
+      "label": "Nama (A-Z)",
+      "value": "asc",
+      "field": "item_name"
+    },
+    {
+      "label": "Nama (Z-A)",
+      "value": "desc",
+      "field": "item_name"
+    },
+    {
+      "label": "Stok Terkecil",
+      "value": "asc",
+      "field": "qty"
+    },
+    {
+      "label": "Stok Terbanyak",
+      "value": "desc",
+      "field": "qty"
+    },
+    {
+      "label": "Modal Terendah",
+      "value": "asc",
+      "field": "purchase_price"
+    },
+    {
+      "label": "Modal Tertinggi",
+      "value": "desc",
+      "field": "purchase_price"
+    },
+    {
+      "label": "Harga Terendah",
+      "value": "asc",
+      "field": "price"
+    },
+    {
+      "label": "Harga Tertinggi",
+      "value": "desc",
+      "field": "price"
+    },
+    {
+      "label": "Restok terlama",
+      "value": "asc",
+      "field": "last_restock_date"
+    },
+    {
+      "label": "Restok terbaru",
+      "value": "desc",
+      "field": "last_restock_date"
+    }
+  ]

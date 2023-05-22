@@ -11,6 +11,8 @@ import ActionPopup from "../../components/ActionPopup";
 
 import supplierApi from "../../apis/supplier";
 import limitOptions from "../../options/tableLimitOptions.json";
+import filterOptions from "./Options/filterOptions.json";
+import sortOptions from "./Options/sortOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
@@ -22,7 +24,8 @@ function Supplier() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(filterOptions[0]);
+  const [sort, setSort] = useState(sortOptions[0]);
   const [search, setSearch] = useState("");
 
   const [createModalShow, setCreateModalShow] = useState(false);
@@ -83,8 +86,9 @@ function Supplier() {
     setIsLoading(true);
     const params = {
       page,
-      limit: limit.value,
+      limit,
       filter,
+      sort,
       search,
     };
     supplierApi
@@ -93,7 +97,7 @@ function Supplier() {
         if (res.status !== 200) throw res;
         const dataLength = res.data.data.count;
         setData(res.data.data.rows);
-        setTotalPage(Math.ceil(dataLength / params.limit));
+        setTotalPage(Math.ceil(dataLength / params.limit.value));
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -174,11 +178,11 @@ function Supplier() {
 
   useEffect(() => {
     getData();
-  }, [limit, page, filter, search]);
+  }, [limit, page, filter, sort, search]);
 
   useEffect(() => {
     setPage(1);
-  }, [limit, search]);
+  }, [limit, search, filter, sort]);
 
   return (
     <Container fluid className="p-4">
@@ -199,6 +203,11 @@ function Supplier() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        setSort={setSort}
+        filter={filter}
+        sort={sort}
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
         actionForEdit={triggerEdit}
         actionForDelete={triggerDelete}
       />

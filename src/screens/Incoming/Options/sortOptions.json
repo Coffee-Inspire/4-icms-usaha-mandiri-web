@@ -1,0 +1,33 @@
+[
+    {
+      "label": "Terbaru",
+      "value": "desc"      ,
+      "field": "created_at"
+    },
+    {
+      "label": "Terlama",
+      "value": "asc",
+      "field": "created_at"
+    },
+    {
+        "label": "No. Pesanan (A-Z)",
+        "value": "asc",
+        "field": "incoming_no"
+      },
+      {
+        "label": "No. Pesanan (Z-A)",
+        "value": "desc",
+        "field": "incoming_no"
+      },
+      {
+        "label": "Harga Pesanan (Min)",
+        "value": "asc",
+        "field": "total_purchase"
+      },
+      {
+        "label": "Harga Pesanan (Maks)",
+        "value": "desc",
+        "field": "total_purchase"
+      }
+
+  ]

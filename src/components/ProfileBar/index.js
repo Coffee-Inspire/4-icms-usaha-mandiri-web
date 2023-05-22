@@ -121,7 +121,7 @@ function ProfileBar({ expanded, setExpanded }) {
         {takeIcon("burger")}
       </Button>
       <div className="d-flex align-items-center me-md-3">
-        Hi,{" "}
+        Halo,{" "}
         <strong className="ms-1 me-2 text-capitalize">
           {profileData.fullname}
         </strong>

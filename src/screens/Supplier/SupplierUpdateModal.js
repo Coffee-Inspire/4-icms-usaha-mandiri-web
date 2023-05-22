@@ -36,7 +36,7 @@ function SupplierUpdateModal({ show, close, handler, subjectData = {} }) {
       "string.empty": `Alamat tidak boleh kosong`,
       "any.required": `Alamat tidak boleh kosong`,
     }),
-    active_status: Joi.boolean().default(true),
+    status: Joi.boolean().default(true),
   });
 
   const {
@@ -169,7 +169,7 @@ function SupplierUpdateModal({ show, close, handler, subjectData = {} }) {
             <Col xs={12} md={6} className="py-2 d-flex">
               <Controller
                 control={control}
-                name="active_status"
+                name="status"
                 render={({ field }) => (
                   <Form.Group
                     {...field}
@@ -177,7 +177,7 @@ function SupplierUpdateModal({ show, close, handler, subjectData = {} }) {
                   >
                     <Form.Check
                       type="switch"
-                      defaultChecked={subjectData && subjectData.active_status}
+                      defaultChecked={subjectData && subjectData.status}
                     />
                     <Form.Label className="m-0">Status Supplier</Form.Label>
                   </Form.Group>

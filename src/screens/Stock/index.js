@@ -9,12 +9,12 @@ import ActionPopup from "../../components/ActionPopup";
 
 import stockApi from "../../apis/stock";
 import limitOptions from "../../options/tableLimitOptions.json";
+import filterOptions from "./Options/filterOptions.json";
+import sortOptions from "./Options/sortOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
 function Stock() {
-  const { profileData } = useSelector((state) => state.profileReducer);
-
   const [data, setData] = useState([]);
   const [subjectData, setSubjectData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,8 @@ function Stock() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(filterOptions[0]);
+  const [sort, setSort] = useState(sortOptions[0]);
   const [search, setSearch] = useState("");
 
   const [updateModalShow, setUpdateModalShow] = useState(false);
@@ -120,11 +121,11 @@ function Stock() {
     setIsLoading(true);
     const params = {
       page,
-      limit: limit.value,
+      limit,
+      sort,
       filter,
       search,
     };
-    // * Call API
     stockApi
       .getAll(params)
       .then((res) => {
@@ -140,7 +141,7 @@ function Stock() {
             })
         );
         setData(normalized);
-        setTotalPage(Math.ceil(dataLength / params.limit));
+        setTotalPage(Math.ceil(dataLength / params.limit.value));
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -151,7 +152,11 @@ function Stock() {
 
   useEffect(() => {
     getData();
-  }, [limit, page, filter, search]);
+  }, [limit, page, sort, filter, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [limit, search, filter, sort]);
 
   return (
     <Container fluid className="p-4">
@@ -166,6 +171,11 @@ function Stock() {
         totalPage={totalPage}
         setSearch={setSearch}
         setFilter={setFilter}
+        setSort={setSort}
+        filter={filter}
+        sort={sort}
+        filterOptions={filterOptions}
+        sortOptions={sortOptions}
         actionForEdit={triggerEdit}
         actionForDelete={null}
       />

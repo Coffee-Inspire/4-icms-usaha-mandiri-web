@@ -8,8 +8,9 @@ const journal = {
       method: "GET",
     };
 
-    // let url = `${base}/?page=${page}&limit=${limit}&search=${search}&sort=${sort}`;
-    let url = `${base}/?page=${page}&limit=${limit}&search=${search}&sort=ASC&filter=created_at`;
+    let url = `${base}/?page=${page}&limit=${limit.value}&search=${search}&sort=${sort.value}&filter=${sort.field}`;
+    if (filter) url += `&${filter.field}=${filter.value}`;
+
     return fetchDepart(url, options);
   },
 

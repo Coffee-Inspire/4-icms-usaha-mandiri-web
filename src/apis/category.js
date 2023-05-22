@@ -8,7 +8,7 @@ const category = {
       method: "GET",
     };
 
-    let url = `${base}/?page=${page}&limit=${limit}&search=${search}&sort=${sort}`;
+    let url = `${base}/?page=${page}&limit=${limit.value}&search=${search}&sort=${sort.value}&filter=${sort.field}`;
     return fetchDepart(url, options);
   },
 

@@ -39,7 +39,6 @@ function TransactionCreateModal({ show, close, handler }) {
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
   const onSubmit = (data) => {
-    console.log(data);
     // TODO Checking whitespace
     const isValid = validator(data);
     if (!isValid) {

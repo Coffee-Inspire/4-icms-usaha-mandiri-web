@@ -26,8 +26,8 @@ function User() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState(filterOptions[0].value);
-  const [sort, setSort] = useState(sortOptions[0].value);
+  const [filter, setFilter] = useState(filterOptions[0]);
+  const [sort, setSort] = useState(sortOptions[0]);
   const [search, setSearch] = useState("");
 
   const [createModalShow, setCreateModalShow] = useState(false);
@@ -54,7 +54,7 @@ function User() {
       textTransform: "capitalize",
     },
     {
-      label: "role",
+      label: "fungsional",
       bind: "role_name",
       align: "left",
     },
@@ -112,7 +112,7 @@ function User() {
     setIsLoading(true);
     const params = {
       page,
-      limit: limit.value,
+      limit,
       sort,
       filter,
       search,
@@ -130,7 +130,7 @@ function User() {
             })
         );
         setData(normalized);
-        setTotalPage(Math.ceil(dataLength / params.limit));
+        setTotalPage(Math.ceil(dataLength / params.limit.value));
       })
       .catch((err) => {
         setActionRes(errorReader(err));

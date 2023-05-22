@@ -23,8 +23,8 @@ function Journal() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [filter, setFilter] = useState(filterOptions[0].value);
-  const [sort, setSort] = useState(sortOptions[0].value);
+  const [filter, setFilter] = useState(filterOptions[0]);
+  const [sort, setSort] = useState(sortOptions[0]);
   const [search, setSearch] = useState("");
 
   const [createModalShow, setCreateModalShow] = useState(false);
@@ -67,7 +67,7 @@ function Journal() {
     setIsLoading(true);
     const params = {
       page,
-      limit: limit.value,
+      limit,
       filter,
       sort,
       search,
@@ -78,7 +78,7 @@ function Journal() {
         if (res.status !== 200) throw res;
         const dataLength = res.data.data.count;
         setData(res.data.data.rows);
-        setTotalPage(Math.ceil(dataLength / params.limit));
+        setTotalPage(Math.ceil(dataLength / params.limit.value));
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -148,7 +148,6 @@ function Journal() {
         setPage={setPage}
         totalPage={totalPage}
         setSearch={setSearch}
-        setFilter={setFilter}
         setFilter={setFilter}
         setSort={setSort}
         filter={filter}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import Illustration from "../../assets/404.svg";
+import Illustration from "../../../assets/404.svg";
 
 function PageNotFound() {
   return (

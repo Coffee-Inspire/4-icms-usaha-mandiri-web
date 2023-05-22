@@ -1,0 +1,22 @@
+[
+  {
+    "label": "Semua",
+    "value": "",
+    "field": ""
+  },
+  {
+    "label": "Stok Habis",
+    "value": "",
+    "field": "qty"
+  },
+  {
+    "label": "Stok Terbatas",
+    "value": "",
+    "field": "qty"
+  },
+  {
+    "label": "Stok Tersedia",
+    "value": "",
+    "field": "qty"
+  }
+]

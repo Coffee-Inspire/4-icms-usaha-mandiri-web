@@ -42,32 +42,32 @@ function Shows({
     : (actionMethods = []);
 
   const sortPopover = (
-    <Popover id="popover-basic">
+    <Popover id="popover-basic" className="cst-max-h-md cst-y-scroll">
       <Popover.Body>
         <Form>
           <Row>
             {sortOptions &&
               sortOptions.map((s) => (
                 <Col
-                  key={s.value}
+                  key={s.label}
                   xs={12}
                   className="cst-clickable cst-hover-bg-respond py-1 my-1 d-flex justify-content-between align-items-center"
                   onClick={() => {
-                    const me = document.getElementById(`sort-${s.value}`);
+                    const me = document.getElementById(`sort-${s.label}`);
                     me.click();
                     document.body.click();
                   }}
                 >
-                  <label htmlFor={`sort-${s.value}`} className="cst-clickable">
+                  <label htmlFor={`sort-${s.label}`} className="cst-clickable">
                     {s.label}
                   </label>
                   <Form.Check
                     type={"radio"}
                     name="sort"
-                    id={`sort-${s.value}`}
-                    onChange={() => setSort(s.value)}
+                    id={`sort-${s.label}`}
+                    onChange={() => setSort(s)}
                     className="cst-clickable"
-                    defaultChecked={sort === s.value}
+                    defaultChecked={sort.label === s.label}
                   />
                 </Col>
               ))}
@@ -85,17 +85,17 @@ function Shows({
             {filterOptions &&
               filterOptions.map((f) => (
                 <Col
-                  key={f.value}
+                  key={f.label}
                   xs={12}
                   className="cst-clickable cst-hover-bg-respond py-1 my-1 d-flex justify-content-between align-items-center"
                   onClick={() => {
-                    const me = document.getElementById(`filter-${f.value}`);
+                    const me = document.getElementById(`filter-${f.label}`);
                     me.click();
                     document.body.click();
                   }}
                 >
                   <label
-                    htmlFor={`filter-${f.value}`}
+                    htmlFor={`filter-${f.label}`}
                     className="cst-clickable"
                   >
                     {f.label}
@@ -103,10 +103,10 @@ function Shows({
                   <Form.Check
                     type={"radio"}
                     name="filter"
-                    id={`filter-${f.value}`}
-                    onChange={() => setFilter(f.value)}
+                    id={`filter-${f.label}`}
+                    onChange={() => setFilter(f)}
                     className="cst-clickable"
-                    defaultChecked={filter === f.value}
+                    defaultChecked={filter.label === f.label}
                   />
                 </Col>
               ))}
@@ -457,8 +457,12 @@ function Shows({
 
   return (
     <div className="cst-section-shadow rounded-3  my-4">
-      <Row className="mx-0 py-3">
-        <Col xs={5} md={1} className="px-1 d-flex justify-content-center">
+      <Row className="mx-0 py-3 ">
+        <Col
+          xs={12}
+          lg={2}
+          className="px-1 my-1 my-lg-0 d-flex justify-content-center"
+        >
           <OverlayTrigger
             rootClose
             trigger="click"
@@ -470,12 +474,16 @@ function Shows({
               className="cst-btn-secondary d-flex justify-content-center align-items-center w-100"
             >
               <span>{takeIcon("sort")}</span>
-              <span className="ms-1"> Urutkan</span>
+              <span className="ms-1"> Urutan: {sort.label}</span>
             </Button>
           </OverlayTrigger>
         </Col>
         {filterOptions && (
-          <Col xs={5} md={1} className="px-1 d-flex justify-content-center">
+          <Col
+            xs={12}
+            lg={2}
+            className="px-1 my-1 my-lg-0 d-flex justify-content-center"
+          >
             <OverlayTrigger
               rootClose
               trigger="click"
@@ -487,12 +495,12 @@ function Shows({
                 className="cst-btn-secondary d-flex justify-content-center align-items-center w-100"
               >
                 <span>{takeIcon("filter")}</span>
-                <span className="ms-1"> Filter</span>
+                <span className="ms-1"> Tampilkan: {filter.label}</span>
               </Button>
             </OverlayTrigger>
           </Col>
         )}
-        <Col xs={12} md={4} className="px-1 mt-3 mt-md-0">
+        <Col xs={12} lg={4} className="px-1 mt-3 mt-lg-0">
           <Form.Group className=" position-relative">
             <Form.Control
               placeholder="Cari"
@@ -533,7 +541,7 @@ function Shows({
           md={2}
           className="d-flex justify-content-end align-items-center py-1"
         >
-          <small className="me-1">Limit:</small>
+          <small className="me-1">Baris maksimal:</small>
           <small>
             <Select
               options={limitOptions}
@@ -549,7 +557,7 @@ function Shows({
           className="d-flex justify-content-end align-items-center py-1"
         >
           <small>
-            Page {page} <span>of {totalPage}</span>
+            Halaman {page} <span>dari {totalPage}</span>
           </small>
           <small
             className="cst-item px-2 mx-2 p-1"

@@ -87,7 +87,7 @@ function UserCreateModal({ show, close, roleOptions, handler }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Tambah User</Modal.Title>
+        <Modal.Title>Tambah Pengguna</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row className="mx-0">

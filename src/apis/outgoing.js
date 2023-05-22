@@ -3,12 +3,12 @@ import fetchDepart from "../helpers/fetchDepart";
 const base = `/outgoings`;
 const outgoing = {
   getAll: (params) => {
-    const { page, limit, sort, filter, search } = params;
+    const { page, limit, sort, search } = params;
     const options = {
       method: "GET",
     };
 
-    let url = `${base}/?page=${page}&limit=${limit}&search=${search}`;
+    let url = `${base}/?page=${page}&limit=${limit.value}&search=${search}&sort=${sort.value}&filter=${sort.field}`;
     return fetchDepart(url, options);
   },
 

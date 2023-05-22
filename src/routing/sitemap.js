@@ -10,7 +10,7 @@ import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
 import Journal from "../screens/Journal";
 import User from "../screens/User";
 import Category from "../screens/Category";
-import PageNotFound from "../screens/PageNotFound";
+import PageNotFound from "../screens/Fallback/PageNotFound";
 
 const sitemap = [
   {

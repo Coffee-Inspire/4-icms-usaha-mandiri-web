@@ -1,18 +1,22 @@
 [
     {
       "label": "Terbaru",
-      "value": "new"      
+      "value": "desc"      ,
+      "field": "created_at"
     },
     {
       "label": "Terlama",
-      "value": "old"
+      "value": "asc",
+      "field": "created_at"
     },
     {
         "label": "Nama (A-Z)",
-        "value": "fullnameASC"
+        "value": "asc",
+        "field": "fullname"
       },
       {
         "label": "Nama (Z-A)",
-        "value": "fullnameDESC"
+        "value": "desc",
+        "field": "fullname"
       }
   ]

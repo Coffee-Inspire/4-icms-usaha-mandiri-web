@@ -8,7 +8,7 @@ import ValidationAlert from "./Alerts/ValidationAlert";
 
 function UserUpdateModal({ show, close, subjectData = {}, handler }) {
   const schema = Joi.object({
-    active_status: Joi.boolean(),
+    status: Joi.boolean(),
   });
 
   const {
@@ -23,9 +23,8 @@ function UserUpdateModal({ show, close, subjectData = {}, handler }) {
   const onSubmit = (data) => {
     const updateParams = {
       ...subjectData,
-      active_status: data.active_status,
+      status: data.status,
     };
-
     handler(updateParams);
     close();
   };
@@ -42,7 +41,7 @@ function UserUpdateModal({ show, close, subjectData = {}, handler }) {
         className="cst-bg-primary cst-text-plain"
         closeButton
       >
-        <Modal.Title>Perbaharui User</Modal.Title>
+        <Modal.Title>Perbaharui Pengguna</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Row className="mx-0">
@@ -60,18 +59,18 @@ function UserUpdateModal({ show, close, subjectData = {}, handler }) {
                 {/* <Controller
                   shouldUnregister
                   control={control}
-                  name="active_status"
-                  defaultValue={subjectData && subjectData.active_status}
+                  name="status"
+                  defaultValue={subjectData && subjectData.status}
                   render={({ field }) => (
                     <Form.Group {...field} className="d-flex">
                       <div className="d-flex me-3 me-md-4">
                         <Form.Check
                           type="radio"
-                          name="active_status"
+                          name="status"
                           id="statusActive"
                           value={true}
                           className="cst-clickable me-2"
-                          defaultChecked={subjectData.active_status}
+                          defaultChecked={subjectData.status}
                         />
                         <Form.Label
                           htmlFor="statusActive"
@@ -83,11 +82,11 @@ function UserUpdateModal({ show, close, subjectData = {}, handler }) {
                       <div className="cst-clickable d-flex me-3 me-md-4">
                         <Form.Check
                           type="radio"
-                          name="active_status"
+                          name="status"
                           id="statusInactive"
                           value={false}
                           className="cst-clickable me-2"
-                          defaultChecked={!subjectData.active_status}
+                          defaultChecked={!subjectData.status}
                         />
                         <Form.Label
                           htmlFor="statusInactive"
@@ -102,8 +101,8 @@ function UserUpdateModal({ show, close, subjectData = {}, handler }) {
                 <Controller
                   shouldUnregister
                   control={control}
-                  name="active_status"
-                  defaultValue={subjectData && subjectData.active_status}
+                  name="status"
+                  defaultValue={subjectData && subjectData.status}
                   render={({ field }) => (
                     <Form.Group
                       {...field}
@@ -111,8 +110,8 @@ function UserUpdateModal({ show, close, subjectData = {}, handler }) {
                     >
                       <Form.Check
                         type="switch"
-                        name="active_status"
-                        defaultChecked={subjectData.active_status}
+                        name="status"
+                        defaultChecked={subjectData.status}
                       />
                       <Form.Label className="m-0">Status User</Form.Label>
                     </Form.Group>

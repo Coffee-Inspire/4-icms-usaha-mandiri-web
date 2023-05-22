@@ -1,0 +1,17 @@
+[
+  {
+    "label": "Semua",
+    "value": "",
+    "field": ""
+  },
+  {
+    "label": "Ts. Selesai",
+    "value": "active",
+    "field": "status"
+  },
+  {
+    "label": "Ts. Blm Selesai",
+    "value": "inactive",
+    "field": "status"
+  }
+]

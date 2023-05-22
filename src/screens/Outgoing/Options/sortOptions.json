@@ -1,0 +1,32 @@
+[
+    {
+      "label": "Terbaru",
+      "value": "desc",
+      "field": "created_at"
+    },
+    {
+      "label": "Terlama",
+      "value": "asc",
+      "field": "created_at"
+    },
+    {
+        "label": "No. Nota (A-Z)",
+        "value": "asc",
+        "field": "receipt_no"
+      },
+      {
+        "label": "No. Nota (Z-A)",
+        "value": "desc",
+        "field": "receipt_no"
+      },
+      {
+        "label": "Harga Nota (Min)",
+        "value": "asc",
+        "field": "total_sold"
+      },
+      {
+        "label": "Harga Nota (Maks)",
+        "value": "desc",
+        "field": "total_sold"
+      }
+  ]

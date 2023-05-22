@@ -36,7 +36,7 @@ function Receipt({ innerRef, data }) {
         </div>
         <div className="w-50 text-end">
           <h5 className="cst-text-negative fw-bold mb-4">
-            {data && data.incoming_no}
+            {data && data.receipt_no}
           </h5>
           <div className="d-flex justify-content-end">
             <table>

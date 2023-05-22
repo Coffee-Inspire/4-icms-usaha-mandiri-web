@@ -9,7 +9,7 @@ import { takeIcon } from "../../helpers/iconMapper";
 
 function Sidebar({ prefix, expanded }) {
   const { profileData } = useSelector((state) => state.profileReducer);
-  // profileData.role.role_name
+
   const [collapseList, setCollapseList] = useState([]);
 
   const checkDropdownState = (label) => {

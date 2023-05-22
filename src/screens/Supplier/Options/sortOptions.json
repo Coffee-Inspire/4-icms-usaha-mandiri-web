@@ -10,13 +10,13 @@
       "field": "created_at"
     },
     {
-        "label": "Nominal (Min)",
+        "label": "Nama (A-Z)",
         "value": "asc",
-        "field": "mutation"
+        "field": "supplier_name"
       },
       {
-        "label": "Nominal (Maks)",
+        "label": "Nama (Z-A)",
         "value": "desc",
-        "field": "mutation"
+        "field": "supplier_name"
       }
   ]
