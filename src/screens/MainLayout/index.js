@@ -4,8 +4,12 @@ import sitemap from "../../routing/sitemap.js";
 import Sidebar from "../../components/Sidebar";
 import { Container } from "react-bootstrap";
 import ProfileBar from "../../components/ProfileBar";
+import { useSelector } from "react-redux";
+import Forbidden from "../Fallback/Forbidden/index.js";
 
 function MainLayout({ prefix }) {
+  const { profileData } = useSelector((state) => state.profileReducer);
+
   const [expanded, setExpanded] = useState(false);
   return (
     <Container fluid className="p-0 vh-100">
@@ -19,9 +23,19 @@ function MainLayout({ prefix }) {
           <ProfileBar expanded={expanded} setExpanded={setExpanded} />
           <Routes>
             {sitemap.length > 0 &&
-              sitemap.map((r) => (
-                <Route key={r.path} element={r.element} path={r.path} />
-              ))}
+              sitemap.map((r) => {
+                if (
+                  r.permissions.includes("Global") ||
+                  r.permissions.includes(profileData.role.role_name)
+                ) {
+                  return (
+                    <Route key={r.path} element={r.element} path={r.path} />
+                  );
+                } else
+                  return (
+                    <Route key={r.path} element={<Forbidden />} path={r.path} />
+                  );
+              })}
           </Routes>
           {!expanded && (
             <div

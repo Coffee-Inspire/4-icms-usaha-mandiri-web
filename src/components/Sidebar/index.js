@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Collapse } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import navs from "../../helpers/navs";
 import logo from "../../assets/logo.png";
 import { takeIcon } from "../../helpers/iconMapper";
 
 function Sidebar({ prefix, expanded }) {
+  const { profileData } = useSelector((state) => state.profileReducer);
+  // profileData.role.role_name
   const [collapseList, setCollapseList] = useState([]);
 
   const checkDropdownState = (label) => {
@@ -56,18 +59,26 @@ function Sidebar({ prefix, expanded }) {
                 >
                   <div>
                     <div className="d-flex flex-column ps-5">
-                      {navItem.childs.map((navChild) => (
+                      {navItem.childs.map((navChild) => {
                         // * Nav childs
-                        <NavLink
-                          key={navChild.label}
-                          to={`${prefix}${navChild.destination}`}
-                          style={{ textDecoration: "none" }}
-                          className="cst-text-primary py-2"
-                        >
-                          {navChild.icon}
-                          <span className="ms-2">{navChild.label}</span>
-                        </NavLink>
-                      ))}
+                        if (
+                          navChild.permissions.includes("Global") ||
+                          navChild.permissions.includes(
+                            profileData.role.role_name
+                          )
+                        )
+                          return (
+                            <NavLink
+                              key={navChild.label}
+                              to={`${prefix}${navChild.destination}`}
+                              style={{ textDecoration: "none" }}
+                              className="cst-text-primary py-2"
+                            >
+                              {navChild.icon}
+                              <span className="ms-2">{navChild.label}</span>
+                            </NavLink>
+                          );
+                      })}
                     </div>
                   </div>
                 </Collapse>

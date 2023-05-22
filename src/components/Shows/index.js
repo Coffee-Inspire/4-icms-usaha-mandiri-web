@@ -14,6 +14,7 @@ import NoData from "../../assets/NoData.jpg";
 import { takeIcon } from "../../helpers/iconMapper";
 import Separator from "../Separator";
 import convertIDR from "../../helpers/convertIDR";
+import { useSelector } from "react-redux";
 
 function Shows({
   columns,
@@ -34,6 +35,7 @@ function Shows({
   actionForDetail,
   actionForDelete,
 }) {
+  const { profileData } = useSelector((state) => state.profileReducer);
   let actionMethods = columns.find((col) => col.methods);
   actionMethods
     ? (actionMethods = actionMethods.methods)
@@ -162,7 +164,62 @@ function Shows({
     const actionPopover = (
       <Popover id="popover-positioned-left">
         <Popover.Body className="p-1">
-          {actionMethods.includes("detail") && (
+          {actionMethods.find(
+            (x) =>
+              x.action.toLowerCase() === "detail" &&
+              (x.permission.includes("Global") ||
+                x.permission.includes(profileData.role.role_name))
+          ) && (
+            <div
+              className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                document.body.click();
+                actionForDetail(record.id);
+              }}
+            >
+              <span>Lihat Detail</span>
+            </div>
+          )}
+          {actionMethods.find(
+            (x) =>
+              x.action.toLowerCase() === "edit" &&
+              (x.permission.includes("Global") ||
+                x.permission.includes(profileData.role.role_name))
+          ) && (
+            <div
+              className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                document.body.click();
+                actionForEdit(record);
+              }}
+            >
+              <span>Ubah</span>
+            </div>
+          )}
+          {actionMethods.find(
+            (x) =>
+              x.action.toLowerCase() === "delete" &&
+              (x.permission.includes("Global") ||
+                x.permission.includes(profileData.role.role_name))
+          ) && (
+            <>
+              {actionMethods.length > 1 && <Separator className="mx-1 mt-2" />}
+              <div
+                className="cst-text-negative cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  document.body.click();
+                  actionForDelete(record);
+                }}
+              >
+                <span>Hapus</span>
+              </div>
+            </>
+          )}
+
+          {/* {actionMethods.includes("detail") && (
             <div
               className="cst-clickable cst-hover-bg-respond my-1 py-1 px-2 rounded-2"
               onClick={(e) => {
@@ -201,7 +258,7 @@ function Shows({
                 <span>Hapus</span>
               </div>
             </>
-          )}
+          )} */}
         </Popover.Body>
       </Popover>
     );

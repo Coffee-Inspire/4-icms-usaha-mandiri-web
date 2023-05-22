@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 import Shows from "../../components/Shows";
 import Header from "../../components/Header";
@@ -12,6 +13,8 @@ import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
 function Stock() {
+  const { profileData } = useSelector((state) => state.profileReducer);
+
   const [data, setData] = useState([]);
   const [subjectData, setSubjectData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +82,12 @@ function Stock() {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["edit"],
+      methods: [
+        {
+          action: "edit",
+          permission: ["Administrator"],
+        },
+      ],
     },
   ];
 

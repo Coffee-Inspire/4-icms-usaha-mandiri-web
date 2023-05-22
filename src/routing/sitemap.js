@@ -16,51 +16,62 @@ const sitemap = [
   {
     element: <Stock />,
     path: "/stock",
-    // role: ["Administrator", "Normal"]
+    permissions: ["Global"],
   },
   {
     element: <Customer />,
     path: "/customer",
+    permissions: ["Global"],
   },
   {
     element: <Supplier />,
     path: "/supplier",
+    permissions: ["Global"],
   },
   {
     element: <Incoming />,
     path: "/incoming",
+    permissions: ["Global"],
   },
   {
     element: <IncomingDetail />,
     path: "/incoming/detail/:id",
+    permissions: ["Global"],
   },
   {
     element: <IncomingCreate />,
     path: "/incoming/create",
+    permissions: ["Global"],
   },
   {
     element: <Outgoing />,
     path: "/outgoing",
+    permissions: ["Global"],
   },
   {
     element: <OutgoingDetail />,
     path: "/outgoing/detail/:id",
+    permissions: ["Global"],
   },
   {
     element: <OutgoingCreate />,
     path: "/outgoing/create",
+    permissions: ["Global"],
   },
   {
     element: <Journal />,
     path: "/journal",
+    permissions: ["Global"],
   },
   {
     element: <User />,
     path: "/user",
+    permissions: ["Administrator"],
   },
   {
     element: <Category />,
     path: "/category",
+    permissions: ["Global"],
   },
   // ? Default routing
   // {
@@ -70,6 +81,7 @@ const sitemap = [
   {
     element: <PageNotFound />,
     path: "/*",
+    permissions: ["Global"],
   },
 ];
 

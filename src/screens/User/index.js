@@ -73,14 +73,23 @@ function User() {
     },
     {
       label: "status akun",
-      bind: "active_status",
+      bind: "status",
       type: "userStatus",
     },
     {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["delete", "edit"],
+      methods: [
+        {
+          action: "edit",
+          permission: ["Administrator"],
+        },
+        {
+          action: "delete",
+          permission: ["Administrator"],
+        },
+      ],
     },
   ];
 

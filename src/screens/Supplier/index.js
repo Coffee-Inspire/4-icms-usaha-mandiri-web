@@ -59,14 +59,23 @@ function Supplier() {
     },
     {
       label: "status",
-      bind: "active_status",
+      bind: "status",
       type: "activeStatus",
     },
     {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["edit", "delete"],
+      methods: [
+        {
+          action: "edit",
+          permission: ["Administrator"],
+        },
+        {
+          action: "delete",
+          permission: ["Administrator"],
+        },
+      ],
     },
   ];
 
@@ -78,7 +87,6 @@ function Supplier() {
       filter,
       search,
     };
-    // * Call API
     supplierApi
       .getAll(params)
       .then((res) => {

@@ -56,7 +56,16 @@ function Incoming() {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["detail", "edit"],
+      methods: [
+        {
+          action: "detail",
+          permission: ["Global"],
+        },
+        {
+          action: "edit",
+          permission: ["Global"],
+        },
+      ],
     },
   ];
 

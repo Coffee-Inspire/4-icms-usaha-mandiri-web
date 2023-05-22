@@ -58,7 +58,16 @@ function Customer() {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["edit", "delete"],
+      methods: [
+        {
+          action: "edit",
+          permission: ["Administrator"],
+        },
+        {
+          action: "delete",
+          permission: ["Administrator"],
+        },
+      ],
     },
   ];
 

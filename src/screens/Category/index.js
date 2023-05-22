@@ -54,7 +54,16 @@ function Category() {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["delete", "edit"],
+      methods: [
+        {
+          action: "edit",
+          permission: ["Global"],
+        },
+        {
+          action: "delete",
+          permission: ["Administrator"],
+        },
+      ],
     },
   ];
 

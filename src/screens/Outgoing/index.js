@@ -56,7 +56,12 @@ function Outgoing() {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
-      methods: ["detail"],
+      methods: [
+        {
+          action: "detail",
+          permission: ["Global"],
+        },
+      ],
     },
   ];
 
