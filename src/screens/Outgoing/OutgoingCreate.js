@@ -77,8 +77,6 @@ function OutgoingCreate() {
   });
   const [customer, setCustomer] = useState(null);
   const [customerInfo, setCustomerInfo] = useState(null);
-  // const [stock, setStock] = useState(null);
-  // const [stockInfo, setStockInfo] = useState(null);
 
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState("0");
@@ -466,7 +464,7 @@ function OutgoingCreate() {
                     <Col xs={9} className="my-1">
                       <Form.Control
                         className="cst-form-control py-1 px-2"
-                        defaultValue={customerInfo && customerInfo.contact}
+                        value={customerInfo && customerInfo.contact}
                         disabled
                       />
                     </Col>
@@ -479,7 +477,7 @@ function OutgoingCreate() {
                       <Form.Control
                         as="textarea"
                         className="cst-form-control py-1 px-2"
-                        defaultValue={customerInfo && customerInfo.address}
+                        value={customerInfo && customerInfo.address}
                         disabled
                       />
                     </Col>
