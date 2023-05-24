@@ -14,6 +14,17 @@ const journal = {
     return fetchDepart(url, options);
   },
 
+  getBalance: () => {
+    // const { page, limit, sort, filter, search } = params;
+    const options = {
+      method: "GET",
+    };
+
+    let url = `${base}/getBalance`;
+
+    return fetchDepart(url, options);
+  },
+
   create: (params) => {
     const options = {
       method: "POST",

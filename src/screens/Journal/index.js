@@ -87,6 +87,28 @@ function Journal() {
       .finally(() => setIsLoading(false));
   };
 
+  const getBalance = () => {
+    setIsLoading(true);
+    // const params = {
+    //   page,
+    //   limit,
+    //   filter,
+    //   sort,
+    //   search,
+    // };
+    journalApi
+      .getBalance()
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setBalance(res.data.data.balance);
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
   const createData = (params) => {
     params = {
       ...params,
@@ -113,6 +135,7 @@ function Journal() {
 
   useEffect(() => {
     getData();
+    getBalance();
   }, [limit, page, sort, filter, search]);
 
   useEffect(() => {
@@ -132,10 +155,12 @@ function Journal() {
         <div className="text-end">
           <strong className="text-secondary">
             <span className="me-2">{takeIcon("cash")}</span>
-            Saldo
+            Saldo Sekarang
           </strong>
           <h6>
-            <strong>IDR {convertIDR(balance)}</strong>
+            <strong className="cst-text-secondary cst-letter-spacing-sm">
+              IDR {convertIDR(balance)}
+            </strong>
           </h6>
         </div>
       </div>

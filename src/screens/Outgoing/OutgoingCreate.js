@@ -300,10 +300,8 @@ function OutgoingCreate() {
     outgoingApi
       .create(params)
       .then((res) => {
-        console.log("Outgoing POST Callback => ", res);
         if (res.status !== 200) throw res;
         // TODO Set quick data from response for fast receipt and details redirect
-        // res.data.data.setQuickData("");
         const peekData = {
           ...res.data.data.outgoingData,
           outgoing_details: res.data.data.outgoingDetailsFrontend,
@@ -397,7 +395,7 @@ function OutgoingCreate() {
 
   return (
     <Container fluid className="p-4">
-      <Header headerLabel={"kasir"} isLoading={isLoading} />
+      <Header useBack headerLabel={"kasir"} isLoading={isLoading} />
       <Row className="mx-0 pt-3">
         <Col xs={12} md={6}>
           <Card className="mb-4">
