@@ -34,6 +34,16 @@ const user = {
     return fetchDepart(url, options);
   },
 
+  updatePassword: (params) => {
+    const options = {
+      method: "PUT",
+      body: params,
+    };
+
+    let url = `${base}/changePass`;
+    return fetchDepart(url, options);
+  },
+
   delete: (targetId) => {
     const options = {
       method: "DELETE",

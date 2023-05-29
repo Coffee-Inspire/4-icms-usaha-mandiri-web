@@ -41,7 +41,7 @@ function ProfileBar({ expanded, setExpanded }) {
       password_new: data.password_new,
     };
     userApi
-      .update(params)
+      .updatePassword(params)
       .then((res) => {
         if (res.status !== 200) throw res;
         setActionRes({
