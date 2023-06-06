@@ -1,6 +1,6 @@
 import fetchDepart from "../helpers/fetchDepart";
 
-const base = `/outgoings`;
+const base = `/return`;
 const outgoing = {
   getAll: (params) => {
     const { page, limit, sort, search } = params;
@@ -22,15 +22,6 @@ const outgoing = {
     return fetchDepart(url, options);
   },
 
-  getDataSource: () => {
-    const options = {
-      method: "GET",
-    };
-
-    let url = `${base}/datasource`;
-    return fetchDepart(url, options);
-  },
-
   create: (params) => {
     const options = {
       method: "POST",
@@ -38,6 +29,16 @@ const outgoing = {
     };
 
     let url = `${base}/create`;
+    return fetchDepart(url, options);
+  },
+
+  update: (params) => {
+    const options = {
+      method: "PUT",
+      body: params,
+    };
+
+    let url = `${base}/update`;
     return fetchDepart(url, options);
   },
 };

@@ -95,7 +95,7 @@ function TransactionCreateModal({ show, close, handler }) {
                           defaultChecked
                         />
                         <Form.Label htmlFor="typeDB" className="cst-clickable">
-                          {"Uang Keluar (DB) "}
+                          {"Uang Keluar (Debit) "}
                         </Form.Label>
                       </div>
                       <div className="cst-clickable d-flex me-3 me-md-4">
@@ -107,7 +107,7 @@ function TransactionCreateModal({ show, close, handler }) {
                           className="cst-clickable me-2"
                         />
                         <Form.Label htmlFor="typeCR" className="cst-clickable">
-                          {"Uang Masuk (CR) "}
+                          {"Uang Masuk (Kredit) "}
                         </Form.Label>
                       </div>
                     </Form.Group>

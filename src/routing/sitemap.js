@@ -7,6 +7,8 @@ import IncomingDetail from "../screens/Incoming/IncomingDetail";
 import Outgoing from "../screens/Outgoing";
 import OutgoingDetail from "../screens/Outgoing/OutgoingDetail";
 import OutgoingCreate from "../screens/Outgoing/OutgoingCreate";
+import Return from "../screens/Return";
+import ReturnCreate from "../screens/Return/ReturnCreate";
 import Journal from "../screens/Journal";
 import User from "../screens/User";
 import Category from "../screens/Category";
@@ -56,6 +58,16 @@ const sitemap = [
   {
     element: <OutgoingCreate />,
     path: "/outgoing/create",
+    permissions: ["Global"],
+  },
+  {
+    element: <Return />,
+    path: "/return",
+    permissions: ["Global"],
+  },
+  {
+    element: <ReturnCreate />,
+    path: "/return/create",
     permissions: ["Global"],
   },
   {

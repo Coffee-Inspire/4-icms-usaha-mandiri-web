@@ -22,7 +22,7 @@ function OutgoingDetail() {
 
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
-  // console.log(data);
+  console.log(data);
   const getData = () => {
     setIsLoading(true);
     const params = {
@@ -187,7 +187,7 @@ function OutgoingDetail() {
                   <th className="text-end">Banyaknya</th>
                   <th className="text-end">Harga Jual</th>
                   <th className="text-end">Amount</th>
-                  {/* <th className="text-center">Action</th> */}
+                  <th className="text-end">Total Retur</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,7 +209,9 @@ function OutgoingDetail() {
                         <span className="text-secondary">IDR</span>
                       </div>
                     </td>
-                    {/* <td>Return</td> */}
+                    <td className="text-end">
+                      {i.return_qty || 0} {i.unit}
+                    </td>
                   </tr>
                 ))}
               </tbody>

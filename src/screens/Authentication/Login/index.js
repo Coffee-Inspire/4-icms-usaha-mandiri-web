@@ -60,7 +60,7 @@ function Login() {
           dispatch(saveProfile(payload));
           const token = res.data.token;
           localStorage.setItem("access_token", token);
-          navigate("/dashboard");
+          navigate("/dashboard/stock");
         } else if (res.response && res.response.status === 403) {
           setAlertMessage(res.response.data.error.message);
           setInvalidAlertShow(true);

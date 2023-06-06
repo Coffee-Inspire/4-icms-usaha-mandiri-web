@@ -28,7 +28,6 @@ function IncomingDetail() {
     incomingApi
       .getById(params)
       .then((res) => {
-        console.log(res);
         if (res.status !== 200) throw res;
         // if (Array.isArray(res.data.data)) {
         //   // ? Custom exeption due to unconsistent respond

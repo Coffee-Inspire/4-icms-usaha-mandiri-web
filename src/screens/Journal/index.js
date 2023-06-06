@@ -89,13 +89,6 @@ function Journal() {
 
   const getBalance = () => {
     setIsLoading(true);
-    // const params = {
-    //   page,
-    //   limit,
-    //   filter,
-    //   sort,
-    //   search,
-    // };
     journalApi
       .getBalance()
       .then((res) => {
@@ -125,6 +118,7 @@ function Journal() {
         });
         setActionAlertShow(true);
         getData();
+        getBalance();
       })
       .catch((err) => {
         setActionRes(errorReader(err));

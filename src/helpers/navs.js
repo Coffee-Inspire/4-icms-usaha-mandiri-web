@@ -42,6 +42,12 @@ const navs = [
         permissions: ["Global"],
       },
       {
+        label: "Retur Penjualan",
+        icon: takeIcon("outgoing"),
+        destination: "/return",
+        permissions: ["Global"],
+      },
+      {
         label: "Jurnal Transaksi",
         icon: takeIcon("journal"),
         destination: "/journal",

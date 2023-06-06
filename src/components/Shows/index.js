@@ -178,7 +178,10 @@ function Shows({
                 actionForDetail(record.id);
               }}
             >
-              <span>Lihat Detail</span>
+              <span>
+                {actionMethods.find((x) => x.action.toLowerCase() === "detail")
+                  .label || "Lihat Detail"}
+              </span>
             </div>
           )}
           {actionMethods.find(
@@ -195,7 +198,10 @@ function Shows({
                 actionForEdit(record);
               }}
             >
-              <span>Ubah</span>
+              <span>
+                {actionMethods.find((x) => x.action.toLowerCase() === "edit")
+                  .label || "Ubah"}
+              </span>
             </div>
           )}
           {actionMethods.find(
@@ -214,7 +220,11 @@ function Shows({
                   actionForDelete(record);
                 }}
               >
-                <span>Hapus</span>
+                <span>
+                  {actionMethods.find(
+                    (x) => x.action.toLowerCase() === "delete"
+                  ).label || "Hapus"}
+                </span>
               </div>
             </>
           )}
@@ -277,7 +287,8 @@ function Shows({
               <div className="w-75 mx-auto">
                 <div className="d-flex flex-column">
                   <span>{`${value}`}</span>
-                  <span className="text-secondary">PCS</span>
+                  <span className="text-secondary text-uppercase">{`${record.unit}`}</span>
+                  {/* <span className="text-secondary">PCS</span> */}
                 </div>
               </div>
             </td>
@@ -318,7 +329,7 @@ function Shows({
               return (
                 <td key={`${record.id}-${col.bind}`}>
                   <div className="cst-bg-positive-light cst-chip-radius w-75 mx-auto text-center">
-                    <span className="cst-text-positive">CR</span>
+                    <span className="cst-text-positive">Kredit</span>
                   </div>
                 </td>
               );
@@ -327,7 +338,7 @@ function Shows({
               return (
                 <td key={`${record.id}-${col.bind}`}>
                   <div className="cst-bg-negative-light cst-chip-radius w-75 mx-auto text-center">
-                    <span className="cst-text-negative">DB</span>
+                    <span className="cst-text-negative">Debit</span>
                   </div>
                 </td>
               );
@@ -372,7 +383,7 @@ function Shows({
             </td>
           );
         case "stockStatus":
-          const current = (key) => {
+          const currentStockStatus = (key) => {
             return {
               OUT: {
                 label: "Stok Habis",
@@ -392,11 +403,43 @@ function Shows({
             <td style={customized} key={`${record.id}-${col.bind}`}>
               <div
                 className={`cst-bg-${
-                  current(value).type
+                  currentStockStatus(value).type
                 }-light cst-chip-radius d-flex`}
               >
-                <span className={`cst-text-${current(value).type} w-100`}>
-                  {current(value).label}
+                <span
+                  className={`cst-text-${currentStockStatus(value).type} w-100`}
+                >
+                  {currentStockStatus(value).label}
+                </span>
+              </div>
+            </td>
+          );
+        case "returnStatus":
+          const currentReturnStatus = (key) => {
+            return {
+              null: {
+                label: "Pengajuan",
+                type: "warning",
+              },
+              true: {
+                label: "Selesai",
+                type: "positive",
+              },
+              false: {
+                label: "Ditolak",
+                type: "negative",
+              },
+            }[key];
+          };
+          return (
+            <td style={customized} key={`${record.id}-${col.bind}`}>
+              <div
+                className={`cst-bg-${
+                  currentReturnStatus(value).type
+                }-light cst-chip-radius d-flex justify-content-center`}
+              >
+                <span className={`cst-text-${currentReturnStatus(value).type}`}>
+                  {currentReturnStatus(value).label}
                 </span>
               </div>
             </td>
