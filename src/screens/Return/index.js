@@ -53,7 +53,7 @@ function Return() {
     {
       label: "jumlah yang diajukan",
       type: "qty",
-      bind: "return_qty",
+      bind: "qty",
       align: "left",
     },
     {
@@ -112,9 +112,6 @@ function Return() {
                 ? i.outgoing_detail.stock
                   ? i.outgoing_detail.stock.item_name
                   : "-"
-                : "-",
-              return_qty: i.outgoing_detail
-                ? i.outgoing_detail.return_qty
                 : "-",
               unit: i.outgoing_detail ? i.outgoing_detail.unit : "-",
             })

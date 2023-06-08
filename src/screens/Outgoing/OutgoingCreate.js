@@ -497,7 +497,7 @@ function OutgoingCreate() {
                     <th>Harga</th>
                     <th>Banyaknya</th>
                     <th>Unit</th>
-                    <th>Amount</th>
+                    <th>Jumlah</th>
                     <th>Hapus</th>
                   </tr>
                 </thead>

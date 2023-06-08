@@ -226,7 +226,8 @@ function ReturnCreate() {
                   <th className="text-end">Banyaknya </th>
                   <th className="text-end">Harga</th>
                   <th className="text-end">Jumlah</th>
-                  <th className="text-end">Total Retur</th>
+                  <th className="text-end">Dalam Pengajuan</th>
+                  <th className="text-end">Jumlah Retur Selesai</th>
                   <th className="text-center">Retur Barang</th>
                 </tr>
               </thead>
@@ -250,6 +251,9 @@ function ReturnCreate() {
                           {convertIDR(i.total_amount)}
                           <span className="text-secondary">IDR</span>
                         </div>
+                      </td>
+                      <td className="text-end">
+                        {i.return_pending ? i.return_pending : "0"} {i.unit}
                       </td>
                       <td className="text-end">
                         {i.return_qty ? i.return_qty : "0"} {i.unit}

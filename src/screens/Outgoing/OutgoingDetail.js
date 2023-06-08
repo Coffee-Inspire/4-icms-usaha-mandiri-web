@@ -22,7 +22,7 @@ function OutgoingDetail() {
 
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
-  console.log(data);
+
   const getData = () => {
     setIsLoading(true);
     const params = {
@@ -32,15 +32,6 @@ function OutgoingDetail() {
       .getById(params)
       .then((res) => {
         if (res.status !== 200) throw res;
-        // if (Array.isArray(res.data.data)) {
-        //   if (res.status !== 200) throw res;
-        //   // ? Custom exeption due to unconsistent respond
-        //   res.response = {
-        //     status: 404,
-        //     data: { error: { message: "Data tidak ditemukan" } },
-        //   };
-        //   throw res;
-        // }
         setData(res.data.data);
       })
       .catch((err) => {
@@ -48,40 +39,6 @@ function OutgoingDetail() {
         setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
-    // ? For Development
-    // const dummy = {
-    //   id: "1",
-    //   receipt_no: "UM/PJL/23040001",
-    //   guest: { name: "Julius", contact: "08238176131" },
-    //   total_sold: 320000,
-    //   note: "Lorem ipsum",
-    //   outgoingDetails: [
-    //     {
-    //       id: "11",
-    //       stock: { item_name: "Saringan air diameter 3" },
-    //       sold_qty: "4",
-    //       sold_price: "35000",
-    //       total_amount: "140000",
-    //     },
-    //     {
-    //       id: "22",
-    //       stock: { item_name: "PVC RUCIKA 2 INCHI" },
-    //       sold_qty: "8",
-    //       sold_price: "10000",
-    //       total_amount: "80000",
-    //     },
-    //     {
-    //       id: "33",
-    //       stock: { item_name: "KNEE L 2 INCHI" },
-    //       sold_qty: "20",
-    //       sold_price: "5000",
-    //       total_amount: "100000",
-    //     },
-    //   ],
-    // };
-    // TODO add maxToReceive property for each icdData (purchaseQty-receivedQty)
-    // setData(dummy);
-    // setIsLoading(false);
   };
 
   const handlePrint = useReactToPrint({
@@ -186,8 +143,8 @@ function OutgoingDetail() {
                   <th>Nama Barang</th>
                   <th className="text-end">Banyaknya</th>
                   <th className="text-end">Harga Jual</th>
-                  <th className="text-end">Amount</th>
-                  <th className="text-end">Total Retur</th>
+                  <th className="text-end">Jumlah</th>
+                  <th className="text-end">Barang Retur</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,7 +166,12 @@ function OutgoingDetail() {
                         <span className="text-secondary">IDR</span>
                       </div>
                     </td>
-                    <td className="text-end">
+                    {/* <td className="text-end cst-text-negative"> */}
+                    <td
+                      className={`${
+                        i.return_qty > 0 && "cst-text-negative"
+                      } text-end`}
+                    >
                       {i.return_qty || 0} {i.unit}
                     </td>
                   </tr>
