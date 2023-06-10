@@ -42,7 +42,7 @@ function UserCreateModal({ show, close, roleOptions, handler }) {
       "string.empty": `Alamat tidak boleh kosong`,
       "any.required": `Alamat tidak boleh kosong`,
     }),
-    active_status: Joi.boolean().default(true),
+    status: Joi.boolean().default(true),
   });
   const {
     register,
@@ -64,7 +64,7 @@ function UserCreateModal({ show, close, roleOptions, handler }) {
       return false;
     }
     setPassUnmatched(false);
-    const isValid = validator(data, ["email", "role_id", "active_status"]);
+    const isValid = validator(data, ["email", "role_id", "status"]);
     if (!isValid) {
       setValidationAlertShow(true);
       return false;
@@ -259,7 +259,7 @@ function UserCreateModal({ show, close, roleOptions, handler }) {
             <Col md={12} lg={4} className="py-2 d-flex">
               <Controller
                 control={control}
-                name="active_status"
+                name="status"
                 render={({ field }) => (
                   <Form.Group
                     {...field}
