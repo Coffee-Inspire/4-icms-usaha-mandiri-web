@@ -35,7 +35,7 @@ function Journal() {
 
   const columns = [
     {
-      label: "tanggal",
+      label: "tanggal pembuatan",
       bind: "transaction_date",
       type: "date",
     },
@@ -56,10 +56,33 @@ function Journal() {
       type: "transactionType",
     },
     {
+      label: "tanggal jatuh tempo",
+      bind: "deadline_date",
+      type: "date",
+    },
+    {
+      label: "status pembayaran",
+      bind: "paid_status",
+      align: "center",
+      type: "paidStatus",
+    },
+    {
       label: "nominal",
       bind: "mutation",
       type: "currency",
       align: "right",
+    },
+    {
+      label: takeIcon("menuVertical"),
+      bind: "action",
+      type: "action",
+      methods: [
+        {
+          action: "edit",
+          permission: ["Global"],
+          label: "Selesaikan Pembayaran",
+        },
+      ],
     },
   ];
 

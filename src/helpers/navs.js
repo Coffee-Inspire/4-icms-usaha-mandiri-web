@@ -23,6 +23,12 @@ const navs = [
         destination: "/supplier",
         permissions: ["Global"],
       },
+      {
+        label: "Kategori Barang",
+        icon: takeIcon("category"),
+        destination: "/category",
+        permissions: ["Global"],
+      },
     ],
   },
   {
@@ -55,23 +61,32 @@ const navs = [
       },
     ],
   },
+  // {
+  //   label: "Konfigurasi",
+  //   icon: takeIcon("config"),
+  //   childs: [
+  //     {
+  //       label: "Pengguna",
+  //       icon: takeIcon("user"),
+  //       destination: "/user",
+  //       permissions: ["Administrator"],
+  //     },
+  //   ],
+  // },
   {
-    label: "Konfigurasi",
-    icon: takeIcon("config"),
-    childs: [
-      {
-        label: "Pengguna",
-        icon: takeIcon("user"),
-        destination: "/user",
-        permissions: ["Administrator"],
-      },
-      {
-        label: "Kategori Barang",
-        icon: takeIcon("category"),
-        destination: "/category",
-        permissions: ["Global"],
-      },
-    ],
+    label: "Pengguna",
+    icon: takeIcon("user"),
+    destination: "/user",
+    permissions: ["Administrator"],
+
+    // childs: [
+    //   {
+    //     label: "Pengguna",
+    //     icon: takeIcon("user"),
+    //     destination: "/user",
+    //     permissions: ["Administrator"],
+    //   },
+    // ],
   },
 ];
 

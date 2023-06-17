@@ -267,12 +267,30 @@ Extra extra large	xxl	≥1400px
   background-color: $color-neutral;
 }
 
+.cst-guide-positive {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: $color-positive;
+}
+
+.cst-guide-negative {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: $color-negative;
+}
+
 .cst-w-min-content {
   width: min-content;
 }
 
 .cst-w-100 {
   width: 100px;
+}
+
+.cst-w-150 {
+  width: 150px;
 }
 
 .cst-letter-spacing-sm {

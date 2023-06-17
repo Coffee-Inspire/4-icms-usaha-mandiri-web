@@ -6,6 +6,7 @@ import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+import moment from "moment";
 
 import Header from "../../components/Header";
 import Subheader from "../../components/Subheader";
@@ -30,6 +31,8 @@ function IncomingCreate() {
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [note, setNote] = useState("");
+  const [dlDate, setDlDate] = useState("");
+  const [errorDate, setErrorDate] = useState(false);
 
   const [isExistAlertShow, setIsExistAlertShow] = useState(false);
   const [rejected, setRejected] = useState("");
@@ -74,7 +77,6 @@ function IncomingCreate() {
         "any.required": `Qty tidak boleh kosong`,
         "string.pattern.base": `Hanya angka`,
       }),
-
     unit: Joi.string().default("pcs").messages({
       "string.empty": `Unit tidak boleh kosong`,
       "any.required": `Unit tidak boleh kosong`,
@@ -88,6 +90,13 @@ function IncomingCreate() {
     control,
     reset,
   } = useForm({ resolver: joiResolver(schema) });
+
+  const resetForm = () => {
+    const fields = [...schema._ids._byKey.keys()];
+    let defaultValues = {};
+    fields.map((i) => (defaultValues[i] = ""));
+    reset(defaultValues);
+  };
 
   const getCategorySource = () => {
     setIsLoading(true);
@@ -151,6 +160,11 @@ function IncomingCreate() {
   };
 
   const createData = () => {
+    if (!dlDate) {
+      setErrorDate(true);
+      return;
+    }
+    setErrorDate(false);
     setIsLoading(true);
     const newDataList = dataList.map(
       (i) =>
@@ -165,6 +179,7 @@ function IncomingCreate() {
       incoming: {
         total_purchase: totalPrice,
         note: note,
+        deadline_date: dlDate,
       },
       details: newDataList,
     };
@@ -177,6 +192,11 @@ function IncomingCreate() {
           status: res.status,
           message: "Berhasil membuat pesanan",
         });
+        setActionAlertShow(true);
+        // TODO Clear All Form
+        resetForm();
+        dataList([]);
+        // TODO Show decision modal, options: open new tab to whatsapp, stay on page, view detail
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -336,6 +356,21 @@ function IncomingCreate() {
                             Box
                           </Form.Label>
                         </div>
+                        <div className="cst-clickable d-flex me-3">
+                          <Form.Check
+                            type="radio"
+                            name="unit"
+                            id="unitSack"
+                            value="sack"
+                            className="cst-clickable me-2"
+                          />
+                          <Form.Label
+                            htmlFor="unitSack"
+                            className="cst-clickable"
+                          >
+                            Sack
+                          </Form.Label>
+                        </div>
                       </Form.Group>
                     )}
                   />
@@ -391,7 +426,7 @@ function IncomingCreate() {
                     variant="none"
                     className="cst-btn-danger w-100"
                     disabled={isLoading}
-                    // onClick={() => reset()}
+                    onClick={() => resetForm()}
                   >
                     Bersihkan
                   </Button>
@@ -414,6 +449,7 @@ function IncomingCreate() {
         <Col xs={12} md={7} className="py-3">
           <Container>
             <Subheader>Daftar Pemesanan</Subheader>
+
             {dataList.length > 0 && (
               <>
                 <Row className="mx-0 mb-3 border-bottom border-1 d-flex justify-content-between justify-content-md-end">
@@ -485,12 +521,35 @@ function IncomingCreate() {
                     </tbody>
                   </Table>
                 </div>
-                <Form.Label>Catatan</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  placeholder="Catatan (opsional)"
-                  onChange={(e) => setNote(e.target.value)}
-                />
+                <Row className="justify-content-between">
+                  <Col xs={12} lg={8}>
+                    <Form.Label>Tambah Keterangan</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Keterangan (opsional)"
+                      onChange={(e) => setNote(e.target.value)}
+                    />
+                  </Col>
+                  <Col xs={12} lg={4}>
+                    <Form.Label>
+                      Jatuh Tempo Pembayaran
+                      <span className="cst-text-negative">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      className={errorDate && "cst-form-invalid"}
+                      onChange={(e) => setDlDate(e.target.value)}
+                      value={dlDate}
+                      required
+                    />
+                    {errorDate && (
+                      <small className="cst-text-negative ">
+                        Wajib mengisi tanggal jatuh tempo
+                      </small>
+                    )}
+                  </Col>
+                </Row>
+
                 <Row className="mx-0 my-5 justify-content-end">
                   <Col xs={5} md={3}>
                     <Button

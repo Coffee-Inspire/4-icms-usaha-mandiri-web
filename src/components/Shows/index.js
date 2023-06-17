@@ -362,7 +362,7 @@ function Shows({
           return (
             <td style={customized} key={`${record.id}-${col.bind}`}>
               {value ? (
-                <span className="bg-danger">
+                <span>
                   <div className="cst-bg-neutral-light cst-chip-radius cst-w-100 mx-auto cst-text-primary px-2">
                     <div className="d-flex align-items-center">
                       <div className="cst-guide-primary mx-1" />
@@ -376,6 +376,34 @@ function Shows({
                     <div className="d-flex align-items-center">
                       <div className="cst-guide-neutral mx-1" />
                       <span>Nonaktif</span>
+                    </div>
+                  </div>
+                </span>
+              )}
+            </td>
+          );
+        case "paidStatus":
+          return (
+            <td
+              style={customized}
+              key={`${record.id}-${col.bind}`}
+              className=""
+            >
+              {value ? (
+                <span>
+                  <div className="cst-bg-neutral-light cst-chip-radius cst-w-150 mx-auto cst-text-positive px-2">
+                    <div className="d-flex align-items-center">
+                      <div className="cst-guide-positive mx-1" />
+                      <span>Selesai</span>
+                    </div>
+                  </div>
+                </span>
+              ) : (
+                <span>
+                  <div className="cst-bg-neutral-lighter cst-chip-radius cst-w-150 mx-auto cst-text-negative px-2">
+                    <div className="d-flex align-items-center">
+                      <div className="cst-guide-negative mx-1" />
+                      <span>Belum selesai</span>
                     </div>
                   </div>
                 </span>
