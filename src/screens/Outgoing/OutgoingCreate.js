@@ -31,41 +31,6 @@ function OutgoingCreate() {
     content: () => printRef.current,
   });
 
-  // ? For Development
-  // const dummyCustomerOptions = [
-  //   {
-  //     value: "1",
-  //     label: "Desmond Tan",
-  //   },
-  //   {
-  //     value: "2",
-  //     label: "Jonathan Lee",
-  //   },
-  //   {
-  //     value: "3",
-  //     label: "Michelle Wong",
-  //   },
-  //   {
-  //     value: "4",
-  //     label: "Amelia Ng",
-  //   },
-  // ];
-
-  const dummyItemOptions = [
-    {
-      value: "1",
-      label: "Semen",
-    },
-    {
-      value: "2",
-      label: "Kayu",
-    },
-    {
-      value: "3",
-      label: "Besi",
-    },
-  ];
-
   const { profileData } = useSelector((state) => state.profileReducer);
   const [quickData, setQuickData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -275,11 +240,6 @@ function OutgoingCreate() {
     const newData = cart.filter((i, idx) => idx !== targetIndex);
     setCart(newData);
   };
-
-  // ? For Development
-  const [dummyApiResultReturn, setDummyApiResultReturn] = useState({
-    incomingNo: "UM/RCPT/23/3/0001",
-  });
 
   const handleSubmit = () => {
     const params = {

@@ -516,6 +516,20 @@ Extra extra large	xxl	≥1400px
   }
 }
 
+.cst-btn-success-light {
+  background-color: lighten($color-positive, 10%);
+  color: $color-plain;
+  transition: 0.3s;
+
+  &:hover,
+  &:focus {
+    background-color: $color-plain;
+    border: 1px solid $color-positive;
+    color: $color-positive;
+    font-weight: bold;
+  }
+}
+
 .cst-btn-plain {
   background-color: $color-plain;
   color: $color-primary;

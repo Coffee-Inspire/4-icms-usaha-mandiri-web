@@ -12,6 +12,7 @@ import Header from "../../components/Header";
 import Subheader from "../../components/Subheader";
 import IsExistAlert from "./Alerts/IsExistAlert";
 import ActionPopup from "../../components/ActionPopup";
+import ChainModal from "./ChainModal";
 
 import incomingApi from "../../apis/incoming";
 import stockApi from "../../apis/stock";
@@ -25,6 +26,8 @@ function IncomingCreate() {
   const navigate = useNavigate();
 
   const [dataList, setDataList] = useState([]);
+  const [quickData, setQuickData] = useState({});
+
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [supplierOptions, setSupplierOptions] = useState([]);
   const [stockOptions, setStockOptions] = useState([]);
@@ -32,10 +35,12 @@ function IncomingCreate() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [note, setNote] = useState("");
   const [dlDate, setDlDate] = useState("");
-  const [errorDate, setErrorDate] = useState(false);
+  const [isDateInvalid, setIsDateInvalid] = useState(false);
 
   const [isExistAlertShow, setIsExistAlertShow] = useState(false);
   const [rejected, setRejected] = useState("");
+
+  const [chainModalShow, setChainModalShow] = useState(false);
 
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
@@ -161,16 +166,16 @@ function IncomingCreate() {
 
   const createData = () => {
     if (!dlDate) {
-      setErrorDate(true);
+      setIsDateInvalid(true);
       return;
     }
-    setErrorDate(false);
+    setIsDateInvalid(false);
     setIsLoading(true);
     const newDataList = dataList.map(
       (i) =>
         (i = {
           ...i,
-          item_name: i.item_name.value,
+          item_name: i.item_name.label,
           supplier_id: i.supplier_id.value,
           category_id: i.category_id.value,
         })
@@ -188,14 +193,21 @@ function IncomingCreate() {
       .then((res) => {
         console.log("Incoming POST Callback => ", res);
         if (res.status !== 200) throw res;
-        setActionRes({
-          status: res.status,
-          message: "Berhasil membuat pesanan",
-        });
-        setActionAlertShow(true);
+        const peekData = {
+          ...res.data.data.incomingData,
+          incoming_details: res.data.data.incomingDetailsFrontend,
+        };
+        setQuickData(peekData);
+
+        // setActionRes({
+        //   status: res.status,
+        //   message: "Berhasil membuat pesanan",
+        // });
+        // setActionAlertShow(true);
         // TODO Clear All Form
         resetForm();
-        dataList([]);
+        setDataList([]);
+        setChainModalShow(true);
         // TODO Show decision modal, options: open new tab to whatsapp, stay on page, view detail
       })
       .catch((err) => {
@@ -203,6 +215,11 @@ function IncomingCreate() {
         setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
+  };
+
+  const handleSendToWA = () => {
+    const url = "https://wa.me/6282283569169?text=test";
+    window.open(url);
   };
 
   useEffect(() => {
@@ -537,12 +554,12 @@ function IncomingCreate() {
                     </Form.Label>
                     <Form.Control
                       type="date"
-                      className={errorDate && "cst-form-invalid"}
+                      className={isDateInvalid && "cst-form-invalid"}
                       onChange={(e) => setDlDate(e.target.value)}
                       value={dlDate}
                       required
                     />
-                    {errorDate && (
+                    {isDateInvalid && (
                       <small className="cst-text-negative ">
                         Wajib mengisi tanggal jatuh tempo
                       </small>
@@ -580,6 +597,12 @@ function IncomingCreate() {
           </Container>
         </Col>
       </Row>
+      <ChainModal
+        show={chainModalShow}
+        close={() => setChainModalShow(false)}
+        handlePrint={handleSendToWA}
+        subject={quickData}
+      />
       <ActionPopup
         show={actionAlertShow}
         setShow={setActionAlertShow}
