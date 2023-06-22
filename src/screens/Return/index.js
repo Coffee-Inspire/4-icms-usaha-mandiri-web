@@ -46,12 +46,12 @@ function Return() {
       align: "left",
     },
     {
-      label: "tanggal pengajuan",
+      label: "tanggal pengajuan retur",
       bind: "return_date",
       type: "date",
     },
     {
-      label: "jumlah yang diajukan",
+      label: "jumlah pengajuan retur",
       type: "qty",
       bind: "qty",
       align: "left",

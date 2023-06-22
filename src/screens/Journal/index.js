@@ -56,7 +56,7 @@ function Journal() {
       type: "transactionType",
     },
     {
-      label: "tanggal jatuh tempo",
+      label: "transaksi jatuh tempo",
       bind: "deadline_date",
       type: "date",
     },
@@ -150,6 +150,30 @@ function Journal() {
       .finally(() => setIsLoading(false));
   };
 
+  const editData = (subject) => {
+    setIsLoading(true);
+    const params = {
+      id: subject.id,
+      paid_status: true,
+    };
+    journalApi
+      .updateStatus(params)
+      .then((res) => {
+        if (res.status !== 200) throw res;
+        setActionRes({
+          status: res.status,
+          message: "Berhasil menyelesaikan pembayaran",
+        });
+        setActionAlertShow(true);
+        getData();
+      })
+      .catch((err) => {
+        setActionRes(errorReader(err));
+        setActionAlertShow(true);
+      })
+      .finally(setIsLoading(false));
+  };
+
   useEffect(() => {
     getData();
     getBalance();
@@ -196,6 +220,7 @@ function Journal() {
         sort={sort}
         filterOptions={filterOptions}
         sortOptions={sortOptions}
+        actionForEdit={editData}
       />
       <TransactionCreateModal
         show={createModalShow}

@@ -88,7 +88,7 @@ function OutgoingDetail() {
               <Col xs={6} md={4} className="text-end px-0">
                 <small>
                   <strong>
-                    {data ? (data.guest ? data.guest.name : "-") : "-"}
+                    {data ? (data.guest ? data.guest.guest_name : "-") : "-"}
                   </strong>
                 </small>
               </Col>
@@ -144,7 +144,7 @@ function OutgoingDetail() {
                   <th className="text-end">Banyaknya</th>
                   <th className="text-end">Harga Jual</th>
                   <th className="text-end">Jumlah</th>
-                  <th className="text-end">Barang Retur</th>
+                  <th className="text-end">Jumlah Retur</th>
                 </tr>
               </thead>
               <tbody>

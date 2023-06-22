@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -9,15 +10,16 @@ import Login from "./screens/Authentication/Login";
 import MainLayout from "./screens/MainLayout";
 
 function App() {
+  const [reqPath, setReqPath] = useState("");
   const prefix = "/dashboard";
   return (
     <>
       <Router>
         <Routes>
-          <Route element={<Login />} path="/login" exact />
-          <Route element={<PrivateRoutes />}>
+          <Route element={<Login reqPath={reqPath} />} path="/login" exact />
+          <Route element={<PrivateRoutes setReqPath={setReqPath} />}>
             <Route
-              element={<MainLayout prefix={prefix} />}
+              element={<MainLayout prefix={prefix} setReqPath={setReqPath} />}
               path={`${prefix}/*`}
             />
           </Route>

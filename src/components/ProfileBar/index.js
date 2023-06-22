@@ -18,7 +18,7 @@ import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 
-function ProfileBar({ expanded, setExpanded }) {
+function ProfileBar({ expanded, setExpanded, setReqPath }) {
   const navigate = useNavigate();
 
   const [changePasswordModalShow, setChangePasswordModalShow] = useState(false);
@@ -30,6 +30,7 @@ function ProfileBar({ expanded, setExpanded }) {
   const { profileData } = useSelector((state) => state.profileReducer);
 
   const handleLogout = () => {
+    setReqPath("");
     localStorage.removeItem("access_token");
     navigate("/login");
   };

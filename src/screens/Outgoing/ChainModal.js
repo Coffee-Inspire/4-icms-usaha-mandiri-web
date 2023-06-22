@@ -7,7 +7,14 @@ import { takeIcon } from "../../helpers/iconMapper";
 function ChainModal({ show, close, handlePrint, subject }) {
   const navigate = useNavigate();
   return (
-    <Modal centered show={show} onHide={close}>
+    <Modal
+      centered
+      show={show}
+      onHide={close}
+      size="sm"
+      backdrop="static"
+      keyboard={false}
+    >
       <Modal.Body>
         <div className="my-2 text-center">
           <span className="cst-text-positive">{takeIcon("bigSuccess")}</span>
@@ -19,7 +26,7 @@ function ChainModal({ show, close, handlePrint, subject }) {
           </p>
         </div>
         <Row className="mx-0 mt-3 mb-2 d-flex justify-content-center">
-          <Col xs={12} md={4} className="my-1">
+          <Col xs={12} md={12} className="my-1">
             <Button
               variant="none"
               className="cst-btn-primary w-100  d-flex justify-content-center align-items-center p-1"
@@ -29,7 +36,7 @@ function ChainModal({ show, close, handlePrint, subject }) {
               <small className="mx-2">Cetak Nota</small>
             </Button>
           </Col>
-          <Col xs={12} md={4} className="my-1">
+          <Col xs={12} md={12} className="my-1">
             <Button
               variant="none"
               className="cst-btn-warning w-100 d-flex justify-content-center align-items-center p-1"
@@ -40,14 +47,14 @@ function ChainModal({ show, close, handlePrint, subject }) {
               <small className="mx-2">Lihat Detail</small>
             </Button>
           </Col>
-          <Col xs={12} md={4} className="my-1">
+          <Col xs={12} md={12} className="mt-4">
             <Button
               variant="none"
-              className="cst-btn-danger w-100 d-flex justify-content-center align-items-center p-1"
+              className="cst-btn-neutral w-100 d-flex justify-content-center align-items-center p-1"
               onClick={close}
             >
               <span> {takeIcon("x")}</span>
-              <small className="mx-2">Tutup</small>
+              <small className="mx-2">Tetap Disini</small>
             </Button>
           </Col>
         </Row>

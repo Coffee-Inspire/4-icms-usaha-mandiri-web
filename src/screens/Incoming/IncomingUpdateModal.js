@@ -121,28 +121,30 @@ function IncomingUpdateModal({ show, close, subjectData }) {
         <Modal.Title>Pembaharuan</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Row className="mx-0 mb-3">
-          <Col xs={12} md={6} className="mb-4">
+        <Row className="mx-0 mb-3 justify-content-between">
+          <Col xs={12} md={3} className="mb-4">
             <div className="cst-text-primary  d-flex flex-row align-items-center">
               <h4 className=" cst-letter-spacing-sm m-0">Penerimaan Barang</h4>
               {isLoading && <Spinner className="mx-2" />}
             </div>
             {data.status ? (
               <small className="cst-text-positive">
-                <strong>Transaksi sudah selesai</strong>
+                <strong>Transaksi telah ditutup</strong>
               </small>
             ) : (
               <>
-                <small className="cst-text-negative">
-                  <strong>Transaksi ini belum selesai</strong>
+                <small>
+                  <strong>Transaksi sedang berlangsung</strong>
                 </small>
                 <div className="mt-2">
-                  <small
+                  <Button
+                    variant="none"
+                    className="cst-btn-warning d-flex justify-content-center align-items-center w-100"
                     onClick={() => editStatus(data)}
-                    className="cst-clickable cst-text-primary cst-hover-color-respond fw-bold"
                   >
-                    <u>Ubah status menjadi selesai</u>
-                  </small>
+                    {/* <span>{takeIcon("filter")}</span> */}
+                    <span className="ms-1"> Tutup transaksi</span>
+                  </Button>
                 </div>
               </>
             )}
@@ -268,7 +270,7 @@ function IncomingUpdateModal({ show, close, subjectData }) {
                           : "-"}
                       </td>
                       <td>
-                        {i.receive_remain === 0 ? (
+                        {i.receive_remain === 0 || data.status ? (
                           <span className="cst-text-positive">
                             Penerimaan Selesai
                           </span>

@@ -21,7 +21,7 @@ import { saveProfile } from "../../../actions/profileAction";
 import authApi from "../../../apis/auth.js";
 import { takeIcon } from "../../../helpers/iconMapper";
 
-function Login() {
+function Login({ reqPath }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -60,7 +60,13 @@ function Login() {
           dispatch(saveProfile(payload));
           const token = res.data.token;
           localStorage.setItem("access_token", token);
-          navigate("/dashboard/stock");
+          // console.log(reqPath);
+          // navigate("/dashboard/stock");
+          if (reqPath) {
+            navigate(reqPath);
+          } else {
+            navigate("/dashboard/stock");
+          }
         } else if (res.response && res.response.status === 403) {
           setAlertMessage(res.response.data.error.message);
           setInvalidAlertShow(true);

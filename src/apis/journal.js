@@ -34,6 +34,16 @@ const journal = {
     let url = `${base}/create`;
     return fetchDepart(url, options);
   },
+
+  updateStatus: (params) => {
+    const options = {
+      method: "PUT",
+      body: params,
+    };
+
+    let url = `${base}/update`;
+    return fetchDepart(url, options);
+  },
 };
 
 export default journal;

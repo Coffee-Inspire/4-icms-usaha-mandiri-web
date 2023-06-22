@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 
 import { saveProfile } from "../actions/profileAction";
 import authApi from "../apis/auth";
 import auditor from "./auditor";
 import Redirect from "../screens/Authentication/Redirect";
 
-function PrivateRoutes() {
+function PrivateRoutes({ setReqPath }) {
   const dispatch = useDispatch();
   const [validationState, setValidationState] = useState(null);
   const token = auditor();
 
+  const catchedReqPath = useLocation();
+
   useEffect(() => {
+    setReqPath(catchedReqPath.pathname);
     if (token) {
       const params = { token };
       authApi

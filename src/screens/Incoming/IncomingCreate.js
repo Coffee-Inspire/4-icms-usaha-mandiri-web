@@ -19,12 +19,11 @@ import stockApi from "../../apis/stock";
 import categoryApi from "../../apis/category";
 import supplierApi from "../../apis/supplier";
 import convertIDR from "../../helpers/convertIDR";
+import whatsAppText from "./whatsAppText";
 import { takeIcon } from "../../helpers/iconMapper";
 import errorReader from "../../helpers/errorReader";
 
 function IncomingCreate() {
-  const navigate = useNavigate();
-
   const [dataList, setDataList] = useState([]);
   const [quickData, setQuickData] = useState({});
 
@@ -191,24 +190,15 @@ function IncomingCreate() {
     incomingApi
       .create(params)
       .then((res) => {
-        console.log("Incoming POST Callback => ", res);
         if (res.status !== 200) throw res;
         const peekData = {
           ...res.data.data.incomingData,
           incoming_details: res.data.data.incomingDetailsFrontend,
         };
         setQuickData(peekData);
-
-        // setActionRes({
-        //   status: res.status,
-        //   message: "Berhasil membuat pesanan",
-        // });
-        // setActionAlertShow(true);
-        // TODO Clear All Form
         resetForm();
         setDataList([]);
         setChainModalShow(true);
-        // TODO Show decision modal, options: open new tab to whatsapp, stay on page, view detail
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -218,8 +208,9 @@ function IncomingCreate() {
   };
 
   const handleSendToWA = () => {
-    const url = "https://wa.me/6282283569169?text=test";
-    window.open(url);
+    const text = whatsAppText(quickData);
+    const whatsappURL = `https://wa.me/6282283569169?text=${text}`;
+    window.open(whatsappURL);
   };
 
   useEffect(() => {

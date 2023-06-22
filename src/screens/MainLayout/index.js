@@ -7,7 +7,7 @@ import ProfileBar from "../../components/ProfileBar";
 import { useSelector } from "react-redux";
 import Forbidden from "../Fallback/Forbidden/index.js";
 
-function MainLayout({ prefix }) {
+function MainLayout({ prefix, setReqPath }) {
   const { profileData } = useSelector((state) => state.profileReducer);
 
   const [expanded, setExpanded] = useState(false);
@@ -20,7 +20,11 @@ function MainLayout({ prefix }) {
         } w-100 vh-100`}
       >
         <div className="position-relative bg-inf vh-100">
-          <ProfileBar expanded={expanded} setExpanded={setExpanded} />
+          <ProfileBar
+            expanded={expanded}
+            setExpanded={setExpanded}
+            setReqPath={setReqPath}
+          />
           <Routes>
             {sitemap.length > 0 &&
               sitemap.map((r) => {

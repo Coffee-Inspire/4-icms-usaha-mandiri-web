@@ -167,7 +167,7 @@ function ReturnCreate() {
                   <strong>
                     {outgoingInfo
                       ? outgoingInfo.guest
-                        ? outgoingInfo.guest_name
+                        ? outgoingInfo.guest.guest_name
                         : "-"
                       : "-"}
                   </strong>

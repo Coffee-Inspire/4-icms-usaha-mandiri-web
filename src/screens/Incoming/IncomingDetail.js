@@ -46,14 +46,14 @@ function IncomingDetail() {
       .finally(() => setIsLoading(false));
   };
 
-  const receiveStatusString = (total, remain) => {
-    if (remain === 0)
-      return <span className="cst-text-positive">Diterima Sepenuhnya</span>;
-    if (remain < total)
-      return <span className="cst-text-warning">Diterima sebagian</span>;
-    if (remain === total)
-      return <span className="cst-text-negative">Belum diterima</span>;
-  };
+  // const receiveStatusString = (total, remain) => {
+  //   if (remain === 0)
+  //     return <span className="cst-text-positive">Diterima Sepenuhnya</span>;
+  //   if (remain < total)
+  //     return <span className="cst-text-warning">Diterima sebagian</span>;
+  //   if (remain === total)
+  //     return <span className="cst-text-negative">Belum diterima</span>;
+  // };
 
   const receivedCount = (data) => {
     const totalData = data.length;
@@ -125,10 +125,10 @@ function IncomingDetail() {
                 <small>
                   <strong
                     className={`${
-                      data.status ? "cst-text-positive" : "cst-text-negative"
+                      data.status ? "cst-text-positive" : "cst-text-warning"
                     }`}
                   >
-                    {data.status ? "Selesai" : "Belum Selesai"}
+                    {data.status ? "Telah Ditutup" : "Sedang Berlangsung"}
                   </strong>
                 </small>
               </Col>
@@ -162,7 +162,7 @@ function IncomingDetail() {
                   <th className="text-end">Harga Barang</th>
                   <th className="text-end">Jumlah Pemesanan</th>
                   <th className="text-end">Jumlah Diterima</th>
-                  <th className="text-center">Status</th>
+                  {/* <th className="text-center">Status</th> */}
                   <th className="text-center">Tgl Terakhir Diterima</th>
                   {/* <th className="text-center">Action</th> */}
                 </tr>
@@ -193,11 +193,11 @@ function IncomingDetail() {
                     <td className="text-end">
                       {i.received_qty} {i.unit}
                     </td>
-                    <td className="text-center">
+                    {/* <td className="text-center">
                       <small>
                         {receiveStatusString(i.purchase_qty, i.receive_remain)}
                       </small>
-                    </td>
+                    </td> */}
                     <td className="text-center">
                       {i.arrive_date
                         ? moment(i.arrive_date).format("DD-MM-YYYY")

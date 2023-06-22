@@ -96,6 +96,7 @@ function Stock() {
     setSubjectData(targetData);
     setUpdateModalShow(true);
   };
+
   const editData = (params) => {
     setIsLoading(true);
     stockApi
