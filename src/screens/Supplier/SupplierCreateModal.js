@@ -38,7 +38,7 @@ function SupplierCreateModal({ show, close, handler }) {
       "string.empty": `Alamat tidak boleh kosong`,
       "any.required": `Alamat tidak boleh kosong`,
     }),
-    active_status: Joi.boolean().default(true),
+    status: Joi.boolean().default(true),
   });
 
   const {
@@ -159,7 +159,7 @@ function SupplierCreateModal({ show, close, handler }) {
             <Col xs={12} md={6} className="py-2 d-flex">
               <Controller
                 control={control}
-                name="active_status"
+                name="status"
                 render={({ field }) => (
                   <Form.Group
                     {...field}
