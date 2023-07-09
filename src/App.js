@@ -11,7 +11,7 @@ import MainLayout from "./screens/MainLayout";
 
 function App() {
   const [reqPath, setReqPath] = useState("");
-  const prefix = "/dashboard";
+  const prefix = "/app";
   return (
     <>
       <Router>

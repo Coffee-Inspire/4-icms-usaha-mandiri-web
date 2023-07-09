@@ -12,12 +12,10 @@ import limitOptions from "../../options/tableLimitOptions.json";
 import sortOptions from "./Options/sortOptions.json";
 import filterOptions from "./Options/filterOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
-import convertIDR from "../../helpers/convertIDR";
 import errorReader from "../../helpers/errorReader";
 
 function Journal() {
   const [data, setData] = useState([]);
-  const [balance, setBalance] = useState("0");
   const [isLoading, setIsLoading] = useState(false);
 
   const [limit, setLimit] = useState(limitOptions[0]);
@@ -35,12 +33,18 @@ function Journal() {
 
   const columns = [
     {
-      label: "tanggal pembuatan",
+      label: "tgl. pembuatan",
       bind: "transaction_date",
       type: "date",
     },
     {
-      label: "lampiran transaksi",
+      label: "tipe",
+      bind: "type",
+      align: "center",
+      type: "transactionType",
+    },
+    {
+      label: "lampiran internal",
       bind: "reference_id",
       align: "left",
     },
@@ -50,13 +54,7 @@ function Journal() {
       align: "left",
     },
     {
-      label: "tipe",
-      bind: "type",
-      align: "center",
-      type: "transactionType",
-    },
-    {
-      label: "transaksi jatuh tempo",
+      label: "tgl. jatuh tempo",
       bind: "deadline_date",
       type: "date",
     },
@@ -65,6 +63,11 @@ function Journal() {
       bind: "paid_status",
       align: "center",
       type: "paidStatus",
+    },
+    {
+      label: "tgl. pembayaran",
+      bind: "paid_date",
+      type: "date",
     },
     {
       label: "nominal",
@@ -110,26 +113,7 @@ function Journal() {
       .finally(() => setIsLoading(false));
   };
 
-  const getBalance = () => {
-    setIsLoading(true);
-    journalApi
-      .getBalance()
-      .then((res) => {
-        if (res.status !== 200) throw res;
-        setBalance(res.data.data.balance);
-      })
-      .catch((err) => {
-        setActionRes(errorReader(err));
-        setActionAlertShow(true);
-      })
-      .finally(() => setIsLoading(false));
-  };
-
   const createData = (params) => {
-    params = {
-      ...params,
-      mutation: parseInt(params.mutation),
-    };
     setIsLoading(true);
     journalApi
       .create(params)
@@ -141,7 +125,6 @@ function Journal() {
         });
         setActionAlertShow(true);
         getData();
-        getBalance();
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -176,7 +159,6 @@ function Journal() {
 
   useEffect(() => {
     getData();
-    getBalance();
   }, [limit, page, sort, filter, search]);
 
   useEffect(() => {
@@ -193,17 +175,6 @@ function Journal() {
         >
           Transaksi Manual
         </ButtonAddRow>
-        <div className="text-end">
-          <strong className="text-secondary">
-            <span className="me-2">{takeIcon("cash")}</span>
-            Saldo Sekarang
-          </strong>
-          <h6>
-            <strong className="cst-text-secondary cst-letter-spacing-sm">
-              IDR {convertIDR(balance)}
-            </strong>
-          </h6>
-        </div>
       </div>
       <Shows
         columns={columns}

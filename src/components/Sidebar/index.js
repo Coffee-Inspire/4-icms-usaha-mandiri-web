@@ -85,18 +85,22 @@ function Sidebar({ prefix, expanded }) {
               </div>
             );
           } else {
-            return (
-              // * Nav single
-              <NavLink
-                key={navItem.label}
-                to={`${prefix}${navItem.destination}`}
-                style={{ textDecoration: "none" }}
-                className="cst-text-primary d-flex align-items-center ps-4 pe-5 py-2 mb-2"
-              >
-                {navItem.icon}
-                <span className="ms-2">{navItem.label}</span>
-              </NavLink>
-            );
+            if (
+              navItem.permissions.includes("Global") ||
+              navItem.permissions.includes(profileData.role.role_name)
+            )
+              return (
+                // * Nav single
+                <NavLink
+                  key={navItem.label}
+                  to={`${prefix}${navItem.destination}`}
+                  style={{ textDecoration: "none" }}
+                  className="cst-text-primary d-flex align-items-center ps-4 pe-5 py-2 mb-2"
+                >
+                  {navItem.icon}
+                  <span className="ms-2">{navItem.label}</span>
+                </NavLink>
+              );
           }
         })}
     </div>

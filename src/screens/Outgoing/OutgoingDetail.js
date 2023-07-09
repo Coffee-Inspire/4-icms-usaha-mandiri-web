@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Container, Table, Row, Col, Button, Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { Container, Table, Row, Col, Button } from "react-bootstrap";
 import { useReactToPrint } from "react-to-print";
 
 import Header from "../../components/Header";
@@ -13,7 +13,6 @@ import convertIDR from "../../helpers/convertIDR";
 import errorReader from "../../helpers/errorReader";
 
 function OutgoingDetail() {
-  const navigate = useNavigate();
   const printRef = useRef();
 
   const { id } = useParams();
@@ -129,7 +128,7 @@ function OutgoingDetail() {
               onClick={() => handlePrint()}
             >
               <span> {takeIcon("print")}</span>
-              <small className="mx-2">Cetak Nota</small>
+              <small className="m-2">Cetak Nota</small>
             </Button>
           </Col>
         </Row>
@@ -140,8 +139,8 @@ function OutgoingDetail() {
             <Table responsive className="cst-subtable">
               <thead>
                 <tr>
+                  <th className="">Banyaknya</th>
                   <th>Nama Barang</th>
-                  <th className="text-end">Banyaknya</th>
                   <th className="text-end">Harga Jual</th>
                   <th className="text-end">Jumlah</th>
                   <th className="text-end">Jumlah Retur</th>
@@ -150,10 +149,10 @@ function OutgoingDetail() {
               <tbody>
                 {data.outgoing_details.map((i) => (
                   <tr key={i.id}>
-                    <td>{i.stock && i.stock.item_name}</td>
-                    <td className="text-end">
+                    <td className="">
                       {i.sold_qty} {i.unit}
                     </td>
+                    <td>{i.stock && i.stock.item_name}</td>
                     <td className="text-end">
                       <div className="d-flex flex-column">
                         {convertIDR(i.sold_price)}
@@ -166,7 +165,6 @@ function OutgoingDetail() {
                         <span className="text-secondary">IDR</span>
                       </div>
                     </td>
-                    {/* <td className="text-end cst-text-negative"> */}
                     <td
                       className={`${
                         i.return_qty > 0 && "cst-text-negative"

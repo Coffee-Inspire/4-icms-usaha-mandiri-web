@@ -10,23 +10,23 @@
       "field": "created_at"
     },
     {
-        "label": "No. Nota (A-Z)",
-        "value": "asc",
-        "field": "receipt_no"
-      },
-      {
-        "label": "No. Nota (Z-A)",
-        "value": "desc",
-        "field": "receipt_no"
-      },
-      {
-        "label": "Jumlah Retur (Min)",
-        "value": "asc",
-        "field": "return_qty"
-      },
-      {
-        "label": "Jumlah Retur (Maks)",
-        "value": "desc",
-        "field": "return_qty"
-      }
+      "label": "No. Nota (A-Z)",
+      "value": "asc",
+      "field": "receipt_no"
+    },
+    {
+      "label": "No. Nota (Z-A)",
+      "value": "desc",
+      "field": "receipt_no"
+    },
+    {
+      "label": "Jumlah Retur (Min)",
+      "value": "asc",
+      "field": "qty"
+    },
+    {
+      "label": "Jumlah Retur (Maks)",
+      "value": "desc",
+      "field": "qty"
+    }
   ]

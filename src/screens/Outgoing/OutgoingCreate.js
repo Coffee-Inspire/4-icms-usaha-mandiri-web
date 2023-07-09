@@ -12,6 +12,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { useReactToPrint } from "react-to-print";
+import CurrencyInput from "react-currency-input-field";
 
 import Header from "../../components/Header";
 import Receipt from "./Receipt";
@@ -113,55 +114,12 @@ function OutgoingCreate() {
       .finally(() => setIsLoading(false));
   };
 
-  // const getStockInfo = (stockId) => {
-  //   setIsLoading(true);
-  //   const params = {
-  //     id: stockId,
-  //   };
-  //   stockApi
-  //     .getById(params)
-  //     .then((res) => {
-  //       if (res.status !== 200) throw res;
-  //       setStockInfo(res.data.data);
-  //     })
-  //     .catch((err) => {
-  //       setActionRes(errorReader(err));
-  //       setActionAlertShow(true);
-  //     })
-  //     .finally(() => setIsLoading(false));
-  // };
-
   const handleAddRow = () => {
     setCart((cart) => [...cart, initialCartRow]);
   };
 
   const handleAssignStockToCart = async (targetIndex, item) => {
     // * Hit GetItemById API ,requesting for stock price
-    // // ? For Development
-    // const dummyItemPrice = [
-    //   {
-    //     id: "1",
-    //     itemName: "Semen",
-    //     price: "50000",
-    //     qty: "50",
-    //     unit: "pcs",
-    //   },
-    //   {
-    //     id: "2",
-    //     itemName: "Kayu",
-    //     price: "30000",
-    //     qty: "60",
-    //     unit: "box",
-    //   },
-    //   {
-    //     id: "3",
-    //     itemName: "Besi",
-    //     price: "80000",
-    //     qty: "30",
-    //     unit: "pcs",
-    //   },
-    // ];
-    // const itemData = dummyItemPrice.find((i) => i.id === item.value);
 
     setIsLoading(true);
     const params = {
@@ -195,24 +153,6 @@ function OutgoingCreate() {
         setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
-
-    // setCart(
-    //   cart.map((c, idx) => {
-    //     if (idx === targetIndex) {
-    //       return {
-    //         ...c,
-    //         itemId: item.value,
-    //         itemName: itemData.itemName,
-    //         price: itemData.price,
-    //         qty: itemData.qty,
-    //         unit: itemData.unit,
-    //         amount: itemData.price * c.soldQty,
-    //       };
-    //     } else {
-    //       return c;
-    //     }
-    //   })
-    // );
   };
 
   const handleAssignQtyToCart = (targetIndex, value) => {
@@ -225,15 +165,6 @@ function OutgoingCreate() {
         }
       })
     );
-    // setCart(
-    //   cart.map((c, idx) => {
-    //     if (idx === targetIndex) {
-    //       return { ...c, soldQty: value, amount: value * c.price };
-    //     } else {
-    //       return c;
-    //     }
-    //   })
-    // );
   };
 
   const handleRemoveFromCart = (targetIndex) => {
@@ -250,12 +181,7 @@ function OutgoingCreate() {
         note: "",
       },
       cart: cart,
-      // customer: customer,
-      // totalPrice: totalPrice,
-      // date: moment(),
-      // user: profileData.id,
     };
-
     setIsLoading(true);
     outgoingApi
       .create(params)
@@ -275,16 +201,6 @@ function OutgoingCreate() {
         setActionAlertShow(true);
       })
       .finally(() => setIsLoading(false));
-
-    // // ? For Development
-    // const d = {
-    //   ...params,
-    //   customer: customer ? customer.label : "",
-    //   date: moment().format("D-MM-YYYY"),
-    // };
-    // setDummyApiResultReturn({ ...dummyApiResultReturn, ...d });
-
-    // setChainModalShow(true);
   };
 
   const stopCheckout = (cart) => {
@@ -309,42 +225,8 @@ function OutgoingCreate() {
     if (customer !== null) {
       // * Hit single GetByID API, request for customer data
       getCustomerInfo(customer.value);
-      // // ? For Development
-      // const dummyCustomerInfo = [
-      //   {
-      //     id: "1",
-      //     contact: "082283569190",
-      //     address: "Avr River 149 Road, Jt Street 19221",
-      //   },
-      //   {
-      //     id: "2",
-      //     contact: "082283561143",
-      //     address: "Bencholeen Sideways 301, 19228",
-      //   },
-      //   {
-      //     id: "3",
-      //     contact: "082283569187",
-      //     address: "Anderson Hills, Rochor Road 52",
-      //   },
-      //   {
-      //     id: "4",
-      //     contact: "082283566570",
-      //     address: "MTS Apartement 709, B-Side Doorways 19885",
-      //   },
-      // ];
-      // const getCustomerInfo = dummyCustomerInfo.find(
-      //   (i) => i.id === customer.value
-      // );
-      // setCustomerInfo(getCustomerInfo);
     } else setCustomerInfo(null);
   }, [customer]);
-
-  // useEffect(() => {
-  //   if (stock !== null) {
-  //     // * Request for stock data
-  //     getStockInfo(stock.value);
-  //   } else setStockIn(null);
-  // }, [stock]);
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -468,7 +350,6 @@ function OutgoingCreate() {
                       <td>
                         <Select
                           menuPortalTarget={document.body}
-                          // options={dummyItemOptions}
                           options={stockOptions}
                           onChange={(e) => {
                             handleAssignStockToCart(index, e);
@@ -476,14 +357,7 @@ function OutgoingCreate() {
                           placeholder="Pilih Barang"
                         />
                       </td>
-                      <td>
-                        {/* <Form.Control
-                          value={cart[index].qty}
-                          className="cst-form-control"
-                          disabled
-                        /> */}
-                        {cart[index].qty}
-                      </td>
+                      <td>{cart[index].qty}</td>
                       <td>
                         <Form.Control
                           value={`IDR ${convertIDR(cart[index].price)}`}
@@ -556,22 +430,22 @@ function OutgoingCreate() {
                   <span>Bayar:</span>
                 </Col>
                 <Col xs={9} className="my-1">
-                  <Form.Control
-                    type="number"
-                    className="cst-form-control"
-                    value={payment.pay}
-                    onChange={(e) => {
-                      const paymentPay = e.target.value;
-                      const paymentChange = Math.max(
-                        paymentPay - totalPrice,
-                        0
-                      );
+                  <CurrencyInput
+                    className="d-block w-100 py-2 px-3 rounded-2 cst-form-control"
+                    allowDecimals={false}
+                    allowNegativeValue={false}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    onValueChange={(val) => {
+                      const paymentChange = Math.max(val - totalPrice, 0);
                       setPayment({
                         ...payment,
-                        pay: paymentPay,
+                        pay: val,
                         change: paymentChange,
                       });
                     }}
+                    prefix={"IDR "}
+                    disabled={isLoading}
                   />
                 </Col>
                 <Col xs={3} className="my-1 d-flex align-items-center">

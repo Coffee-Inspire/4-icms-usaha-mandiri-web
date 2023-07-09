@@ -65,12 +65,12 @@ function Stock() {
       align: "right",
     },
     {
-      label: "Tanggal Pembelian",
+      label: "tgl. Pembelian",
       bind: "last_order_date",
       type: "date",
     },
     {
-      label: "Tanggal Restock",
+      label: "tgl. Restock",
       bind: "last_restock_date",
       type: "date",
     },

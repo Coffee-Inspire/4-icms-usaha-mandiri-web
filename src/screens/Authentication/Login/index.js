@@ -60,12 +60,10 @@ function Login({ reqPath }) {
           dispatch(saveProfile(payload));
           const token = res.data.token;
           localStorage.setItem("access_token", token);
-          // console.log(reqPath);
-          // navigate("/dashboard/stock");
           if (reqPath) {
             navigate(reqPath);
           } else {
-            navigate("/dashboard/stock");
+            navigate("/app/dashboard");
           }
         } else if (res.response && res.response.status === 403) {
           setAlertMessage(res.response.data.error.message);

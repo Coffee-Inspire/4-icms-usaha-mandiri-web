@@ -35,7 +35,7 @@ function Outgoing() {
       align: "left",
     },
     {
-      label: "tanggal nota",
+      label: "tgl. nota",
       bind: "sold_date",
       type: "date",
     },

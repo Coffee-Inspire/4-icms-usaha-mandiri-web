@@ -4,8 +4,8 @@ import { host } from "../../appsetting/config";
 
 export default (data) => {
   const textHeader = `Usaha%20Mandiri%20-%20Pemesanan%20barang%0ANomor%20Pemesanan%20${data.incoming_no}`;
-  //   const detailsURL = `${host}/dashboard/incoming/detail/${data.id}%20`;
-  const detailsURL = `${"https://icmsmandiristage.arzone.site"}/dashboard/incoming/detail/${
+  //   const detailsURL = `${host}/app/incoming/detail/${data.id}%20`;
+  const detailsURL = `${"https://icmsmandiristage.arzone.site"}/app/incoming/detail/${
     data.id
   }%20`;
   const textBody = `%0ATotal%20Pemesanan:%20Rp%20${convertIDR(

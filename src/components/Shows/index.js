@@ -328,7 +328,7 @@ function Shows({
             case "CR":
               return (
                 <td key={`${record.id}-${col.bind}`}>
-                  <div className="cst-bg-positive-light cst-chip-radius w-75 mx-auto text-center">
+                  <div className="cst-bg-positive-light cst-chip-radius w-100 mx-auto text-center">
                     <span className="cst-text-positive">Kredit</span>
                   </div>
                 </td>
@@ -337,7 +337,7 @@ function Shows({
             case "DB":
               return (
                 <td key={`${record.id}-${col.bind}`}>
-                  <div className="cst-bg-negative-light cst-chip-radius w-75 mx-auto text-center">
+                  <div className="cst-bg-negative-light cst-chip-radius w-100 mx-auto text-center">
                     <span className="cst-text-negative">Debit</span>
                   </div>
                 </td>
@@ -355,6 +355,34 @@ function Shows({
                 <div className="cst-bg-negative-light cst-chip-radius d-flex">
                   <span className="cst-text-negative w-100">Non Aktif</span>
                 </div>
+              )}
+            </td>
+          );
+        case "incomingStatus":
+          return (
+            <td
+              style={customized}
+              key={`${record.id}-${col.bind}`}
+              className=""
+            >
+              {value ? (
+                <span>
+                  <div className="cst-bg-neutral-light cst-chip-radius cst-w-150 mx-auto cst-text-positive px-2">
+                    <div className="d-flex align-items-center">
+                      <div className="cst-guide-positive mx-1" />
+                      <span>Ditutup</span>
+                    </div>
+                  </div>
+                </span>
+              ) : (
+                <span>
+                  <div className="cst-bg-neutral-lighter cst-chip-radius cst-w-150 mx-auto cst-text-warning px-2">
+                    <div className="d-flex align-items-center">
+                      <div className="cst-guide-warning mx-1" />
+                      <span>Berlangsung</span>
+                    </div>
+                  </div>
+                </span>
               )}
             </td>
           );
@@ -498,16 +526,17 @@ function Shows({
       switch (col.type) {
         case "action":
           return (
-            <OverlayTrigger
-              key={`${record.id}-${col.bind}`}
-              trigger="click"
-              placement="bottom-start"
-              rootClose
-              rootCloseEvent="click"
-              overlay={actionPopover}
-            >
-              <td style={align}>{takeIcon("menuVertical")}</td>
-            </OverlayTrigger>
+            <td style={align} key={`${record.id}-${col.bind}`}>
+              <OverlayTrigger
+                trigger="click"
+                placement="bottom-start"
+                rootClose
+                rootCloseEvent="click"
+                overlay={actionPopover}
+              >
+                {takeIcon("menuVertical")}
+              </OverlayTrigger>
+            </td>
           );
         default:
           return <td key={`${record.id}-${col.bind}`}>-</td>;

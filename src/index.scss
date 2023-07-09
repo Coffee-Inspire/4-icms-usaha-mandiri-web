@@ -206,6 +206,10 @@ Extra extra large	xxl	≥1400px
   background-color: lighten($color-negative, 53%);
 }
 
+.cst-bg-negative-dark {
+  background-color: $color-negative-dark
+}
+
 .cst-bg-warning {
   background-color: $color-warning;
 }
@@ -279,6 +283,13 @@ Extra extra large	xxl	≥1400px
   height: 10px;
   border-radius: 5px;
   background-color: $color-negative;
+}
+
+.cst-guide-warning {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: $color-warning;
 }
 
 .cst-w-min-content {
@@ -412,7 +423,7 @@ Extra extra large	xxl	≥1400px
   color: $color-negative;
 
   &:focus {
-    box-shadow: 0 0 0 0.1rem lighten($color-negative, 20%);
+    box-shadow: 0 0 0 0 lighten($color-negative, 20%);
     border-color: $color-negative;
     background-color: lighten($color-primary, 35%);
     transition: 0.3s;
@@ -421,6 +432,14 @@ Extra extra large	xxl	≥1400px
 
 .cst-section-shadow {
   box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.2);
+}
+
+.cst-section-shadow-light {
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.cst-border-neutral {
+  border: 1px solid rgba($color-neutral, 0.8);  
 }
 
 .cst-border-bottom {
@@ -443,8 +462,7 @@ Extra extra large	xxl	≥1400px
   &:focus {
     background-color: $color-plain;
     border: 1px solid $color-primary;
-    color: $color-primary;
-    // font-weight: bold;
+    color: $color-primary;    
   }
 
   &:disabled {
@@ -457,7 +475,7 @@ Extra extra large	xxl	≥1400px
 .cst-btn-secondary {
   background-color: $color-plain;
   border: 1px solid $color-primary;
-  color: $color-primary;
+  color: $color-primary;  
 
   &:hover {
     background-color: $color-primary;
@@ -467,13 +485,11 @@ Extra extra large	xxl	≥1400px
 }
 
 .cst-btn-neutral {
-  background-color: $color-neutral;
-  // color: $color-plain;
+  background-color: $color-neutral;  
   transition: 0.3s;
 
   &:hover {
-    background-color: darken($color-neutral, 20%);
-    // color: $color-plain;
+    background-color: darken($color-neutral, 20%);    
     transition: 0.3s;
   }
 }
@@ -482,12 +498,6 @@ Extra extra large	xxl	≥1400px
   background-color: $color-warning;
   color: $color-plain;
   transition: 0.3s;
-
-  // &:hover {
-  //   background-color: darken($color-warning, 20%);
-  //   color: $color-plain;
-  //   transition: 0.3s;
-  // }
 
   &:hover,
   &:focus {
@@ -553,6 +563,36 @@ Extra extra large	xxl	≥1400px
   width: 55px;
   height: 30px;
   border-radius: 100px;
+}
+
+.cst-tab {
+  background-color: $color-plain;
+  border: 2px solid $color-primary;
+  color: $color-primary;  
+  font-weight: bold;
+  transition: 0.15s;
+
+  &:hover {
+    background-color: $color-secondary;
+    border: 2px solid $color-plain;
+    color: $color-plain;
+    transition: 0.15s;
+  }
+}
+
+.cst-tab-active {
+  background-color: $color-primary;
+   border: 2px solid $color-secondary;
+  color: $color-plain;  
+  font-weight: bold;
+  transition: 0.15s;
+
+  &:hover {
+    background-color: $color-secondary;
+    border: 2px solid $color-plain;
+    color: $color-plain;
+    transition: 0.15s;
+  }
 }
 
 .cst-chip-radius {

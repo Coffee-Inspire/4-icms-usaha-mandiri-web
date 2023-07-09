@@ -40,7 +40,6 @@ function ChainModal({ show, close, handlePrint, subject }) {
             <Button
               variant="none"
               className="cst-btn-warning w-100 d-flex justify-content-center align-items-center p-1"
-              // onClick={() => navigate(`/detail/${subject.id}`)}
               onClick={() => navigate(`../outgoing/detail/${subject.id}`)}
             >
               <span> {takeIcon("search")}</span>

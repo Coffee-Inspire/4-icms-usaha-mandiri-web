@@ -2,6 +2,12 @@ import { takeIcon } from "./iconMapper";
 
 const navs = [
   {
+    label: "Beranda",
+    icon: takeIcon("dashboard"),
+    destination: "/dashboard",
+    permissions: ["Global"],
+  },
+  {
     label: "Inventaris",
     icon: takeIcon("inventory"),
     childs: [
@@ -18,7 +24,7 @@ const navs = [
         permissions: ["Global"],
       },
       {
-        label: "Suppliers",
+        label: "Supplier",
         icon: takeIcon("supplier"),
         destination: "/supplier",
         permissions: ["Global"],
@@ -49,7 +55,7 @@ const navs = [
       },
       {
         label: "Retur Penjualan",
-        icon: takeIcon("outgoing"),
+        icon: takeIcon("return"),
         destination: "/return",
         permissions: ["Global"],
       },

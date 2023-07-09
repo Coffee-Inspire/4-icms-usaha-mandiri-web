@@ -6,17 +6,17 @@
   },
   {
     "label": "Stok Habis",
-    "value": "",
+    "value": "empty",
     "field": "qty"
   },
   {
     "label": "Stok Terbatas",
-    "value": "",
+    "value": "limited",
     "field": "qty"
   },
   {
     "label": "Stok Tersedia",
-    "value": "",
+    "value": "ready",
     "field": "qty"
   }
 ]

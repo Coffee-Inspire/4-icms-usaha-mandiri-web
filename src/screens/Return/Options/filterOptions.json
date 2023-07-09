@@ -5,12 +5,17 @@
     "field": ""
   },
   {
-    "label": "St. Ditutup",
+    "label": "Status Pengajuan",
+    "value": "pending",
+    "field": "status"
+  },
+  {
+    "label": "Status Selesai",
     "value": "active",
     "field": "status"
   },
   {
-    "label": "St. Berlangsung",
+    "label": "Status Ditolak",
     "value": "inactive",
     "field": "status"
   }

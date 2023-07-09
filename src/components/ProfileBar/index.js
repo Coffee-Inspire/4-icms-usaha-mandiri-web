@@ -85,9 +85,7 @@ function ProfileBar({ expanded, setExpanded, setReqPath }) {
               className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
               onClick={() => setChangePasswordModalShow(true)}
             >
-              <strong>
-                <u>Ganti Kata Sandi</u>
-              </strong>
+              <strong>Ganti Kata Sandi</strong>
             </small>
           </span>
           <span className="my-1 text-end">
@@ -95,9 +93,7 @@ function ProfileBar({ expanded, setExpanded, setReqPath }) {
               className="cst-clickable cst-hover-bg-respond cst-text-secondary rounded-3 p-1"
               onClick={() => setLogoutConfirmModalShow(true)}
             >
-              <strong>
-                <u>Keluar</u>
-              </strong>
+              <strong>Keluar</strong>
             </small>
           </span>
         </Col>

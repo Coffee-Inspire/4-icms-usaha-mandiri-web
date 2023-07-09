@@ -42,7 +42,7 @@ function Incoming() {
       align: "left",
     },
     {
-      label: "tanggal pemesanan",
+      label: "tgl. pemesanan",
       bind: "purchase_date",
       type: "date",
     },
@@ -57,6 +57,11 @@ function Incoming() {
       bind: "note",
     },
     {
+      label: "status penerimaan",
+      bind: "status",
+      type: "incomingStatus",
+    },
+    {
       label: takeIcon("menuVertical"),
       bind: "action",
       type: "action",
@@ -67,6 +72,7 @@ function Incoming() {
         },
         {
           action: "edit",
+          label: "Terima Barang",
           permission: ["Global"],
         },
       ],

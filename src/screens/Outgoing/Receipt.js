@@ -12,11 +12,37 @@ function Receipt({ innerRef, data }) {
     textAlign: "right",
   };
 
-  // ? For Development
-  const dummyContent = {
-    address:
-      " Jln Diponegoro, Ruko Orchid Garden Blok B11-B12 95231, Jakarta Selatan, Bekasi",
-    contact: "08271272372",
+  const renderRow = (data) => {
+    const totalData = data.length;
+    const minRow = 11;
+
+    let output = data.map((i, index) => {
+      return (
+        <tr key={index}>
+          <td className="text-center">{`${i.sold_qty} ${i.unit}`}</td>
+          <td>{i.stock.item_name}</td>
+          <td className="text-end">{convertIDR(i.sold_price)}</td>
+          <td className="text-end">{convertIDR(i.total_amount)}</td>
+        </tr>
+      );
+    });
+
+    for (let i = totalData; i < minRow; i++) {
+      output.push(
+        <tr key={i} style={{ height: "30px" }}>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      );
+    }
+    return output;
+  };
+
+  const metaContent = {
+    address: "Taman Wisma Asri Blok B27-39, Bekasi",
+    contact: "0812-2252-9267",
   };
 
   return (
@@ -30,8 +56,8 @@ function Receipt({ innerRef, data }) {
             src={Logo}
           />
           <div className="d-flex flex-column">
-            <small>{dummyContent.address}</small>
-            <small>Telp {dummyContent.contact}</small>
+            <small>{metaContent.address}</small>
+            <small>Telp {metaContent.contact}</small>
           </div>
         </div>
         <div className="w-50 text-end">
@@ -61,18 +87,16 @@ function Receipt({ innerRef, data }) {
       <div>
         <table className="cst-print-table mb-3">
           <colgroup>
-            <col span="1" style={{ width: "6%" }} />
+            <col span="1" style={{ width: "20%" }} />
             <col span="1" style={{ width: "50%" }} />
-            <col span="1" style={{ width: "14%" }} />
-            <col span="1" style={{ width: "15%" }} />
-            <col span="1" style={{ width: "15%" }} />
+            <col span="1" style={{ width: "35%" }} />
+            <col span="1" style={{ width: "35%" }} />
           </colgroup>
           <thead>
             <tr>
-              <th>NO</th>
-              <th>NAMA BARANG</th>
               <th>BANYAKNYA</th>
-              <th>HARGA</th>
+              <th>NAMA BARANG</th>
+              <th>HARGA SATUAN</th>
               <th>JUMLAH</th>
             </tr>
           </thead>
@@ -80,19 +104,11 @@ function Receipt({ innerRef, data }) {
             {data &&
               data.outgoing_details &&
               data.outgoing_details.length > 0 &&
-              data.outgoing_details.map((i, index) => (
-                <tr key={index}>
-                  <td className="text-center">{index + 1}</td>
-                  <td>{i.stock.item_name}</td>
-                  <td className="text-center">{i.sold_qty}</td>
-                  <td className="text-end">{convertIDR(i.sold_price)}</td>
-                  <td className="text-end">{convertIDR(i.total_amount)}</td>
-                </tr>
-              ))}
+              renderRow(data.outgoing_details)}
           </tbody>
         </table>
         <div className="border border-dark text-end py-1 px-2">
-          <span className="fw-bold">TOTAL: </span>{" "}
+          <span className="fw-bold">Total Rp: </span>{" "}
           {convertIDR(data && data.total_sold)}
         </div>
         <div className="my-3 d-flex justify-content-between">

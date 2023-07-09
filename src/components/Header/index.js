@@ -3,11 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { takeIcon } from "../../helpers/iconMapper";
 
-function Header({ className, headerLabel, useBack, isLoading }) {
+function Header({
+  className,
+  headerLabel,
+  useBack,
+  separator = true,
+  isLoading,
+}) {
   const navigate = useNavigate();
   return (
     <div
-      className={`${className} cst-border-bottom cst-text-secondary cst-letter-spacing d-flex align-items-center pb-3`}
+      className={`${className} ${
+        separator && "cst-border-bottom"
+      } cst-text-secondary cst-letter-spacing d-flex align-items-center pb-3`}
     >
       {useBack && (
         <span onClick={() => navigate(-1)} className="cst-clickable">

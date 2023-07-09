@@ -7,6 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import moment from "moment";
+import CurrencyInput from "react-currency-input-field";
 
 import Header from "../../components/Header";
 import Subheader from "../../components/Subheader";
@@ -18,6 +19,7 @@ import incomingApi from "../../apis/incoming";
 import stockApi from "../../apis/stock";
 import categoryApi from "../../apis/category";
 import supplierApi from "../../apis/supplier";
+import modelParser from "../../helpers/modelParser";
 import convertIDR from "../../helpers/convertIDR";
 import whatsAppText from "./whatsAppText";
 import { takeIcon } from "../../helpers/iconMapper";
@@ -57,22 +59,14 @@ function IncomingCreate() {
       "string.empty": `Kategori tidak boleh kosong`,
       "any.required": `Kategori tidak boleh kosong`,
     }),
-    purchase_price: Joi.string()
-      .pattern(/^[0-9]+$/)
-      .required()
-      .messages({
-        "string.empty": `Harga beli tidak boleh kosong`,
-        "any.required": `Harga beli tidak boleh kosong`,
-        "string.pattern.base": `Hanya angka`,
-      }),
-    price: Joi.string()
-      .pattern(/^[0-9]+$/)
-      .required()
-      .messages({
-        "string.empty": `Harga jual tidak boleh kosong`,
-        "any.required": `Harga jual tidak boleh kosong`,
-        "string.pattern.base": `Hanya angka`,
-      }),
+    purchase_price: Joi.string().required().messages({
+      "string.empty": `Harga beli tidak boleh kosong`,
+      "any.required": `Harga beli tidak boleh kosong`,
+    }),
+    price: Joi.string().required().messages({
+      "string.empty": `Harga jual tidak boleh kosong`,
+      "any.required": `Harga jual tidak boleh kosong`,
+    }),
     purchase_qty: Joi.string()
       .pattern(/^[0-9]+$/)
       .required()
@@ -146,9 +140,8 @@ function IncomingCreate() {
   };
 
   const onSubmit = (data) => {
+    data = modelParser(data);
     // TODO Checking whitespace
-    // handler(data);
-    // handleClose();
     data.total_amount = data.purchase_price * data.purchase_qty;
     // TODO Checking if item name already exist in dataList
     const isExist = dataList.find(
@@ -369,14 +362,29 @@ function IncomingCreate() {
                             type="radio"
                             name="unit"
                             id="unitSack"
-                            value="sack"
+                            value="sak"
                             className="cst-clickable me-2"
                           />
                           <Form.Label
                             htmlFor="unitSack"
                             className="cst-clickable"
                           >
-                            Sack
+                            Sak
+                          </Form.Label>
+                        </div>
+                        <div className="cst-clickable d-flex me-3">
+                          <Form.Check
+                            type="radio"
+                            name="unit"
+                            id="unitCubic"
+                            value="kubik"
+                            className="cst-clickable me-2"
+                          />
+                          <Form.Label
+                            htmlFor="unitCubic"
+                            className="cst-clickable"
+                          >
+                            Kubik
                           </Form.Label>
                         </div>
                       </Form.Group>
@@ -387,18 +395,23 @@ function IncomingCreate() {
                   </small>
                 </Form.Group>
               </Col>
-              <Col xs={12} md={6} className="pb-2">
+              <Col xs={12} md={6} className="pb-2 ">
                 <Form.Group>
                   <Form.Label>
                     Harga Beli<span className="cst-text-negative">*</span>
                   </Form.Label>
-                  <Form.Control
-                    type="number"
-                    className={`cst-form-control ${
+                  <CurrencyInput
+                    className={`d-block w-100 py-2 px-3 rounded-2 cst-form-control ${
                       errors.purchase_price && "cst-form-invalid"
                     }`}
-                    {...register("purchase_price")}
                     placeholder="Harga beli"
+                    allowDecimals={false}
+                    allowNegativeValue={false}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    {...register("purchase_price")}
+                    prefix={"IDR "}
+                    disabled={isLoading}
                   />
                   <small className="cst-text-negative ">
                     {errors.purchase_price?.message}
@@ -410,13 +423,18 @@ function IncomingCreate() {
                   <Form.Label>
                     Harga Jual<span className="cst-text-negative">*</span>
                   </Form.Label>
-                  <Form.Control
-                    type="number"
-                    className={`cst-form-control ${
+                  <CurrencyInput
+                    className={`d-block w-100 py-2 px-3 rounded-2 cst-form-control ${
                       errors.price && "cst-form-invalid"
                     }`}
-                    {...register("price")}
                     placeholder="Harga jual"
+                    {...register("price")}
+                    allowDecimals={false}
+                    allowNegativeValue={false}
+                    decimalSeparator=","
+                    groupSeparator="."
+                    prefix={"IDR "}
+                    disabled={isLoading}
                   />
                   <small className="cst-text-negative ">
                     {errors.price?.message}
@@ -540,7 +558,7 @@ function IncomingCreate() {
                   </Col>
                   <Col xs={12} lg={4}>
                     <Form.Label>
-                      Jatuh Tempo Pembayaran
+                      Tanggal Jatuh Tempo
                       <span className="cst-text-negative">*</span>
                     </Form.Label>
                     <Form.Control
@@ -572,8 +590,6 @@ function IncomingCreate() {
 
                   <Col xs={5} md={4}>
                     <Button
-                      // onClick={() => navigate(-1)}
-                      // onClick={() => setShow(true)}
                       onClick={() => createData()}
                       variant="none"
                       className="cst-btn-secondary w-100"

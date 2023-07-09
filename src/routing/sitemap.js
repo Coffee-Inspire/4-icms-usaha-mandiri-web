@@ -1,3 +1,4 @@
+import Home from "../screens/Home";
 import Stock from "../screens/Stock";
 import Customer from "../screens/Customer";
 import Supplier from "../screens/Supplier";
@@ -15,6 +16,11 @@ import Category from "../screens/Category";
 import PageNotFound from "../screens/Fallback/PageNotFound";
 
 const sitemap = [
+  {
+    element: <Home />,
+    path: "/dashboard",
+    permissions: ["Global"],
+  },
   {
     element: <Stock />,
     path: "/stock",

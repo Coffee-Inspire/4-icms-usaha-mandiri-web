@@ -13,5 +13,15 @@
     "label": "Uang Masuk (CR)",
     "value": "cr",
     "field": "journalType"
+  },
+  {
+    "label": "Status Selesai",
+    "value": "true",
+    "field": "paidStatus"
+  },
+  {
+    "label": "Status Blm Selesai",
+    "value": "false",
+    "field": "paidStatus"
   }
 ]

@@ -8,6 +8,7 @@ import ButtonAddRow from "../../components/ButtonAddRow";
 import ActionPopup from "../../components/ActionPopup";
 
 import returnApi from "../../apis/return";
+import filterOptions from "./Options/filterOptions.json";
 import limitOptions from "../../options/tableLimitOptions.json";
 import sortOptions from "./Options/sortOptions.json";
 import { takeIcon } from "../../helpers/iconMapper";
@@ -22,6 +23,7 @@ function Return() {
   const [limit, setLimit] = useState(limitOptions[0]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [filter, setFilter] = useState(filterOptions[0]);
   const [sort, setSort] = useState(sortOptions[0]);
   const [search, setSearch] = useState("");
 
@@ -30,12 +32,12 @@ function Return() {
 
   const columns = [
     {
-      label: "nomor nota",
+      label: "nomor nota penjualan",
       bind: "receipt_no",
       align: "left",
     },
     {
-      label: "tanggal nota",
+      label: "tgl. nota",
       bind: "outgoing_date",
       type: "date",
     },
@@ -46,7 +48,7 @@ function Return() {
       align: "left",
     },
     {
-      label: "tanggal pengajuan retur",
+      label: "tgl. pengajuan retur",
       bind: "return_date",
       type: "date",
     },
@@ -87,6 +89,7 @@ function Return() {
       page,
       limit,
       sort,
+      filter,
       search,
     };
     returnApi
@@ -181,11 +184,11 @@ function Return() {
 
   useEffect(() => {
     getData();
-  }, [limit, page, sort, search]);
+  }, [limit, page, sort, filter, search]);
 
   useEffect(() => {
     setPage(1);
-  }, [limit, search, sort]);
+  }, [limit, search, sort, filter]);
 
   return (
     <Container fluid className="p-4">
@@ -202,9 +205,12 @@ function Return() {
         setPage={setPage}
         totalPage={totalPage}
         setSearch={setSearch}
+        setFilter={setFilter}
         setSort={setSort}
+        filter={filter}
         sort={sort}
         sortOptions={sortOptions}
+        filterOptions={filterOptions}
         actionForEdit={handleApprove}
         actionForDelete={handleReject}
       />

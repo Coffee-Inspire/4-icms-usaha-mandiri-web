@@ -3,21 +3,19 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+import CurrencyInput from "react-currency-input-field";
 
 import ValidationAlert from "./Alerts/ValidationAlert";
 
 import validator from "../../helpers/validator";
+import modelParser from "../../helpers/modelParser";
 
 function StockUpdateModal({ show, close, handler, subject = {} }) {
   const schema = Joi.object({
-    price: Joi.string()
-      .pattern(/^[0-9]+$/)
-      .required()
-      .messages({
-        "string.empty": `Harga jual tidak boleh kosong`,
-        "any.required": `Harga jual tidak boleh kosong`,
-        "string.pattern.base": `Harga jual tidak valid`,
-      }),
+    price: Joi.string().required().messages({
+      "string.empty": `Harga jual tidak boleh kosong`,
+      "any.required": `Harga jual tidak boleh kosong`,
+    }),
   });
 
   const {
@@ -30,6 +28,7 @@ function StockUpdateModal({ show, close, handler, subject = {} }) {
   const [validationAlertShow, setValidationAlertShow] = useState(false);
 
   const onSubmit = (data) => {
+    data = modelParser(data);
     const isValid = validator(data);
     if (!isValid) {
       setValidationAlertShow(true);
@@ -78,14 +77,18 @@ function StockUpdateModal({ show, close, handler, subject = {} }) {
                 <Form.Label>
                   Harga Jual <span className="cst-text-negative">*</span>
                 </Form.Label>
-                <Form.Control
-                  type="name"
-                  {...register("price")}
-                  className={`cst-form-control ${
-                    errors.price && "cst-form-invalid"
+                <CurrencyInput
+                  className={`d-block w-100 py-2 px-3 rounded-2 cst-form-control ${
+                    errors.purchase_price && "cst-form-invalid"
                   }`}
-                  placeholder="Harga Jual"
+                  placeholder="Harga beli"
+                  allowDecimals={false}
+                  allowNegativeValue={false}
+                  decimalSeparator=","
+                  groupSeparator="."
+                  {...register("price")}
                   defaultValue={subject && subject.price}
+                  prefix={"IDR "}
                 />
                 <small className="cst-text-negative ">
                   {errors.price?.message}
