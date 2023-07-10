@@ -55,10 +55,12 @@ function Supplier() {
     {
       label: "e-mail",
       bind: "email",
+      align: "left",
     },
     {
       label: "alamat",
       bind: "address",
+      align: "left",
     },
     {
       label: "status",

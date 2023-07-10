@@ -50,10 +50,12 @@ function Customer() {
     {
       label: "E-mail",
       bind: "email",
+      align: "left",
     },
     {
       label: "Alamat",
       bind: "address",
+      align: "left",
     },
     {
       label: takeIcon("menuVertical"),

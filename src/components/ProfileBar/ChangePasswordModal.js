@@ -40,6 +40,7 @@ function ChangePasswordModal({ show, close, handler }) {
     setPassUnmatched(false);
     handler(data);
     close();
+    reset();
   };
 
   const handleClose = () => {

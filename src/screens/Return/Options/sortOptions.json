@@ -12,12 +12,12 @@
     {
       "label": "No. Nota (A-Z)",
       "value": "asc",
-      "field": "receipt_no"
+      "field": "return_receipt_no"
     },
     {
       "label": "No. Nota (Z-A)",
       "value": "desc",
-      "field": "receipt_no"
+      "field": "return_receipt_no"
     },
     {
       "label": "Jumlah Retur (Min)",

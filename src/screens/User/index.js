@@ -70,6 +70,7 @@ function User() {
     {
       label: "e-mail",
       bind: "email",
+      align: "left",
     },
     {
       label: "status akun",
