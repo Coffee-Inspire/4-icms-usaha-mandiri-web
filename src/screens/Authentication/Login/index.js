@@ -87,7 +87,7 @@ function Login({ reqPath }) {
           lg={5}
           xl={4}
           xxl={3}
-          className="cst-bg-plain cst-section-shadow cst-border-radius-left cst-border-radius-right-xs p-4 "
+          className="cst-bg-plain cst-section-shadow cst-border-radius-left cst-border-radius-right-xs p-4"
         >
           <div className="text-center">
             <div>

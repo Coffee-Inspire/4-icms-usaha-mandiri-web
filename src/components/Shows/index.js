@@ -637,8 +637,8 @@ function Shows({
       )}
       <Row className="cst-heading-bg cst-pagination-toolbar cst-text-secondary mx-0 fw-bold d-flex justify-content-end">
         <Col
-          xs={5}
-          md={2}
+          xs={12}
+          md={4}
           className="d-flex justify-content-end align-items-center py-1"
         >
           <small className="me-1">Baris maksimal:</small>
@@ -652,7 +652,7 @@ function Shows({
           </small>
         </Col>
         <Col
-          xs={7}
+          xs={12}
           md={3}
           className="d-flex justify-content-end align-items-center py-1"
         >
