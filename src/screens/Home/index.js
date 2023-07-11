@@ -341,8 +341,8 @@ function Home() {
     <Container fluid className="p-4">
       <Header headerLabel={"beranda"} isLoading={isLoading} />
       <Row className="mt-3 mb-5 justify-content-between">
-        <Col xs={12} md={3} className="px-md-3 ">
-          <ButtonGroup size="">
+        <Col xs={12} md={3} className="px-md-3 text-center text-md-start">
+          <ButtonGroup>
             <Button
               variant="none"
               className={period === "1D" ? "cst-tab-active" : "cst-tab"}
@@ -436,7 +436,9 @@ function Home() {
                 overlay={
                   <Tooltip id={`toolip-1`}>
                     <div style={{ textAlign: "start" }} className="p-1">
-                      <p>Penjualan yang terjadi dalam periode yang dipilih</p>
+                      <p>
+                        Jumlah penjualan yang terjadi dalam periode yang dipilih
+                      </p>
                     </div>
                   </Tooltip>
                 }
@@ -447,7 +449,9 @@ function Home() {
                 </span>
               </OverlayTrigger>
             </div>
-            <h5 className="cst-text-secondary">Jumlah Penjualan</h5>
+            <h5 className="cst-text-secondary">
+              <span className="d-inline d-md-none">Jumlah </span>Penjualan
+            </h5>
             <h3 className="fw-bold">{activityData.totalOutgoing}</h3>
           </div>
         </Col>
@@ -459,7 +463,9 @@ function Home() {
                 overlay={
                   <Tooltip id={`toolip-1`}>
                     <div style={{ textAlign: "start" }} className="p-1">
-                      <p>Pembelian yang terjadi dalam periode yang dipilih</p>
+                      <p>
+                        Jumlah pembelian yang terjadi dalam periode yang dipilih
+                      </p>
                     </div>
                   </Tooltip>
                 }
@@ -470,7 +476,9 @@ function Home() {
                 </span>
               </OverlayTrigger>
             </div>
-            <h5 className="cst-text-secondary">Jumlah Pembelian</h5>
+            <h5 className="cst-text-secondary">
+              <span className="d-inline d-md-none">Jumlah </span>Pembelian
+            </h5>
             <h3 className="fw-bold">{activityData.totalIncoming}</h3>
           </div>
         </Col>
@@ -482,7 +490,9 @@ function Home() {
                 overlay={
                   <Tooltip id={`toolip-1`}>
                     <div style={{ textAlign: "start" }} className="p-1">
-                      <p>Retur yang terjadi dalam periode yang dipilih</p>
+                      <p>
+                        Jumlah retur yang terjadi dalam periode yang dipilih
+                      </p>
                     </div>
                   </Tooltip>
                 }
@@ -493,7 +503,9 @@ function Home() {
                 </span>
               </OverlayTrigger>
             </div>
-            <h5 className="cst-text-secondary">Jumlah Retur</h5>
+            <h5 className="cst-text-secondary">
+              <span className="d-inline d-md-none">Jumlah </span>Retur
+            </h5>
             <h3 className="fw-bold">{activityData.totalReturn}</h3>
           </div>
         </Col>
@@ -602,11 +614,7 @@ function Home() {
         </Col>
         <Col xs={12} md={5} className="my-2 my-md-3">
           <div className="cst-section-shadow-light rounded-4 px-5 py-4">
-            <Row className="">
-              <Col xs={12} md={6}>
-                <h3 className="cst-text-primary">Ringkasan Transaksi</h3>
-              </Col>
-            </Row>
+            <h3 className="cst-text-primary">Ringkasan Transaksi</h3>
 
             <Row className="d-flex align-items-center justify-content-center">
               <OverlayTrigger
@@ -640,13 +648,13 @@ function Home() {
               </OverlayTrigger>
             </Row>
             <Row className="mb-2 justify-content-center">
-              <Col xs={12} md={5}>
+              <Col xs={12} md={6}>
                 <div className="d-flex justify-content-center align-items-center my-1">
                   <span
                     style={{ width: "15px", height: "15px" }}
                     className="cst-bg-positive rounded-circle mx-1"
                   />
-                  <span>Transaksi keseluruhan</span>
+                  <small>Transaksi keseluruhan</small>
                 </div>
               </Col>
               <Col xs={12} md={5}>
@@ -655,7 +663,7 @@ function Home() {
                     style={{ width: "15px", height: "15px" }}
                     className="cst-bg-warning rounded-circle mx-1"
                   />
-                  <span>Belum dibayar</span>
+                  <small>Belum dibayar</small>
                 </div>
               </Col>
             </Row>

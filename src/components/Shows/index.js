@@ -442,15 +442,15 @@ function Shows({
           const currentStockStatus = (key) => {
             return {
               OUT: {
-                label: "Stok Habis",
+                label: "Habis",
                 type: "negative",
               },
               LIMIT: {
-                label: "Stok Terbatas",
+                label: "Terbatas",
                 type: "warning",
               },
               READY: {
-                label: "Stok Tersedia",
+                label: "Tersedia",
                 type: "positive",
               },
             }[key];
