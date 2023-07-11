@@ -560,7 +560,7 @@ function Shows({
       <Row className="mx-0 py-3 ">
         <Col
           xs={12}
-          lg={2}
+          lg={3}
           className="px-1 my-1 my-lg-0 d-flex justify-content-center"
         >
           <OverlayTrigger
@@ -581,7 +581,7 @@ function Shows({
         {filterOptions && (
           <Col
             xs={12}
-            lg={2}
+            lg={3}
             className="px-1 my-1 my-lg-0 d-flex justify-content-center"
           >
             <OverlayTrigger

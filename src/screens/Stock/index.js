@@ -137,7 +137,7 @@ function Stock() {
               ...i,
               category_name: i.item_category?.category_name,
               supplier_name: i.supplier?.supplier_name,
-              status: i.qty === 0 ? "OUT" : i.qty <= 80 ? "LIMIT" : "READY",
+              status: i.qty === 0 ? "OUT" : i.qty < 80 ? "LIMIT" : "READY",
             })
         );
         setData(normalized);
