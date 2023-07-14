@@ -46,7 +46,7 @@ function Login({ reqPath }) {
     },
     {
       image: CarouselImg3,
-      text: "Tingkatkat performa bisnis anda dengan mekanisme yang user friendly dan mudah digunakan oleh siapa saja",
+      text: "Tingkatkan performa bisnis anda dengan mekanisme yang user friendly dan mudah digunakan oleh siapa saja",
     },
   ];
   const submitLogin = (e) => {

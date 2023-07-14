@@ -9,7 +9,7 @@ import convertIDR from "../../helpers/convertIDR";
 import errorReader from "../../helpers/errorReader";
 import moment from "moment";
 
-function IncomingUpdateModal({ show, close, subjectData }) {
+function IncomingUpdateModal({ show, close, subjectData, getAllData }) {
   const [data, setData] = useState({});
   const [invalidReceiveAlertShow, setInvalidReceiveAlertShow] = useState(false);
   const [actionAlertShow, setActionAlertShow] = useState(false);
@@ -52,6 +52,7 @@ function IncomingUpdateModal({ show, close, subjectData }) {
         });
         setActionAlertShow(true);
         getData();
+        getAllData();
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -95,6 +96,7 @@ function IncomingUpdateModal({ show, close, subjectData }) {
         });
         setActionAlertShow(true);
         getData();
+        getAllData();
       })
       .catch((err) => {
         setActionRes(errorReader(err));

@@ -66,6 +66,19 @@ function OutgoingCreate() {
   const [actionAlertShow, setActionAlertShow] = useState(false);
   const [actionRes, setActionRes] = useState({ status: null, message: "" });
 
+  const handleReset = () => {
+    const currentDate = moment().format("D-MM-YYYY hh:mm A");
+    setInvoiceInfo({
+      date: currentDate,
+      user: profileData.fullname,
+    });
+    getCustomerSource();
+    setCart([initialCartRow]);
+    getStockSource();
+    setCustomer(null);
+    setCustomerInfo(null);
+  };
+
   const getCustomerSource = () => {
     setIsLoading(true);
     customerApi
@@ -195,6 +208,7 @@ function OutgoingCreate() {
         setQuickData(peekData);
         // TODO Shows chain popup if status res is 200
         setChainModalShow(true);
+        handleReset();
       })
       .catch((err) => {
         setActionRes(errorReader(err));
@@ -211,14 +225,15 @@ function OutgoingCreate() {
   };
 
   useEffect(() => {
-    const currentDate = moment().format("D-MM-YYYY hh:mm A");
-    setInvoiceInfo({
-      date: currentDate,
-      user: profileData.fullname,
-    });
-    getCustomerSource();
-    setCart([initialCartRow]);
-    getStockSource();
+    // const currentDate = moment().format("D-MM-YYYY hh:mm A");
+    // setInvoiceInfo({
+    //   date: currentDate,
+    //   user: profileData.fullname,
+    // });
+    // getCustomerSource();
+    // setCart([initialCartRow]);
+    // getStockSource();
+    handleReset();
   }, []);
 
   useEffect(() => {

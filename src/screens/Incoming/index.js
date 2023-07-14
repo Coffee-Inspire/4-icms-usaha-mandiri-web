@@ -149,6 +149,7 @@ function Incoming() {
         show={updateModalShow}
         close={handleCloseUpdateModal}
         subjectData={subjectData}
+        getAllData={getData}
       />
       <ActionPopup
         show={actionAlertShow}

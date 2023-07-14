@@ -15,6 +15,7 @@ import IsExistAlert from "./Alerts/IsExistAlert";
 import ActionPopup from "../../components/ActionPopup";
 import ChainModal from "./ChainModal";
 
+import unitOptions from "../../options/unitOptions.json";
 import incomingApi from "../../apis/incoming";
 import stockApi from "../../apis/stock";
 import categoryApi from "../../apis/category";
@@ -75,10 +76,7 @@ function IncomingCreate() {
         "any.required": `Qty tidak boleh kosong`,
         "string.pattern.base": `Hanya angka`,
       }),
-    unit: Joi.string().default("pcs").messages({
-      "string.empty": `Unit tidak boleh kosong`,
-      "any.required": `Unit tidak boleh kosong`,
-    }),
+    unit: Joi.object().default(unitOptions[0]),
   });
 
   const {
@@ -140,6 +138,7 @@ function IncomingCreate() {
   };
 
   const onSubmit = (data) => {
+    data = { ...data, unit: data.unit.value };
     data = modelParser(data);
     // TODO Checking whitespace
     data.total_amount = data.purchase_price * data.purchase_qty;
@@ -201,8 +200,9 @@ function IncomingCreate() {
   };
 
   const handleSendToWA = () => {
+    const number = "6281222529267";
     const text = whatsAppText(quickData);
-    const whatsappURL = `https://wa.me/6282283569169?text=${text}`;
+    const whatsappURL = `https://wa.me/${number}?text=${text}`;
     window.open(whatsappURL);
   };
 
@@ -320,8 +320,19 @@ function IncomingCreate() {
               <Col xs={6} md={6} className="pb-2">
                 <Form.Group>
                   <Form.Label>Unit</Form.Label>
-
                   <Controller
+                    name="unit"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={unitOptions}
+                        defaultValue={unitOptions[0]}
+                        isDisabled={isLoading}
+                      />
+                    )}
+                  />
+                  {/* <Controller
                     control={control}
                     name="unit"
                     render={({ field }) => (
@@ -389,7 +400,7 @@ function IncomingCreate() {
                         </div>
                       </Form.Group>
                     )}
-                  />
+                  /> */}
                   <small className="cst-text-negative ">
                     {errors.unit?.message}
                   </small>

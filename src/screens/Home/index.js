@@ -693,17 +693,17 @@ function Home() {
                 </Row>
                 <Row className="justify-content-between">
                   <Col xs={12} md={6} className="text-center text-md-start">
-                    <h5 className="cst-text-neutral">
+                    <h6 className="cst-text-neutral">
                       Dibuat pada:{" "}
                       {moment(debtData.main.transaction_date).format(
                         "DD-MM-YYYY"
                       )}
-                    </h5>
+                    </h6>
                   </Col>
                   <Col xs={12} md={6} className="text-center text-md-end">
-                    <h5 className="cst-text-neutral">
+                    <h6 className="cst-text-neutral">
                       {debtData.main.reference_id || "Transaksi manual"}
-                    </h5>
+                    </h6>
                   </Col>
                 </Row>
               </div>

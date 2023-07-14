@@ -5,12 +5,12 @@
     "field": ""
   },
   {
-    "label": "Uang Keluar (DB)",
+    "label": "Dana Keluar (Debit)",
     "value": "db",
     "field": "journalType"
   },
   {
-    "label": "Uang Masuk (CR)",
+    "label": "Dana Masuk (Kredit)",
     "value": "cr",
     "field": "journalType"
   },
