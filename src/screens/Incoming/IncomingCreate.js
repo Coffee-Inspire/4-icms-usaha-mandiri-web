@@ -49,14 +49,17 @@ function IncomingCreate() {
 
   const schema = Joi.object({
     item_name: Joi.object().required().messages({
+      "object.base": `Nama barang tidak boleh kosong`,
       "string.empty": `Nama barang tidak boleh kosong`,
       "any.required": `Nama barang tidak boleh kosong`,
     }),
     supplier_id: Joi.object().required().messages({
+      "object.base": `Nama supplier tidak boleh kosong`,
       "string.empty": `Nama supplier tidak boleh kosong`,
       "any.required": `Nama supplier tidak boleh kosong`,
     }),
     category_id: Joi.object().required().messages({
+      "object.base": `Nama kategori tidak boleh kosong`,
       "string.empty": `Kategori tidak boleh kosong`,
       "any.required": `Kategori tidak boleh kosong`,
     }),
@@ -76,7 +79,12 @@ function IncomingCreate() {
         "any.required": `Qty tidak boleh kosong`,
         "string.pattern.base": `Hanya angka`,
       }),
-    unit: Joi.object().default(unitOptions[0]),
+    // unit: Joi.object().default(unitOptions[0]),
+    unit: Joi.object().default(unitOptions[0]).required().messages({
+      "object.base": `Nama unit tidak boleh kosong`,
+      "string.empty": `Nama unit tidak boleh kosong`,
+      "any.required": `Nama unit tidak boleh kosong`,
+    }),
   });
 
   const {
@@ -232,7 +240,7 @@ function IncomingCreate() {
           />
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row>
-              <Col xs={12} md={8} className="pb-2">
+              <Col xs={12} md={12} className="pb-2">
                 <Form.Group>
                   <Form.Label>
                     Nama Barang<span className="cst-text-negative">*</span>
@@ -254,7 +262,7 @@ function IncomingCreate() {
                   </small>
                 </Form.Group>
               </Col>
-              <Col xs={12} md={4} className="pb-2">
+              <Col xs={12} md={12} className="pb-2">
                 <Form.Group>
                   <Form.Label>
                     Kategori<span className="cst-text-negative">*</span>
